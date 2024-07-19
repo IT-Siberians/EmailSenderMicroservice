@@ -54,7 +54,10 @@ namespace NotificationMicroservice.Domain.Models
         /// Дата отправки сообщения
         /// </summary>
         public DateTime CreateDate { get => _createDate; }
-
+        
+        /// <summary>
+        /// Пустой конструктор класса
+        /// </summary>
         public Setting() { }
 
         /// <summary>
