@@ -1,6 +1,6 @@
 ﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using System.Text;
-using System.Text.RegularExpressions;
+using NotificationMicroservice.Domain.Exception.Message;
+using NotificationMicroservice.Domain.ValueObject;
 
 namespace NotificationMicroservice.Domain.Models
 {
@@ -11,7 +11,7 @@ namespace NotificationMicroservice.Domain.Models
     {
         
         private Guid _id;
-        private string _email;
+        private Email _email;
         private string _messageType;
         private string _messageText;
         private bool _status;
@@ -25,7 +25,7 @@ namespace NotificationMicroservice.Domain.Models
         /// <summary>
         /// Email получателя
         /// </summary>
-        public string Email { get => _email; }
+        public Email Email { get => _email; }
         
         /// <summary>
         /// Название шаблона сообщений
@@ -48,11 +48,6 @@ namespace NotificationMicroservice.Domain.Models
         public DateTime CreateDate { get => _createDate; }
 
         /// <summary>
-        /// Пустой конструктор класса
-        /// </summary>
-        public Message() { }
-
-        /// <summary>
         /// Основной конструктор класса
         /// </summary>
         /// <param name="id">идентификатор записи</param>
@@ -63,57 +58,31 @@ namespace NotificationMicroservice.Domain.Models
         /// <param name="createDate">дата и время отправления сообщения</param>
         /// <returns>Сущность</returns>
         public Message(Guid id, string email, string messageType, string messageText, bool status, DateTime createDate)
-        { 
+        {
+
+            if (id == Guid.Empty)
+            {
+                throw new MessageGuidEmptyException(nameof(id));
+            }
+
+            if (string.IsNullOrEmpty(messageType))
+            {
+                throw new MessageTypeNullOrEmptyException(nameof(messageType));
+            }
+
+            if (string.IsNullOrEmpty(messageText))
+            {
+                throw new MessageTextNullOrEmptyException(nameof(messageText));
+            }
+
             _id = id;
-            _email = email;
+            _email = new Email(email);
             _messageType = messageType;
             _messageText = messageText;
             _status = status;
             _createDate = createDate;
         }
 
-        /// <summary>
-        /// Основной конструктор класса
-        /// </summary>
-        /// <param name="id">идентификатор записи</param>
-        /// <param name="email">адрес получателя сообщений</param>
-        /// <param name="messageType">тип сообщений</param>
-        /// <param name="messageText">текст сообщения</param>
-        /// <param name="status">статус отправки</param>
-        /// <param name="createDate">дата и время отправления сообщения</param>
-        /// <returns>Кортеж (Сущностьб Ошибки)</returns>
-        public (Message Message, string Error) Create(Guid id, string email, string messageType, string messageText, bool status, DateTime createDate)
-        {
-            var errorSb = new StringBuilder();
-
-            if (id == Guid.Empty)
-            {
-                errorSb.AppendLine($"Identifier {id} cannot be empty");
-            }
-
-            if (string.IsNullOrEmpty(messageType))
-            {
-                errorSb.AppendLine($"MessageType {messageType} cannot be empty");
-            }            
-
-            if (string.IsNullOrEmpty(messageText))
-            {
-                errorSb.AppendLine($"MessageText {messageText} cannot be empty");
-            }
-
-            if (string.IsNullOrEmpty(email) || IsValidEmail(email))
-            {
-                errorSb.AppendLine($"Email {email} cannot be empty or does not meet the requirements");
-            }
-
-
-            return (new Message(id, email, messageType, messageText, status, createDate), errorSb.ToString());
-        }
-        private bool IsValidEmail(string email)
-        {
-            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
-            Match isMatch = Regex.Match(email, pattern, RegexOptions.IgnoreCase);
-            return isMatch.Success;
-        }
+        
     }
 }

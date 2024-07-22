@@ -1,5 +1,6 @@
 ﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using System.Text;
+using NotificationMicroservice.Domain.Exception.Setting;
+using NotificationMicroservice.Domain.ValueObject;
 using System.Text.RegularExpressions;
 
 namespace NotificationMicroservice.Domain.Models
@@ -15,8 +16,8 @@ namespace NotificationMicroservice.Domain.Models
         private string _serverAddress;
         private uint _serverPort;
         private bool _useSSL;
-        private string _login;
-        private string _passwordHash;
+        private Email _login;
+        private string _password;
         private DateTime _createDate;
 
 
@@ -43,23 +44,18 @@ namespace NotificationMicroservice.Domain.Models
         /// <summary>
         /// Логин от ящика для отправки
         /// </summary>        
-        public string Login { get => _login; }
+        public Email Login { get => _login; }
 
         /// <summary>
         /// Пароль от ящика отправки
         /// </summary>
-        public string PasswordHash { get => _passwordHash; }
+        public string Password { get => _password; }
 
         /// <summary>
         /// Дата отправки сообщения
         /// </summary>
         public DateTime CreateDate { get => _createDate; }
         
-        /// <summary>
-        /// Пустой конструктор класса
-        /// </summary>
-        public Setting() { }
-
         /// <summary>
         /// Основной конструктор класса
         /// </summary>
@@ -68,68 +64,42 @@ namespace NotificationMicroservice.Domain.Models
         /// <param name="serverPort">порт сервера отправки сообщений</param>
         /// <param name="useSSl">признак использования SSL</param>
         /// <param name="login">логин учетной записи отправителя</param>
-        /// <param name="passwordHash">пароль от учетной записи отпраителя</param>
+        /// <param name="password">пароль от учетной записи отпраителя</param>
         /// <param name="createDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
-        private Setting(Guid id, string serverAddress, uint serverPort, bool useSSl, string login, string passwordHash, DateTime createDate)
+        private Setting(Guid id, string serverAddress, uint serverPort, bool useSSl, string login, string password, DateTime createDate)
         {
-            _id = id;
-            _serverAddress = serverAddress;
-            _serverPort = serverPort;
-            _useSSL = useSSl;
-            _login = login;
-            _passwordHash = passwordHash;
-            _createDate = createDate;
-        }
-
-        /// <summary>
-        /// Создание настроек
-        /// </summary>
-        /// <param name="id">идентификатор записи</param>
-        /// <param name="serverAddress">адрес сервера отправки сообщений</param>
-        /// <param name="serverPort">порт сервера отправки сообщений</param>
-        /// <param name="useSSl">признак использования SSL</param>
-        /// <param name="login">логин учетной записи отправителя</param>
-        /// <param name="passwordHash">пароль от учетной записи отпраителя</param>
-        /// <param name="createDate">дата и время отправления сообщения</param>
-        /// <returns>Кортеж (Сущность, Ошибки)</returns>
-        public (Setting Setting, string Error) Create(Guid id, string serverAddress, uint serverPort, bool useSSl, string login, string passwordHash, DateTime createDate)
-        {
-            var errorSb = new StringBuilder();
-
             if (id == Guid.Empty)
             {
-                errorSb.AppendLine($"Identifier {id} cannot be empty");
+                throw new SettingGuidEmptyException(nameof(id));
             }
 
-            if (string.IsNullOrEmpty(serverAddress) || serverAddress.Length > MAX_SERVER_ADDRESS_LENG)
+            if (string.IsNullOrEmpty(serverAddress))
             {
-                errorSb.AppendLine($"Sending server address {serverAddress} cannot be empty or longer than {MAX_SERVER_ADDRESS_LENG} characters");
+                throw new SettingServerAddressNullOrEmptyException(nameof(serverAddress));
+            }
+            if (serverAddress.Length > MAX_SERVER_ADDRESS_LENG)
+            {
+                throw new SettingServerAddressLengthException(nameof(serverAddress));
             }
 
             if ((serverPort) > 0 && (serverPort % 100 != 0))
             {
-                errorSb.AppendLine($"Specified port {serverPort} cannot be negative or not a three-digit number");
+                throw new SettingServerPortException(nameof(serverPort));
             }
 
-            if (string.IsNullOrEmpty(login) || IsValidEmail(login))
+            if (string.IsNullOrEmpty(password))
             {
-                errorSb.AppendLine($"Login {login} cannot be empty or does not meet the requirements");
+                throw new SettingPasswordNullOrEmptyException(nameof(password));
             }
 
-            if (string.IsNullOrEmpty(passwordHash))
-            {
-                errorSb.AppendLine($"PasswordHash {passwordHash} cannot be empty");
-            }
-
-            return (new Setting(id, serverAddress, serverPort, useSSl, login, passwordHash, createDate), errorSb.ToString());
-                
-        }
-        private bool IsValidEmail(string email)
-        {
-            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
-            Match isMatch = Regex.Match(email, pattern, RegexOptions.IgnoreCase);
-            return isMatch.Success;
+            _id = id;
+            _serverAddress = serverAddress;
+            _serverPort = serverPort;
+            _useSSL = useSSl;
+            _login = new Email(login);
+            _password = password;
+            _createDate = createDate;
         }
     }
 }
