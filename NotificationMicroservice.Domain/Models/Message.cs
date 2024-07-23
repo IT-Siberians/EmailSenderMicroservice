@@ -82,7 +82,6 @@ namespace NotificationMicroservice.Domain.Models
             _status = status;
             _createDate = createDate;
         }
-
         
     }
 }

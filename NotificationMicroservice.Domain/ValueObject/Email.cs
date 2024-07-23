@@ -1,4 +1,5 @@
 ﻿using NotificationMicroservice.Domain.Exception.VoalueObject;
+using NotificationMicroservice.Domain.Resources;
 using System.Text.RegularExpressions;
 
 namespace NotificationMicroservice.Domain.ValueObject
@@ -7,8 +8,8 @@ namespace NotificationMicroservice.Domain.ValueObject
     {
 
         private static readonly Regex ValidationRegex = new Regex(
-        @"[.\-_a-z0-9]+@([a-z0-9][\-a-z0-9]+\.)+[a-z]{2,6}",
-        RegexOptions.Singleline | RegexOptions.Compiled);
+                StringResources.REGEX_EMAIL,
+                RegexOptions.Singleline | RegexOptions.Compiled);
 
         public Email(string value)
         {
@@ -22,7 +23,7 @@ namespace NotificationMicroservice.Domain.ValueObject
 
         public string Value { get; }
 
-        public static bool IsValid(string value)
+        private bool IsValid(string value)
         {
             return !string.IsNullOrWhiteSpace(value) && ValidationRegex.IsMatch(value);
         }

@@ -1,6 +1,5 @@
 ﻿namespace NotificationMicroservice.Domain.Exception.Setting
 {
-    [Serializable]
     internal class SettingPasswordNullOrEmptyException : System.Exception
     {
         public SettingPasswordNullOrEmptyException()

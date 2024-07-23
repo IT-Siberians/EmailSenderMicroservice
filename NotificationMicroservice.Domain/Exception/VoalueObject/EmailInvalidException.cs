@@ -1,6 +1,5 @@
 ﻿namespace NotificationMicroservice.Domain.Exception.VoalueObject
 {
-    [Serializable]
     internal class EmailInvalidException : System.Exception
     {
         public EmailInvalidException()

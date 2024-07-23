@@ -11,7 +11,7 @@ namespace NotificationMicroservice.Domain.Interface.Repository
         /// 
         /// </summary>
         /// <returns>Сущность с текущими настройки</returns>
-        Task<Setting> GetAsync();
+        Task<Setting>? GetAsync();
 
         /// <summary>
         /// 

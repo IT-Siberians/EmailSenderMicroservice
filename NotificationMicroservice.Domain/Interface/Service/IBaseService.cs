@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="key">Идентификатор сущности</param>
         /// <returns>Сущность</returns>
-        Task<TEntity> GetByIdAsync(TKey key);
+        Task<TEntity>? GetByIdAsync(TKey key);
 
         /// <summary>
         /// 

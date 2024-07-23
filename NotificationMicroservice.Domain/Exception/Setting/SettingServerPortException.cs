@@ -1,6 +1,5 @@
 ﻿namespace NotificationMicroservice.Domain.Exception.Setting
 {
-    [Serializable]
     internal class SettingServerPortException : System.Exception
     {
         public SettingServerPortException()
