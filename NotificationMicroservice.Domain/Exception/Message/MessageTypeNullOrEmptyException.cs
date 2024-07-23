@@ -7,11 +7,13 @@
         {
         }
 
-        public MessageTypeNullOrEmptyException(string? name) : base($"The '{name}' cannot be empty")
+        public MessageTypeNullOrEmptyException(string? name) 
+            : base($"The '{name}' cannot be empty")
         {
         }
 
-        public MessageTypeNullOrEmptyException(string? message, System.Exception? innerException) : base(message, innerException)
+        public MessageTypeNullOrEmptyException(string? message, System.Exception? innerException) 
+            : base(message, innerException)
         {
         }
     }

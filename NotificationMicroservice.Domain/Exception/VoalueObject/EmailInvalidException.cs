@@ -7,7 +7,8 @@
         {
         }
 
-        public EmailInvalidException(string? name) : base($"Email in '{name}' is not valid")
+        public EmailInvalidException(string? name) 
+            : base($"Email in '{name}' is not valid")
         {
         }
 

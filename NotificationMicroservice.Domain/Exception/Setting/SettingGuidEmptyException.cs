@@ -7,11 +7,13 @@
         {
         }
 
-        public SettingGuidEmptyException(string? name) : base($"Identifier '{name}' cannot be empty")
+        public SettingGuidEmptyException(string? name) 
+            : base($"Identifier '{name}' cannot be empty")
         {
         }
 
-        public SettingGuidEmptyException(string? message, System.Exception? innerException) : base(message, innerException)
+        public SettingGuidEmptyException(string? message, System.Exception? innerException) 
+            : base(message, innerException)
         {
         }
     }

@@ -7,11 +7,13 @@
         {
         }
 
-        public SettingPasswordNullOrEmptyException(string? name) : base($"Password '{name}' cannot be empty")
+        public SettingPasswordNullOrEmptyException(string? name) 
+            : base($"Password '{name}' cannot be empty")
         {
         }
 
-        public SettingPasswordNullOrEmptyException(string? message, System.Exception? innerException) : base(message, innerException)
+        public SettingPasswordNullOrEmptyException(string? message, System.Exception? innerException) 
+            : base(message, innerException)
         {
         }
     }

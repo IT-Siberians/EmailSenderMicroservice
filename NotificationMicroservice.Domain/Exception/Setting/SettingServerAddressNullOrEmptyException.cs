@@ -7,11 +7,13 @@
         {
         }
 
-        public SettingServerAddressNullOrEmptyException(string? name) : base($"Server address '{name}' cannot be empty.")
+        public SettingServerAddressNullOrEmptyException(string? name) 
+            : base($"Server address '{name}' cannot be empty.")
         {
         }
 
-        public SettingServerAddressNullOrEmptyException(string? message, System.Exception? innerException) : base(message, innerException)
+        public SettingServerAddressNullOrEmptyException(string? message, System.Exception? innerException) 
+            : base(message, innerException)
         {
         }
     }

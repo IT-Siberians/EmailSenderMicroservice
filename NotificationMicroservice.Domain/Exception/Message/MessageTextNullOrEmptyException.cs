@@ -9,11 +9,13 @@ namespace NotificationMicroservice.Domain.Exception.Message
         {
         }
 
-        public MessageTextNullOrEmptyException(string? name) : base($"The '{name}' cannot be empty")
+        public MessageTextNullOrEmptyException(string? name) 
+            : base($"The '{name}' cannot be empty")
         {
         }
 
-        public MessageTextNullOrEmptyException(string? message, System.Exception? innerException) : base(message, innerException)
+        public MessageTextNullOrEmptyException(string? message, System.Exception? innerException) 
+            : base(message, innerException)
         {
         }
     }
