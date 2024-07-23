@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace NotificationMicroservice.Domain.Exception.Message
+﻿namespace NotificationMicroservice.Domain.Exception.Message
 {
     [Serializable]
     internal class MessageTextNullOrEmptyException : System.Exception
