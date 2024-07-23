@@ -7,5 +7,6 @@ namespace EmailSenderMicroservice.Domain.Interface.Service
     /// </summary>
     internal interface IMessageService :IBaseService<Message, Guid>
     {
+
     }
 }
