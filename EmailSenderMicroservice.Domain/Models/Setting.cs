@@ -1,6 +1,7 @@
 ﻿using EmailSenderMicroservice.Domain.Interface.Model;
 using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.ValueObject;
+using EmailSenderMicroservice.Domain.Resources;
 
 namespace EmailSenderMicroservice.Domain.Models
 {
@@ -54,7 +55,7 @@ namespace EmailSenderMicroservice.Domain.Models
         /// Дата отправки сообщения
         /// </summary>
         public DateTime CreateDate { get => _createDate; }
-        
+
         /// <summary>
         /// Основной конструктор класса
         /// </summary>
@@ -70,26 +71,26 @@ namespace EmailSenderMicroservice.Domain.Models
         {
             if (id == Guid.Empty)
             {
-                throw new SettingGuidEmptyException(nameof(id));
+                throw new SettingGuidEmptyException(StringResources.ERROR_ID, id.ToString());
             }
 
             if (string.IsNullOrEmpty(serverAddress))
             {
-                throw new SettingServerAddressNullOrEmptyException(nameof(serverAddress));
+                throw new SettingServerAddressNullOrEmptyException(StringResources.ERROR_SERVER_ADDRESS, serverAddress.ToString());
             }
             if (serverAddress.Length > MAX_SERVER_ADDRESS_LENG)
             {
-                throw new SettingServerAddressLengthException(nameof(serverAddress));
+                throw new SettingServerAddressLengthException(StringResources.ERROR_SERVER_ADDRESS_LENG, serverAddress.ToString());
             }
 
             if ((serverPort) > 0 && (serverPort % 100 != 0))
             {
-                throw new SettingServerPortException(nameof(serverPort));
+                throw new SettingServerPortException(StringResources.ERROR_SERVER_PORT, serverPort.ToString());
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                throw new SettingPasswordNullOrEmptyException(nameof(password));
+                throw new SettingPasswordNullOrEmptyException(StringResources.ERROR_SERVER_PASS, password.ToString());
             }
 
             _id = id;

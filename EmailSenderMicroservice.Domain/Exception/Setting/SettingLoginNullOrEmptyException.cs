@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingLoginNullOrEmptyException : System.Exception
+    internal class SettingLoginNullOrEmptyException : ArgumentException
     {
         public SettingLoginNullOrEmptyException()
         {
         }
 
-        public SettingLoginNullOrEmptyException(string? name) 
-            : base($"Login '{name}' cannot be empty or does not meet the requirements")
+        public SettingLoginNullOrEmptyException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public SettingLoginNullOrEmptyException(string? message, System.Exception? innerException) 
+        public SettingLoginNullOrEmptyException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }

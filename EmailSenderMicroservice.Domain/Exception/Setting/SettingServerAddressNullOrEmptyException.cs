@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingServerAddressNullOrEmptyException : System.Exception
+    internal class SettingServerAddressNullOrEmptyException : ArgumentException
     {
         public SettingServerAddressNullOrEmptyException()
         {
         }
 
-        public SettingServerAddressNullOrEmptyException(string? name) 
-            : base($"Server address '{name}' cannot be empty.")
+        public SettingServerAddressNullOrEmptyException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public SettingServerAddressNullOrEmptyException(string? message, System.Exception? innerException) 
+        public SettingServerAddressNullOrEmptyException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }

@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingPasswordNullOrEmptyException : System.Exception
+    internal class SettingPasswordNullOrEmptyException : ArgumentException
     {
         public SettingPasswordNullOrEmptyException()
         {
         }
 
-        public SettingPasswordNullOrEmptyException(string? name) 
-            : base($"Password '{name}' cannot be empty")
+        public SettingPasswordNullOrEmptyException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public SettingPasswordNullOrEmptyException(string? message, System.Exception? innerException) 
+        public SettingPasswordNullOrEmptyException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }

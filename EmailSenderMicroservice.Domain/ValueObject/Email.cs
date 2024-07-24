@@ -15,7 +15,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             if (!IsValid(value))
             {
-                throw new EmailInvalidException(nameof(value));
+                throw new EmailInvalidException(StringResources.ERROR_EMAIL, value);
             }
 
             Value = value;

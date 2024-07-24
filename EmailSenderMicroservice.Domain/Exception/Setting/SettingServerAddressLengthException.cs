@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingServerAddressLengthException : System.Exception
+    internal class SettingServerAddressLengthException : ArgumentException
     {
         public SettingServerAddressLengthException()
         {
         }
 
-        public SettingServerAddressLengthException(string? name) 
-            : base($"Server address {name} cannot be longer than the specified length")
+        public SettingServerAddressLengthException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public SettingServerAddressLengthException(string? message, System.Exception? innerException) 
+        public SettingServerAddressLengthException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }

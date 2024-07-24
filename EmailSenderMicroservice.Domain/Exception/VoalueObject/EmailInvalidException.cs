@@ -1,17 +1,18 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.VoalueObject
 {
-    internal class EmailInvalidException : System.Exception
+    internal class EmailInvalidException : ArgumentException
     {
         public EmailInvalidException()
         {
         }
 
-        public EmailInvalidException(string? name) 
-            : base($"Email in '{name}' is not valid")
+        public EmailInvalidException(string? message, string? value) 
+            : base(message, value)
         {
         }
 
-        public EmailInvalidException(string? message, System.Exception? innerException) : base(message, innerException)
+        public EmailInvalidException(string? message, ArgumentException? innerException) 
+            : base(message, innerException)
         {
         }
     }

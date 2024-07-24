@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Message
 {
-    internal class MessageGuidEmptyException : System.Exception
+    internal class MessageGuidEmptyException : ArgumentException
     {
         public MessageGuidEmptyException()
         {
         }
 
-        public MessageGuidEmptyException(string? name) 
-            : base($"Identifier '{name}' cannot be empty")
+        public MessageGuidEmptyException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public MessageGuidEmptyException(string? message, System.Exception? innerException) 
+        public MessageGuidEmptyException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }

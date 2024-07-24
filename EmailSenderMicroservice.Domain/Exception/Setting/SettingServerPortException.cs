@@ -1,17 +1,17 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingServerPortException : System.Exception
+    internal class SettingServerPortException : ArgumentException
     {
         public SettingServerPortException()
         {
         }
 
-        public SettingServerPortException(string? name) 
-            : base($"Specified port '{name}' cannot be negative or not a three-digit number")
+        public SettingServerPortException(string? message, string? value)
+            : base(message, value)
         {
         }
 
-        public SettingServerPortException(string? message, System.Exception? innerException) 
+        public SettingServerPortException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }
