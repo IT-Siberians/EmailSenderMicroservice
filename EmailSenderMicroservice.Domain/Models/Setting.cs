@@ -1,7 +1,7 @@
 ﻿using EmailSenderMicroservice.Domain.Interface.Model;
 using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.ValueObject;
-using EmailSenderMicroservice.Domain.Resources;
+using EmailSenderMicroservice.Domain.Exception.Resources;
 
 namespace EmailSenderMicroservice.Domain.Models
 {
@@ -71,26 +71,26 @@ namespace EmailSenderMicroservice.Domain.Models
         {
             if (id == Guid.Empty)
             {
-                throw new SettingGuidEmptyException(StringResources.ERROR_ID, id.ToString());
+                throw new SettingGuidEmptyException(ExceptionStrings.ERROR_ID, id.ToString());
             }
 
             if (string.IsNullOrEmpty(serverAddress))
             {
-                throw new SettingServerAddressNullOrEmptyException(StringResources.ERROR_SERVER_ADDRESS, serverAddress.ToString());
+                throw new SettingServerAddressNullOrEmptyException(ExceptionStrings.ERROR_SERVER_ADDRESS, serverAddress.ToString());
             }
             if (serverAddress.Length > MAX_SERVER_ADDRESS_LENG)
             {
-                throw new SettingServerAddressLengthException(StringResources.ERROR_SERVER_ADDRESS_LENG, serverAddress.ToString());
+                throw new SettingServerAddressLengthException(ExceptionStrings.ERROR_SERVER_ADDRESS_LENG, serverAddress.ToString());
             }
 
             if ((serverPort) > 0 && (serverPort % 100 != 0))
             {
-                throw new SettingServerPortException(StringResources.ERROR_SERVER_PORT, serverPort.ToString());
+                throw new SettingServerPortException(ExceptionStrings.ERROR_SERVER_PORT, serverPort.ToString());
             }
 
             if (string.IsNullOrEmpty(password))
             {
-                throw new SettingPasswordNullOrEmptyException(StringResources.ERROR_SERVER_PASS, password.ToString());
+                throw new SettingPasswordNullOrEmptyException(ExceptionStrings.ERROR_SERVER_PASS, password.ToString());
             }
 
             _id = id;

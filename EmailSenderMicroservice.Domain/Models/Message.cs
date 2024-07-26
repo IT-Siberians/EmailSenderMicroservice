@@ -1,7 +1,7 @@
 ﻿using EmailSenderMicroservice.Domain.Interface.Model;
 using EmailSenderMicroservice.Domain.Exception.Message;
 using EmailSenderMicroservice.Domain.ValueObject;
-using EmailSenderMicroservice.Domain.Resources;
+using EmailSenderMicroservice.Domain.Exception.Resources;
 
 namespace EmailSenderMicroservice.Domain.Models
 {
@@ -63,17 +63,17 @@ namespace EmailSenderMicroservice.Domain.Models
 
             if (id == Guid.Empty)
             {
-                throw new MessageGuidEmptyException(StringResources.ERROR_ID, id.ToString());
+                throw new MessageGuidEmptyException(ExceptionStrings.ERROR_ID, id.ToString());
             }
 
             if (string.IsNullOrEmpty(messageType))
             {
-                throw new MessageTypeNullOrEmptyException(StringResources.ERROR_TYPE, messageType);
+                throw new MessageTypeNullOrEmptyException(ExceptionStrings.ERROR_TYPE, messageType);
             }
 
             if (string.IsNullOrEmpty(messageText))
             {
-                throw new MessageTextNullOrEmptyException(StringResources.ERROR_TEXT, messageText);
+                throw new MessageTextNullOrEmptyException(ExceptionStrings.ERROR_TEXT, messageText);
             }
 
             _id = id;

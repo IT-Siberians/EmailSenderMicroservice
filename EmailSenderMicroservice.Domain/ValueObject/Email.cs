@@ -1,5 +1,5 @@
-﻿using EmailSenderMicroservice.Domain.Exception.VoalueObject;
-using EmailSenderMicroservice.Domain.Resources;
+﻿using EmailSenderMicroservice.Domain.Exception.Resources;
+using EmailSenderMicroservice.Domain.Exception.VoalueObject;
 using System.Text.RegularExpressions;
 
 namespace EmailSenderMicroservice.Domain.ValueObject
@@ -8,14 +8,14 @@ namespace EmailSenderMicroservice.Domain.ValueObject
     {
 
         private static readonly Regex ValidationRegex = new Regex(
-                StringResources.REGEX_EMAIL,
+                ExceptionStrings.REGEX_EMAIL,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         public Email(string value)
         {
             if (!IsValid(value))
             {
-                throw new EmailInvalidException(StringResources.ERROR_EMAIL, value);
+                throw new EmailInvalidException(ExceptionStrings.ERROR_EMAIL, value);
             }
 
             Value = value;
