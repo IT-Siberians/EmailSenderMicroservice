@@ -58,6 +58,9 @@ namespace EmailSenderMicroservice.Domain.Models
         /// <param name="status">статус отправки</param>
         /// <param name="createDate">дата и время отправления сообщения</param>
         /// <returns>Сущность</returns>
+        /// <exception cref="MessageGuidEmptyException">Исключение пустого значения идентификатора</exception>
+        /// <exception cref="MessageTypeNullOrEmptyException">Исключение пустого значения типа направляемого сообщения</exception>
+        /// <exception cref="MessageTextNullOrEmptyException">Исключение пустого значения текста направляемого сообщения</exception>
         public Message(Guid id, string email, string messageType, string messageText, bool status, DateTime createDate)
         {
 
