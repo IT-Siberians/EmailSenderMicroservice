@@ -67,7 +67,12 @@ namespace EmailSenderMicroservice.Domain.Models
         /// <param name="password">пароль от учетной записи отпраителя</param>
         /// <param name="createDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
-        private Setting(Guid id, string serverAddress, uint serverPort, bool useSSl, string login, string password, DateTime createDate)
+        /// <exception cref="SettingGuidEmptyException">Исключение на соответсвие идентификатора</exception>
+        /// <exception cref="SettingServerAddressNullOrEmptyException">Исключение пустого значения адреса сервиса отправки</exception>
+        /// <exception cref="SettingServerAddressLengthException">Исключение привышения адреса сервиса отправки максимально разрешенному значению</exception>
+        /// <exception cref="SettingServerPortException">Исключение несоответсвия разрадности значения порта сервиса отправки</exception>
+        /// <exception cref="SettingPasswordNullOrEmptyException">Исключение пустого значения параметра пароля</exception>
+        public Setting(Guid id, string serverAddress, uint serverPort, bool useSSl, string login, string password, DateTime createDate)
         {
             if (id == Guid.Empty)
             {
@@ -83,7 +88,7 @@ namespace EmailSenderMicroservice.Domain.Models
                 throw new SettingServerAddressLengthException(ExceptionStrings.ERROR_SERVER_ADDRESS_LENG, serverAddress.ToString());
             }
 
-            if ((serverPort) > 0 && (serverPort % 100 != 0))
+            if ((serverPort) < 0 || (serverPort / 100 > 9))
             {
                 throw new SettingServerPortException(ExceptionStrings.ERROR_SERVER_PORT, serverPort.ToString());
             }

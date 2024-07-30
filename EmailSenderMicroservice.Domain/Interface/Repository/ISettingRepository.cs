@@ -5,19 +5,21 @@ namespace EmailSenderMicroservice.Domain.Interface.Repository
     /// <summary>
     /// Описания методов для репозитория Настроек.
     /// </summary>
-    internal interface ISettingRepository : IBaseRepository<Setting, Guid>
+    public interface ISettingRepository : IBaseRepository<Setting, Guid>
     {
         /// <summary>
-        /// 
+        /// Получение текущих настроек отправки сообщений
         /// </summary>
+        /// <param name="cancellationToken"> Токен отмены. </param>
         /// <returns>Сущность с текущими настройки</returns>
-        Task<Setting>? GetAsync();
+        Task<Setting>? GetAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// 
+        /// Обновление настроек отправки сообщений
         /// </summary>
-        /// <param name="key">Идентификатор сущности</param>
+        /// <param name="entity"> Сущность для изменения. </param>
+        /// <param name="cancellationToken"> Токен отмены. </param>
         /// <returns>Идентификатор обновленной сущности</returns>
-        Task<Guid> UpdateAsync(Guid key);
+        Task<bool> UpdateAsync(Setting entity, CancellationToken cancellationToken);
     }
 }

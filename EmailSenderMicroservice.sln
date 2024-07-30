@@ -7,6 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice.Domain", "EmailSenderMicroservice.Domain\EmailSenderMicroservice.Domain.csproj", "{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice.Application", "EmailSenderMicroservice.Application\EmailSenderMicroservice.Application.csproj", "{A228C78E-0FA8-4919-ACAA-214B040E26D7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2} = {CEAB2183-D827-49E2-93CD-968AAFD2F7A2}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice.DataAccess", "EmailSenderMicroservice.DataAccess\EmailSenderMicroservice.DataAccess.csproj", "{2818E67B-3ED9-4000-B6D2-0C05945458EA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2} = {CEAB2183-D827-49E2-93CD-968AAFD2F7A2}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +31,14 @@ Global
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A228C78E-0FA8-4919-ACAA-214B040E26D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A228C78E-0FA8-4919-ACAA-214B040E26D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A228C78E-0FA8-4919-ACAA-214B040E26D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A228C78E-0FA8-4919-ACAA-214B040E26D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2818E67B-3ED9-4000-B6D2-0C05945458EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2818E67B-3ED9-4000-B6D2-0C05945458EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2818E67B-3ED9-4000-B6D2-0C05945458EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2818E67B-3ED9-4000-B6D2-0C05945458EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

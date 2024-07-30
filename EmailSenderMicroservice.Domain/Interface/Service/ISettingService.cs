@@ -5,19 +5,12 @@ namespace EmailSenderMicroservice.Domain.Interface.Service
     /// <summary>
     /// Описания методов для сервиса Настроек.
     /// </summary>
-    internal interface ISettingService : IBaseService<Setting, Guid>
+    public interface ISettingService : IBaseService<Setting, Guid>
     {
         /// <summary>
-        /// 
+        /// Получение текущих настроек сервиса отправки сообщений
         /// </summary>
         /// <returns>Сущность с текущими настройками</returns>
-        Task<Setting>? GetAsync();
-     
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entity">Сущность</param>
-        /// <returns>Идентификатор обновленной сущности</returns>
-        Task<Guid> UpdateAsync(Setting entity);
+        Task<Setting>? GetAsync();     
     }
 }

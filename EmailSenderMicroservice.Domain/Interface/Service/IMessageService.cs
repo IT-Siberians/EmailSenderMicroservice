@@ -5,7 +5,7 @@ namespace EmailSenderMicroservice.Domain.Interface.Service
     /// <summary>
     /// Описания методов для сервиса Сообщений.
     /// </summary>
-    internal interface IMessageService :IBaseService<Message, Guid>
+    public interface IMessageService :IBaseService<Message, Guid>
     {
 
     }

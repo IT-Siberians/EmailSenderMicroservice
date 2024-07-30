@@ -3,23 +3,23 @@
     /// <summary>
     /// Описания методов для базового сервиса.
     /// </summary>
-    internal interface IBaseService<TEntity, TKey>
+    public interface IBaseService<TEntity, TKey>
     {
         /// <summary>
-        /// 
+        /// Получение всех сущностей
         /// </summary>
         /// <returns>Коллекция сущностей</returns>
         Task<IEnumerable<TEntity>> GetAllAsync();
 
         /// <summary>
-        /// 
+        /// Получение конкретной сущности по идентификатору
         /// </summary>
         /// <param name="key">Идентификатор сущности</param>
         /// <returns>Сущность</returns>
         Task<TEntity>? GetByIdAsync(TKey key);
 
         /// <summary>
-        /// 
+        /// Добавление сущности
         /// </summary>
         /// <param name="entity">Сущность</param>
         /// <returns>Идентификатор добавленной сущности</returns>
