@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingServerPortException : ArgumentException
+    public class SettingServerPortException : ArgumentException
     {
         public SettingServerPortException()
         {

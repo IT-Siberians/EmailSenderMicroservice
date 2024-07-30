@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingGuidEmptyException : ArgumentException
+    public class SettingGuidEmptyException : ArgumentException
     {
         public SettingGuidEmptyException()
         {

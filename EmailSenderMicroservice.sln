@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailSenderMicroservice.Domain", "EmailSenderMicroservice.Domain\EmailSenderMicroservice.Domain.csproj", "{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSenderMicroservice.Tests", "EmailSenderMicroservice.Tests\EmailSenderMicroservice.Tests.csproj", "{BBB3C458-3E08-48CA-AB0F-5045EA4D8B58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEAB2183-D827-49E2-93CD-968AAFD2F7A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBB3C458-3E08-48CA-AB0F-5045EA4D8B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBB3C458-3E08-48CA-AB0F-5045EA4D8B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBB3C458-3E08-48CA-AB0F-5045EA4D8B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBB3C458-3E08-48CA-AB0F-5045EA4D8B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

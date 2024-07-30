@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingServerAddressLengthException : ArgumentException
+    public class SettingServerAddressLengthException : ArgumentException
     {
         public SettingServerAddressLengthException()
         {

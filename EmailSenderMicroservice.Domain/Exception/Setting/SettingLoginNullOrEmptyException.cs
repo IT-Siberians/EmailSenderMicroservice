@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
-    internal class SettingLoginNullOrEmptyException : ArgumentException
+    public class SettingLoginNullOrEmptyException : ArgumentException
     {
         public SettingLoginNullOrEmptyException()
         {

@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Message
 {
-    internal class MessageTypeNullOrEmptyException : ArgumentException
+    public class MessageTypeNullOrEmptyException : ArgumentException
     {
         public MessageTypeNullOrEmptyException()
         {
