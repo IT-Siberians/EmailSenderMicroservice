@@ -9,7 +9,6 @@ namespace EmailSenderMicroservice.Domain.ValueObject
     /// </summary>
     public class Email
     {
-
         private static readonly Regex ValidationRegex = new Regex(
                 ExceptionStrings.REGEX_EMAIL,
                 RegexOptions.Singleline | RegexOptions.Compiled);
