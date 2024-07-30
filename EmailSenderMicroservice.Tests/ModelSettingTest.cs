@@ -27,21 +27,6 @@ namespace EmailSenderMicroservice.Tests
             Assert.Equal(_password, message.Password);
             Assert.Equal(_now, message.CreateDate);
         }
-        [Fact]
-        public void SettingCreateNotNull()
-        {
-            var setting = new Setting(_guidTest, _serverAdress, _serverPort, true, _login, _password, _now);
-
-            Assert.NotNull(setting);
-        }
-
-        [Fact]
-        public void SettingCreateTypeOk()
-        {
-            var setting = new Setting(_guidTest, _serverAdress, _serverPort, true, _login, _password, _now);
-
-            Assert.IsType<Setting>(setting);
-        }
 
         [Fact]
         public async Task ExceptionGuidEmpty()

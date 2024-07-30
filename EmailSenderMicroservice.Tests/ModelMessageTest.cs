@@ -26,22 +26,6 @@ namespace EmailSenderMicroservice.Tests
         }
 
         [Fact]
-        public void MessageCreateNotNull()
-        {
-            var message = new Message(_guidTest, _email, _messageType, _messageText, true, _now);
-
-            Assert.NotNull(message);
-        }
-
-        [Fact]
-        public void MessageCreateTypeOk()
-        {
-            var message = new Message(_guidTest, _email, _messageType, _messageText, true, _now);
-
-            Assert.IsType<Message>(message);
-        }
-
-        [Fact]
         public async Task ExceptionGuidEmpty()
         {
             await Assert.ThrowsAsync<MessageGuidEmptyException>(() => MethodGuidEmpty());

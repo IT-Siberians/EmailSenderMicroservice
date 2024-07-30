@@ -1,14 +1,14 @@
-﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
+﻿namespace EmailSenderMicroservice.Domain.Exception.VoalueObject
 {
     /// <summary>
-    /// Исключение пустого значения идентификатора
+    /// Исключение проверки строки на соответсвуе Email
     /// </summary>
-    public class SettingGuidEmptyException : ArgumentException
+    internal class EmailInvalidException : ArgumentException
     {
         /// <summary>
         /// Основной конструктор
         /// </summary>
-        public SettingGuidEmptyException()
+        public EmailInvalidException()
         {
         }
 
@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="message">Информационное сообщение</param>
         /// <param name="value">значение параметра вызвашвего исключение</param>
-        public SettingGuidEmptyException(string? message, string? value)
+        public EmailInvalidException(string? message, string? value) 
             : base(message, value)
         {
         }
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="message">Информационное сообщение</param>
         /// <param name="innerException">Внутренне исключение</param>
-        public SettingGuidEmptyException(string? message, ArgumentException? innerException) 
+        public EmailInvalidException(string? message, ArgumentException? innerException) 
             : base(message, innerException)
         {
         }
