@@ -19,7 +19,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// 
         /// </summary>
         private static readonly Regex ValidationAddressRegex = new Regex(
-                ExceptionStrings.REGEX_PORT,
+                ExceptionStrings.REGEX_ADDRESS,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
