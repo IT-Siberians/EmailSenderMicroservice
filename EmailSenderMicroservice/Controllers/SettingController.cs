@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.Contracts.Message;
-using EmailSenderMicroservice.Contracts.Setting;
+﻿using EmailSenderMicroservice.Contracts.Setting;
 using EmailSenderMicroservice.Domain.Interface.Service;
 using EmailSenderMicroservice.Domain.Models;
+using EmailSenderMicroservice.Domain.ValueObject;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSenderMicroservice.Controllers
@@ -26,8 +26,8 @@ namespace EmailSenderMicroservice.Controllers
             var response = settings
                 .Select(z=> new SettingResponse(
                     z.Id,
-                    z.ServerAddress,
-                    z.ServerPort,
+                    z.Connection.Address,
+                    z.Connection.Port,
                     z.UseSSL,
                     z.Login.Value,
                     z.Password,
@@ -53,8 +53,8 @@ namespace EmailSenderMicroservice.Controllers
 
             var response = new SettingResponse(
                 setting.Id,
-                setting.ServerAddress,
-                setting.ServerPort,
+                setting.Connection.Address,
+                setting.Connection.Port,
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
@@ -67,7 +67,7 @@ namespace EmailSenderMicroservice.Controllers
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<SettingResponse>> GetAcync(Guid id)
+        public async Task<ActionResult<SettingResponse>> GetAcync()
         {
             var setting = await _settingService.GetAsync();
 
@@ -78,8 +78,8 @@ namespace EmailSenderMicroservice.Controllers
 
             var response = new SettingResponse(
                 setting.Id,
-                setting.ServerAddress,
-                setting.ServerPort,
+                setting.Connection.Address,
+                setting.Connection.Port,
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
@@ -93,12 +93,13 @@ namespace EmailSenderMicroservice.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request)
         {
+            var conn = new Connection(request.ServerAddress, request.ServerPort);
+            var log = new Email(request.Login);
             var setting = new Setting(
                 Guid.NewGuid(),
-                request.ServerAddress,
-                request.ServerPort,
+                conn,
                 request.UseSSL,
-                request.Login,
+                log,
                 request.Password,
                 DateTime.UtcNow);
 

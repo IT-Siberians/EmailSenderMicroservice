@@ -1,5 +1,6 @@
 using EmailSenderMicroservice.Application.Services;
 using EmailSenderMicroservice.DataAccess;
+using EmailSenderMicroservice.DataAccess.Entities;
 using EmailSenderMicroservice.DataAccess.Repossitory;
 using EmailSenderMicroservice.Domain.Interface.Repository;
 using EmailSenderMicroservice.Domain.Interface.Service;
@@ -24,10 +25,10 @@ namespace EmailSenderMicroservice
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
-            builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+            builder.Services.AddScoped<IMessageRepository<MessageEntity, Guid>, MessageRepository>();
 
             builder.Services.AddScoped<ISettingService, SettingService>();
-            builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+            builder.Services.AddScoped<ISettingRepository<SettingEntity, Guid>, SettingRepository>();
             //builder.Services.AddHostedService<ConsumerBackgroundService>();
 
 

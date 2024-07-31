@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmailSenderMicroservice.DataAccess.Repossitory
 {
-    public class SettingRepository : ISettingRepository
+    public class SettingRepository : ISettingRepository<SettingEntity, Guid>
     {
         private readonly EmailSenderMicroserviceDbContext _context;
 
@@ -14,75 +14,34 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
             _context = context; 
         }
 
-        public async Task<Guid> AddAsync(Setting entity, CancellationToken cancellationToken)
+        public async Task<Guid> AddAsync(SettingEntity entity, CancellationToken cancellationToken)
         {
-            var settingEntity = new SettingEntity()
-            {
-                Id = entity.Id,
-                ServerAddress = entity.ServerAddress,
-                ServerPort = entity.ServerPort,
-                UseSSL = entity.UseSSL,
-                Login = entity.Login.Value,
-                Password = entity.Password,
-                CreateDate = entity.CreateDate,
-            };
-
-            await _context.Settings.AddAsync(settingEntity);
+            await _context.Settings.AddAsync(entity);
             await _context.SaveChangesAsync();
             
             return entity.Id;
         }
 
-        public async Task<IEnumerable<Setting>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false)
+        public async Task<IEnumerable<SettingEntity>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking = false)
         {
             return await (asNoTracking ? _context.Settings.AsNoTracking() : _context.Settings)
-                .Select(z=> new Setting(
-                    z.Id,
-                    z.ServerAddress, 
-                    z.ServerPort, 
-                    z.UseSSL,
-                    z.Login,
-                    z.Password,
-                    z.CreateDate))
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Setting>? GetAsync(CancellationToken cancellationToken)
+        public async Task<SettingEntity>? GetAsync(CancellationToken cancellationToken)
         {
             return await _context.Settings
-                .Select(z => new Setting(
-                    z.Id,
-                    z.ServerAddress,
-                    z.ServerPort,
-                    z.UseSSL,
-                    z.Login,
-                    z.Password,
-                    z.CreateDate))
-                .FirstAsync(cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<Setting>? GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<SettingEntity>? GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var settingEntity = await _context.Settings
+            return await _context.Settings
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
-
-            if (settingEntity == null)
-            {
-                throw new InvalidOperationException("FAAAAAAIIIIIIL");
-            }
-
-            return new Setting(
-                    settingEntity.Id,
-                    settingEntity.ServerAddress,
-                    settingEntity.ServerPort,
-                    settingEntity.UseSSL,
-                    settingEntity.Login,
-                    settingEntity.Password,
-                    settingEntity.CreateDate);
         }
 
-        public async Task<bool> UpdateAsync(Setting entity, CancellationToken cancellationToken)
+        public async Task<bool> UpdateAsync(SettingEntity entity, CancellationToken cancellationToken)
         {
             await _context.Settings
                 .Where(x => x.Id == entity.Id)
@@ -90,7 +49,7 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
                 .SetProperty(a => a.ServerAddress, a => entity.ServerAddress)
                 .SetProperty(a => a.ServerPort, a => entity.ServerPort)
                 .SetProperty(a => a.UseSSL, a => entity.UseSSL)
-                .SetProperty(a => a.Login, a => entity.Login.Value)
+                .SetProperty(a => a.Login, a => entity.Login)
                 .SetProperty(a => a.Password, a => entity.Password)
                 .SetProperty(a => a.Password, a => entity.Password)
                 .SetProperty(a => a.CreateDate, a => entity.CreateDate)

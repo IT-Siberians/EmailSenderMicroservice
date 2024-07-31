@@ -3,6 +3,8 @@
     /// <summary>
     /// Описания методов для базового репозитория.
     /// </summary>
+    /// <typeparam name="TEntity">Тип сущности</typeparam>
+    /// <typeparam name="TKey">Тип идентификатора</typeparam>
     public interface IBaseRepository<TEntity, TKey>
     {
         /// <summary>

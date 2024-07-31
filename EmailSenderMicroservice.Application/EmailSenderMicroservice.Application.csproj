@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EmailSenderMicroservice.DataAccess\EmailSenderMicroservice.DataAccess.csproj" />
     <ProjectReference Include="..\EmailSenderMicroservice.Domain\EmailSenderMicroservice.Domain.csproj" />
   </ItemGroup>
 
