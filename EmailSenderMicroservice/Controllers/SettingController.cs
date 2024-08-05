@@ -60,7 +60,7 @@ namespace EmailSenderMicroservice.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Guid), 201)]
-        [ProducesResponseType(400)]
+        [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request)
         {
 

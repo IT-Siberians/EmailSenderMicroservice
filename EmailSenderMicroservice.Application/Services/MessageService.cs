@@ -36,14 +36,30 @@ namespace EmailSenderMicroservice.Application.Services
         {
             var messages = await _messageRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
-            return (messages.Select(_mapper.Map<MessageModel>));
+            return messages.Select(z=> new MessageModel(
+                z.Id,
+                z.ToEmail.Value,
+                z.MessageType,
+                z.MessageText,
+                z.Status,
+                z.CreateDate)); 
+            
+            //return messages.Select(_mapper.Map<MessageModel>)
         }
 
         public async Task<MessageModel?> GetByIdAsync(Guid id)
         {
             var message = await _messageRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
-            return message is null ? null : _mapper.Map<MessageModel>(message);
+            return message is null ? null : new MessageModel(
+                message.Id,
+                message.ToEmail.Value,
+                message.MessageType,
+                message.MessageText,
+                message.Status,
+                message.CreateDate);
+
+                //_mapper.Map<MessageModel>(message);
         }
     }
 }

@@ -30,7 +30,8 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
         public async Task<Setting?> GetAsync(CancellationToken cancellationToken)
         {
             return await _context.Settings
-                .FirstOrDefaultAsync(cancellationToken);
+                .OrderBy(z => z.CreateDate)
+                .LastOrDefaultAsync(cancellationToken);
         }
 
         public async Task<Setting?> GetByIdAsync(Guid id, CancellationToken cancellationToken)

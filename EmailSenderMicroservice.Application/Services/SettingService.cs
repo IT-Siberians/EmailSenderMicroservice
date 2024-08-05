@@ -35,14 +35,32 @@ namespace EmailSenderMicroservice.Application.Services
         {
             var settings = await _settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
-            return settings.Select(_mapper.Map<SettingModel>);
+            return settings.Select(z=> new SettingModel(
+                z.Id,
+                z.Connection.Address,
+                z.Connection.Port,
+                z.UseSSL,
+                z.Login.Value,
+                z.Password,
+                z.CreateDate));
+
+            //return settings.Select(_mapper.Map<SettingModel>);
         }
 
         public async Task<SettingModel?> GetAsync()
         {
             var setting = await _settingRepository.GetAsync(_cancellationTokenSource.Token);
 
-            return setting is null ? null : _mapper.Map<SettingModel>(setting);
+            return setting is null ? null : new SettingModel(
+                setting.Id,
+                setting.Connection.Address,
+                setting.Connection.Port,
+                setting.UseSSL,
+                setting.Login.Value,
+                setting.Password,
+                setting.CreateDate);
+
+            //(_mapper.Map<SettingModel>(setting));
         }
 
         public async Task<SettingModel?> GetByIdAsync(Guid id)
@@ -50,7 +68,16 @@ namespace EmailSenderMicroservice.Application.Services
             var setting = await _settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
 
-            return setting is null ? null : (_mapper.Map<SettingModel>(setting));
+            return setting is null ? null : new SettingModel(
+                setting.Id,
+                setting.Connection.Address,
+                setting.Connection.Port,
+                setting.UseSSL,
+                setting.Login.Value,
+                setting.Password,
+                setting.CreateDate);
+
+                //(_mapper.Map<SettingModel>(setting));
         }
     }
 }

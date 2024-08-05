@@ -31,10 +31,9 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddScoped<ISettingService, SettingService>();
             builder.Services.AddScoped<ISettingRepository, SettingRepository>();
-            //builder.Services.AddHostedService<ConsumerBackgroundService>();
 
             builder.Services.AddAutoMapper(typeof(RepProfile), typeof(AppProfile));
-            //builder.Services.AddHostedService<ConsumerBackgroundService>();
+          //  builder.Services.AddAutoMapper(typeof(AppProfile));
 
 
             var app = builder.Build();
