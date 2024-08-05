@@ -21,7 +21,7 @@ namespace EmailSenderMicroservice.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SettingResponse>), 200)]
-        public async Task<ActionResult<List<SettingResponse>>> GetAllAcync() 
+        public async Task<ActionResult<List<SettingResponse>>> GetAllAsync() 
         {
             var settings = await _settingService.GetAllAsync();
 
@@ -31,7 +31,7 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<SettingResponse>> GetByIdAcync(Guid id)
+        public async Task<ActionResult<SettingResponse>> GetByIdAsync(Guid id)
         {
             var setting = await _settingService.GetByIdAsync(id);
 
@@ -46,7 +46,7 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<SettingResponse>> GetAcync()
+        public async Task<ActionResult<SettingResponse>> GetAsync()
         {
             var setting = await _settingService.GetAsync();
 

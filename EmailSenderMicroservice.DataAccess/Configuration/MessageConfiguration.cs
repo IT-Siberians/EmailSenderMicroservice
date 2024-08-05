@@ -13,7 +13,7 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Property(x => x.ToEmail)
+            builder.Property(x => x.Email)
                 .HasConversion(
                     v => v.Value, 
                     v => new Email(v))

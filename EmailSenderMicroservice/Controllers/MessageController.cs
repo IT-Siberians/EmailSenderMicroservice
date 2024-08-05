@@ -30,7 +30,7 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(MessageResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<MessageResponse>> GetByIdAcync(Guid id)
+        public async Task<ActionResult<MessageResponse>> GetByIdAsync(Guid id)
         {
             var message = await _messageService.GetByIdAsync(id);
             

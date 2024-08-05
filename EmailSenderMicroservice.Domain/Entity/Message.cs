@@ -18,7 +18,7 @@ namespace EmailSenderMicroservice.Domain.Models
         /// <summary>
         /// Email получателя
         /// </summary>
-        public Email ToEmail { get; }
+        public Email Email { get; }
         
         /// <summary>
         /// Название шаблона сообщений
@@ -44,7 +44,7 @@ namespace EmailSenderMicroservice.Domain.Models
         /// Основной конструктор класса
         /// </summary>
         /// <param name="id">идентификатор записи</param>
-        /// <param name="toEmail">адрес получателя сообщений</param>
+        /// <param name="email">адрес получателя сообщений</param>
         /// <param name="messageType">тип сообщений</param>
         /// <param name="messageText">текст сообщения</param>
         /// <param name="status">статус отправки</param>
@@ -53,7 +53,7 @@ namespace EmailSenderMicroservice.Domain.Models
         /// <exception cref="MessageGuidEmptyException">Исключение пустого значения идентификатора</exception>
         /// <exception cref="MessageTypeNullOrEmptyException">Исключение пустого значения типа направляемого сообщения</exception>
         /// <exception cref="MessageTextNullOrEmptyException">Исключение пустого значения текста направляемого сообщения</exception>
-        public Message(Guid id, Email toEmail, string messageType, string messageText, bool status, DateTime createDate)
+        public Message(Guid id, Email email, string messageType, string messageText, bool status, DateTime createDate)
         {
 
             if (id == Guid.Empty)
@@ -72,7 +72,7 @@ namespace EmailSenderMicroservice.Domain.Models
             }
 
             Id = id;
-            ToEmail = toEmail;
+            Email = email;
             MessageType = messageType;
             MessageText = messageText;
             Status = status;

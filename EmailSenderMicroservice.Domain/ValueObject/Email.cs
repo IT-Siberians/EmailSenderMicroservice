@@ -1,6 +1,7 @@
 ﻿using EmailSenderMicroservice.Domain.Exception.VoalueObject;
 using EmailSenderMicroservice.Domain.Resources;
 using System.Text.RegularExpressions;
+using System.Xml.Linq;
 
 namespace EmailSenderMicroservice.Domain.ValueObject
 {
@@ -42,6 +43,8 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             return !string.IsNullOrWhiteSpace(value) && ValidationRegex.IsMatch(value);
         }
+        
+        public override string ToString() => Value;
 
         public override bool Equals(object obj)
         {

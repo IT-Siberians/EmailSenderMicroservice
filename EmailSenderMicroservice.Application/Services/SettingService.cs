@@ -35,7 +35,7 @@ namespace EmailSenderMicroservice.Application.Services
         {
             var settings = await _settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
-            return settings.Select(z=> new SettingModel(
+            return settings.Select(z => new SettingModel(
                 z.Id,
                 z.Connection.Address,
                 z.Connection.Port,
@@ -51,7 +51,8 @@ namespace EmailSenderMicroservice.Application.Services
         {
             var setting = await _settingRepository.GetAsync(_cancellationTokenSource.Token);
 
-            return setting is null ? null : new SettingModel(
+            return setting is null ? null :
+            new SettingModel(
                 setting.Id,
                 setting.Connection.Address,
                 setting.Connection.Port,
@@ -68,7 +69,8 @@ namespace EmailSenderMicroservice.Application.Services
             var setting = await _settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
 
-            return setting is null ? null : new SettingModel(
+            return setting is null ? null :
+                new SettingModel(
                 setting.Id,
                 setting.Connection.Address,
                 setting.Connection.Port,
@@ -77,7 +79,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.Password,
                 setting.CreateDate);
 
-                //(_mapper.Map<SettingModel>(setting));
+            //(_mapper.Map<SettingModel>(setting));
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using EmailSenderMicroservice.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmailSenderMicroservice.DataAccess.Migrations
 {
     [DbContext(typeof(EmailSenderMicroserviceDbContext))]
-    partial class EmailSenderMicroserviceDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240805155028_ReName_Email")]
+    partial class ReName_Email
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

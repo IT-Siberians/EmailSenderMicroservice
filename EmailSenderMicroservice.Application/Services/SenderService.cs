@@ -40,7 +40,7 @@ namespace EmailSenderMicroservice.Application.Services
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(settingNow.ServerAddress, (int)settingNow.ServerPort, (settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None));
+                await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort), (settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None));
                 await client.AuthenticateAsync(settingNow.Login, settingNow.Password);
                 result = await client.SendAsync(message);
                 await client.DisconnectAsync(true);
