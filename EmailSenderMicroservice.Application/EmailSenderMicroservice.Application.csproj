@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="MailKit" Version="4.7.1.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
   </ItemGroup>
@@ -14,6 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\EmailSenderMicroservice.DataAccess\EmailSenderMicroservice.DataAccess.csproj" />
     <ProjectReference Include="..\EmailSenderMicroservice.Domain\EmailSenderMicroservice.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Exception\" />
   </ItemGroup>
 
 </Project>

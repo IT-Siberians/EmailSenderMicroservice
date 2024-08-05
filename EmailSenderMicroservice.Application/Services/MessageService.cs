@@ -1,65 +1,49 @@
-﻿using EmailSenderMicroservice.DataAccess.Entities;
+﻿using AutoMapper;
+using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Application.Model;
 using EmailSenderMicroservice.Domain.Interface.Repository;
-using EmailSenderMicroservice.Domain.Interface.Service;
 using EmailSenderMicroservice.Domain.Models;
+using EmailSenderMicroservice.Domain.ValueObject;
 
 namespace EmailSenderMicroservice.Application.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly IMessageRepository<MessageEntity, Guid> _messageRepository;
+        private readonly IMessageRepository _messageRepository;
+        private readonly IMapper _mapper;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public MessageService(IMessageRepository<MessageEntity, Guid> messageRepository)
+        public MessageService(IMessageRepository messageRepository, IMapper mapper)
         {
             _messageRepository = messageRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Guid> AddAsync(Message entity)
+        public async Task<Guid> AddAsync(MessageAddModel entity)
         {
-            var messageEntity = new MessageEntity()
-            {
-                Id = entity.Id,
-                Email = entity.Email.Value,
-                Type = entity.MessageType,
-                Text = entity.MessageText,
-                Status = entity.Status,
-                CreateDate = entity.CreateDate
-            };
+            var result = new Message(
+                Guid.NewGuid(), 
+                new Email(entity.Email), 
+                entity.MessageType, 
+                entity.MessageText, 
+                false, 
+                DateTime.UtcNow);
 
-            return await _messageRepository.AddAsync(messageEntity, _cancellationTokenSource.Token);
+            return await _messageRepository.AddAsync(result, _cancellationTokenSource.Token);
         }
 
-        public async Task<IEnumerable<Message>> GetAllAsync()
+        public async Task<IEnumerable<MessageModel>> GetAllAsync()
         {
-            var entitiesDB = await _messageRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var messages = await _messageRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
-            return entitiesDB
-                    .Select(z => new Message(
-                        z.Id,
-                        z.Email,
-                        z.Type,
-                        z.Text,
-                        z.Status,
-                        z.CreateDate));
+            return (messages.Select(_mapper.Map<MessageModel>));
         }
 
-        public async Task<Message>? GetByIdAsync(Guid id)
+        public async Task<MessageModel?> GetByIdAsync(Guid id)
         {
-            var entityDB = await _messageRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
+            var message = await _messageRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
-            if (entityDB == null)
-            {
-                throw new InvalidOperationException("FAAAAAAIIIIIIL");
-            }
-
-            return new Message(
-                    entityDB.Id,
-                    entityDB.Email,
-                    entityDB.Type,
-                    entityDB.Text,
-                    entityDB.Status,
-                    entityDB.CreateDate);
+            return message is null ? null : _mapper.Map<MessageModel>(message);
         }
     }
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EmailSenderMicroservice.DataAccess.Migrations
 {
     [DbContext(typeof(EmailSenderMicroserviceDbContext))]
-    [Migration("20240730084954_Init")]
+    [Migration("20240805094943_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EmailSenderMicroservice.DataAccess.Entities.MessageEntity", b =>
+            modelBuilder.Entity("EmailSenderMicroservice.Domain.Models.Message", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,18 +34,18 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("MessageText")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MessageType")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Status")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("ToEmail")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -54,11 +54,15 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("EmailSenderMicroservice.DataAccess.Entities.SettingEntity", b =>
+            modelBuilder.Entity("EmailSenderMicroservice.Domain.Models.Setting", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<string>("Connection")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("timestamp with time zone");
@@ -70,13 +74,6 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("ServerAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<long>("ServerPort")
-                        .HasColumnType("bigint");
 
                     b.Property<bool>("UseSSL")
                         .HasColumnType("boolean");

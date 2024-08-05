@@ -1,6 +1,6 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Resources;
-using EmailSenderMicroservice.Domain.Exception.Setting;
+﻿using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.Exception.VoalueObject;
+using EmailSenderMicroservice.Domain.Resources;
 using System.Text.RegularExpressions;
 
 namespace EmailSenderMicroservice.Domain.ValueObject
@@ -19,14 +19,14 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// 
         /// </summary>
         private static readonly Regex ValidationAddressRegex = new Regex(
-                ExceptionStrings.REGEX_ADDRESS,
+                StringValue.REGEX_ADDRESS,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
         /// 
         /// </summary>
         private static readonly Regex ValidationPortRegex = new Regex(
-                ExceptionStrings.REGEX_PORT,
+                StringValue.REGEX_PORT,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
@@ -38,17 +38,17 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             if (!IsValidAddress(address))
             {
-                throw new SettingServerAddressNullOrEmptyException(ExceptionStrings.ERROR_SERVER_ADDRESS, address);
+                throw new SettingServerAddressNullOrEmptyException(StringValue.ERROR_SERVER_ADDRESS, address);
             }
 
             if (address.Length > MAX_SERVER_ADDRESS_LENG)
             {
-                throw new SettingServerAddressLengthException(ExceptionStrings.ERROR_SERVER_ADDRESS_LENG, address.ToString());
+                throw new SettingServerAddressLengthException(StringValue.ERROR_SERVER_ADDRESS_LENG, address.ToString());
             }
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(ExceptionStrings.ERROR_SERVER_PORT, port.ToString());
+                throw new SettingServerPortException(StringValue.ERROR_SERVER_PORT, port.ToString());
             }
 
             Address = address;

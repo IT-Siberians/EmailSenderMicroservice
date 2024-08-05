@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.Contracts.Setting;
-using EmailSenderMicroservice.Domain.Interface.Service;
-using EmailSenderMicroservice.Domain.Models;
-using EmailSenderMicroservice.Domain.ValueObject;
+﻿using AutoMapper;
+using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Application.Model;
+using EmailSenderMicroservice.Contracts.Setting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSenderMicroservice.Controllers
@@ -11,10 +11,12 @@ namespace EmailSenderMicroservice.Controllers
     public class SettingController : ControllerBase
     {
         private readonly ISettingService _settingService;
+        private readonly IMapper _mapper;
 
-        public SettingController(ISettingService settingService) 
+        public SettingController(ISettingService settingService, IMapper mapper) 
         {
             _settingService = settingService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -22,70 +24,38 @@ namespace EmailSenderMicroservice.Controllers
         public async Task<ActionResult<List<SettingResponse>>> GetAllAcync() 
         {
             var settings = await _settingService.GetAllAsync();
-            
-            var response = settings
-                .Select(z=> new SettingResponse(
-                    z.Id,
-                    z.Connection.Address,
-                    z.Connection.Port,
-                    z.UseSSL,
-                    z.Login.Value,
-                    z.Password,
-                    z.CreateDate
-                    ))
-                .ToList();
 
-            return Ok(response);
+            return Ok(settings.Select(_mapper.Map<SettingResponse>));
         }
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(SettingResponse), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<SettingResponse>> GetByIdAcync(Guid id)
         {
             var setting = await _settingService.GetByIdAsync(id);
 
-            if (setting == null)
+            if (setting is null)
             {
-                return NotFound($"Setting id:{id} not found!");
+                return NotFound($"Setting {id} not found!");
             }
 
-            var response = new SettingResponse(
-                setting.Id,
-                setting.Connection.Address,
-                setting.Connection.Port,
-                setting.UseSSL,
-                setting.Login.Value,
-                setting.Password,
-                setting.CreateDate);
-
-            return Ok(response);
+            return Ok(_mapper.Map<SettingResponse>(setting));
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(SettingResponse), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<SettingResponse>> GetAcync()
         {
             var setting = await _settingService.GetAsync();
 
-            if (setting == null)
+            if (setting is null)
             {
                 return NotFound($"Default Setting not found!");
             }
 
-            var response = new SettingResponse(
-                setting.Id,
-                setting.Connection.Address,
-                setting.Connection.Port,
-                setting.UseSSL,
-                setting.Login.Value,
-                setting.Password,
-                setting.CreateDate);
-
-            return Ok(response);
+            return Ok(_mapper.Map<SettingResponse>(setting));
         }
 
         [HttpPost]
@@ -93,19 +63,15 @@ namespace EmailSenderMicroservice.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request)
         {
-            var conn = new Connection(request.ServerAddress, request.ServerPort);
-            var log = new Email(request.Login);
-            var setting = new Setting(
-                Guid.NewGuid(),
-                conn,
-                request.UseSSL,
-                log,
-                request.Password,
-                DateTime.UtcNow);
 
-            var settingId = await _settingService.AddAsync(setting);
+            var settingId = await _settingService.AddAsync(_mapper.Map<SettingAddModel>(request));
 
-            return Ok(settingId);
+            if (settingId == Guid.Empty)
+            {
+                return BadRequest("Setting can not be created");
+            }
+
+            return Created("",settingId);
         }
 
     }

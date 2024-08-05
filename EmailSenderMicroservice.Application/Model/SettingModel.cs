@@ -1,6 +1,6 @@
-﻿namespace EmailSenderMicroservice.Contracts.Setting
+﻿namespace EmailSenderMicroservice.Application.Model
 {
-    public record SettingResponse(
+    public record SettingModel(
         Guid Id,
         string ServerAddress,
         uint ServerPort,

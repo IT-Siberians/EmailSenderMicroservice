@@ -16,9 +16,9 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    Text = table.Column<string>(type: "text", nullable: false),
+                    ToEmail = table.Column<string>(type: "text", nullable: false),
+                    MessageType = table.Column<string>(type: "text", nullable: false),
+                    MessageText = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -32,8 +32,7 @@ namespace EmailSenderMicroservice.DataAccess.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ServerAddress = table.Column<string>(type: "text", nullable: false),
-                    ServerPort = table.Column<long>(type: "bigint", nullable: false),
+                    Connection = table.Column<string>(type: "text", nullable: false),
                     UseSSL = table.Column<bool>(type: "boolean", nullable: false),
                     Login = table.Column<string>(type: "text", nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),

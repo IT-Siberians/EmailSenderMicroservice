@@ -1,6 +1,7 @@
-﻿using EmailSenderMicroservice.DataAccess.Entities;
+﻿using AutoMapper;
+using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Application.Model;
 using EmailSenderMicroservice.Domain.Interface.Repository;
-using EmailSenderMicroservice.Domain.Interface.Service;
 using EmailSenderMicroservice.Domain.Models;
 using EmailSenderMicroservice.Domain.ValueObject;
 
@@ -8,77 +9,48 @@ namespace EmailSenderMicroservice.Application.Services
 {
     public class SettingService : ISettingService
     {
-        private readonly ISettingRepository<SettingEntity, Guid> _settingRepository;
+        private readonly ISettingRepository _settingRepository;
+        private readonly IMapper _mapper;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public SettingService(ISettingRepository<SettingEntity, Guid> settingRepository)
+        public SettingService(ISettingRepository settingRepository, IMapper mapper)
         {
             _settingRepository = settingRepository;
+            _mapper = mapper;
         }
-        public async Task<Guid> AddAsync(Setting entity)
+        public async Task<Guid> AddAsync(SettingAddModel entity)
         {
-            var settingEntity = new SettingEntity()
-            {
-                Id = entity.Id,
-                ServerAddress = entity.Connection.Address,
-                ServerPort = entity.Connection.Port,
-                UseSSL = entity.UseSSL,
-                Login = entity.Login.Value,
-                Password = entity.Password,
-                CreateDate = entity.CreateDate,
-            };
+            var setting = new Setting(
+                Guid.NewGuid(),
+                new Connection(entity.ServerAddress, entity.ServerPort),
+                entity.UseSSL,
+                new Email(entity.Login),
+                entity.Password,
+                DateTime.UtcNow);
 
-            return await _settingRepository.AddAsync(settingEntity, _cancellationTokenSource.Token);
+            return await _settingRepository.AddAsync(setting, _cancellationTokenSource.Token);
         }
 
-        public async Task<IEnumerable<Setting>> GetAllAsync()
+        public async Task<IEnumerable<SettingModel>> GetAllAsync()
         {
-            var entitiesDB = await _settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var settings = await _settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
-            return entitiesDB
-                    .Select(z => new Setting(
-                        z.Id,
-                        new Connection(z.ServerAddress,z.ServerPort),
-                        z.UseSSL,
-                        new Email(z.Login),
-                        z.Password,
-                        z.CreateDate));
+            return settings.Select(_mapper.Map<SettingModel>);
         }
 
-        public async Task<Setting>? GetAsync()
+        public async Task<SettingModel?> GetAsync()
         {
-            var entityDb = await _settingRepository.GetAsync(_cancellationTokenSource.Token);
+            var setting = await _settingRepository.GetAsync(_cancellationTokenSource.Token);
 
-            if (entityDb == null)
-            {
-                throw new InvalidOperationException("FAAAAAAIIIIIIL");
-            }
-
-            return new Setting(
-                    entityDb.Id,
-                    new Connection(entityDb.ServerAddress, entityDb.ServerPort),
-                    entityDb.UseSSL,
-                    new Email(entityDb.Login),
-                    entityDb.Password,
-                    entityDb.CreateDate);
+            return setting is null ? null : _mapper.Map<SettingModel>(setting);
         }
 
-        public async Task<Setting>? GetByIdAsync(Guid id)
+        public async Task<SettingModel?> GetByIdAsync(Guid id)
         {
-            var entityDb = await _settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
+            var setting = await _settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
-            if (entityDb == null)
-            {
-                throw new InvalidOperationException("FAAAAAAIIIIIIL");
-            }
 
-            return new Setting(
-                    entityDb.Id,
-                    new Connection(entityDb.ServerAddress, entityDb.ServerPort),
-                    entityDb.UseSSL,
-                    new Email(entityDb.Login),
-                    entityDb.Password,
-                    entityDb.CreateDate);
+            return setting is null ? null : (_mapper.Map<SettingModel>(setting));
         }
     }
 }

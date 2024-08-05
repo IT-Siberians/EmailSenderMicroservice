@@ -1,5 +1,6 @@
-﻿using EmailSenderMicroservice.Contracts.Message;
-using EmailSenderMicroservice.Domain.Interface.Service;
+﻿using AutoMapper;
+using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Contracts.Message;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSenderMicroservice.Controllers
@@ -9,10 +10,12 @@ namespace EmailSenderMicroservice.Controllers
     public class MessageController : ControllerBase
     {
         private readonly IMessageService _messageService;
+        private readonly IMapper _mapper;
 
-        public MessageController(IMessageService messageService)
+        public MessageController(IMessageService messageService, IMapper mapper)
         {
             _messageService = messageService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -21,33 +24,22 @@ namespace EmailSenderMicroservice.Controllers
         {
             var messages = await _messageService.GetAllAsync();
 
-            var response = messages.Select(z => new MessageResponse(z.Id, z.Email.Value, z.MessageType, z.MessageText, z.Status, z.CreateDate));
-
-            return Ok(response);
+            return Ok(messages.Select(_mapper.Map<MessageResponse>));
         }
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(MessageResponse), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
+        [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<MessageResponse>> GetByIdAcync(Guid id)
         {
             var message = await _messageService.GetByIdAsync(id);
             
-            if (message == null)
+            if (message is null)
             {
-                return NotFound($"Message id:{id} not found!");
+                return NotFound($"Message {id} not found!");
             }
 
-            var response = new MessageResponse(
-                message.Id,
-                message.Email.Value,
-                message.MessageType,
-                message.MessageText,
-                message.Status,
-                message.CreateDate);
-
-            return Ok(response);
+            return Ok(_mapper.Map<MessageResponse>(message));
         }
     }
 }

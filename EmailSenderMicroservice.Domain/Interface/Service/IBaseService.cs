@@ -3,7 +3,10 @@
     /// <summary>
     /// Описания методов для базового сервиса.
     /// </summary>
-    public interface IBaseService<TEntity, TKey>
+    /// <typeparam name="TEntity">Основной класс сущности</typeparam>
+    /// <typeparam name="TEntityAdd">Класс сущности для добавления</typeparam>
+    /// <typeparam name="TKey">Идентификатор</typeparam>
+    public interface IBaseService<TEntity, TEntityAdd, TKey> where TEntity : class where TEntityAdd : class where TKey : struct
     {
         /// <summary>
         /// Получение всех сущностей
@@ -16,14 +19,14 @@
         /// </summary>
         /// <param name="key">Идентификатор сущности</param>
         /// <returns>Сущность</returns>
-        Task<TEntity>? GetByIdAsync(TKey key);
+        Task<TEntity?> GetByIdAsync(TKey key);
 
         /// <summary>
         /// Добавление сущности
         /// </summary>
         /// <param name="entity">Сущность</param>
         /// <returns>Идентификатор добавленной сущности</returns>
-        Task<TKey> AddAsync(TEntity entity);        
+        Task<TKey> AddAsync(TEntityAdd entity);        
         
     }
 }

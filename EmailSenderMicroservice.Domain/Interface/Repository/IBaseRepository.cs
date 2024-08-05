@@ -5,7 +5,7 @@
     /// </summary>
     /// <typeparam name="TEntity">Тип сущности</typeparam>
     /// <typeparam name="TKey">Тип идентификатора</typeparam>
-    public interface IBaseRepository<TEntity, TKey>
+    public interface IBaseRepository<TEntity, TKey> where TEntity : class where TKey : struct
     {
         /// <summary>
         /// Получить сущность коллекцию сущностей.
@@ -21,7 +21,7 @@
         /// <param name="id"> Идентификатор сущности. </param>
         /// <param name="cancellationToken"> Токен отмены. </param>
         /// <returns> Cущность. </returns>
-        Task<TEntity>? GetByIdAsync(TKey id, CancellationToken cancellationToken);
+        Task<TEntity?> GetByIdAsync(TKey id, CancellationToken cancellationToken);
 
         /// <summary>
         /// Добавление сущьности

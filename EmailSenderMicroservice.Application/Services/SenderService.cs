@@ -1,5 +1,5 @@
-﻿using EmailSenderMicroservice.Domain.Models;
-using EmailSenderMicroservice.Domain.Interface.Service;
+﻿using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Application.Model;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
@@ -23,11 +23,12 @@ namespace EmailSenderMicroservice.Application.Services
         {
             var settingNow = await _setting.GetAsync();
 
-            var messageDomain = new Message(Guid.NewGuid(), toEmail, subject, text, true, DateTime.UtcNow);
-            
+            var messageSend = new MessageAddModel(toEmail, subject, text);
+
+            await _message.AddAsync(messageSend);
 
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(fromName, settingNow.Login.Value));
+            message.From.Add(new MailboxAddress(fromName, settingNow.Login));
             message.To.Add(new MailboxAddress(toName, toEmail));
             message.Subject = subject;
             message.Body = new TextPart(isHtml ? "html" : "plain")
@@ -35,15 +36,17 @@ namespace EmailSenderMicroservice.Application.Services
                 Text = text
             };
 
+            var result = string.Empty;
+
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(settingNow.Connection.Address, (int)settingNow.Connection.Port, (settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None));
-                await client.AuthenticateAsync(settingNow.Login.Value, settingNow.Password);
-                await client.SendAsync(message);
+                await client.ConnectAsync(settingNow.ServerAddress, (int)settingNow.ServerPort, (settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None));
+                await client.AuthenticateAsync(settingNow.Login, settingNow.Password);
+                result = await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
 
-            await _message.AddAsync(messageDomain);
+            result.Trim();
 
         }
 

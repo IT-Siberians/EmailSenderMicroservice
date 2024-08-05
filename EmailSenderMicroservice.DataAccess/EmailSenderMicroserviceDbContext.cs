@@ -1,4 +1,4 @@
-﻿using EmailSenderMicroservice.DataAccess.Entities;
+﻿using EmailSenderMicroservice.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmailSenderMicroservice.DataAccess
@@ -9,8 +9,18 @@ namespace EmailSenderMicroservice.DataAccess
             : base(options)
         {
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+            base.OnConfiguring(optionsBuilder);
+        }
 
-        public DbSet<MessageEntity> Messages { get; set; }
-        public DbSet<SettingEntity> Settings { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        }
+
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Setting> Settings { get; set; }
     }
 }
