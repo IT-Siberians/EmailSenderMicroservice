@@ -46,12 +46,21 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         
         public override string ToString() => Value;
 
+        /// <summary>
+        /// Переопределенный метод Equals
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns>Булевое значение</returns>
         public override bool Equals(object obj)
         {
             return obj is Email other &&
                    StringComparer.Ordinal.Equals(Value, other.Value);
         }
 
+        /// <summary>
+        /// Переопределенный метод HashCode
+        /// </summary>
+        /// <returns>HashCode</returns>
         public override int GetHashCode()
         {
             return StringComparer.Ordinal.GetHashCode(Value);
