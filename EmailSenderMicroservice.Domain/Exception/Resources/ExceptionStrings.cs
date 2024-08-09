@@ -1,6 +1,6 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Resources
 {
-    internal class ExceptionStrings
+    public class ExceptionStrings
     {
         public const string REGEX_EMAIL = @"[.\-_a-z0-9]+@([a-z0-9][\-a-z0-9]+\.)+[a-z]{2,6}";
         public const string REGEX_ADDRESS = @"^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$";

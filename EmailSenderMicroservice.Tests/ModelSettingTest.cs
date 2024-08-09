@@ -1,81 +1,71 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Setting;
+﻿using EmailSenderMicroservice.Domain.Exception.Resources;
+using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.Models;
+using EmailSenderMicroservice.Domain.ValueObject;
 using Xunit;
 
 namespace EmailSenderMicroservice.Tests
 {
     public class ModelSettingTest
     {
-        private readonly Guid _guidEmpty = Guid.Empty;
-        private readonly Guid _guidTest = Guid.NewGuid();
-        private readonly string _serverAdress = "ya.ru";
-        private readonly uint _serverPort = 477;
-        private readonly string _login = "ya@ya.ru";
-        private readonly string _password = "12345";
-        private readonly DateTime _now = DateTime.Now;
-
         [Fact]
-        public void SettingCreateOk()
+        public void Constructor_Should_Create_Setting_When_Valid_Parameters()
         {
-            var message = new Setting(_guidTest, _serverAdress, _serverPort, true, _login, _password, _now);
+            // Arrange
+            var id = Guid.NewGuid();
+            var serverAdress = "ya.ru";
+            uint serverPort = 477;
+            var connection = new Connection(serverAdress, serverPort);
+            var login = new Email("ya@ya.ru");
+            var password = "12345";
+            var createDate = DateTime.Now;
 
-            Assert.Equal(_guidTest, message.Id);
-            Assert.Equal(_serverAdress, message.ServerAddress);
-            Assert.Equal(_serverPort, message.ServerPort);
-            Assert.True(message.UseSSL);
-            Assert.Equal(_login, message.Login.Value);
-            Assert.Equal(_password, message.Password);
-            Assert.Equal(_now, message.CreateDate);
-        }
+            // Act
+            var setting = new Setting(id, connection, true, login, password, createDate);
 
-        [Fact]
-        public async Task ExceptionGuidEmpty()
-        {
-            await Assert.ThrowsAsync<SettingGuidEmptyException>(() => MethodGuidEmpty());
+            // Assert
+            Assert.Equal(id, setting.Id);
+            Assert.Equal(serverAdress, setting.Connection.Address);
+            Assert.Equal(serverPort, setting.Connection.Port);
+            Assert.True(setting.UseSSL);
+            Assert.Equal(login, setting.Login);
+            Assert.Equal(password, setting.Password);
+            Assert.Equal(createDate, setting.CreateDate);
         }
 
         [Fact]
-        public async Task ExceptionAddressNullOrEmpty()
+        public void Constructor_Should_ThrowException_When_Password_IsNullOrEmpty()
         {
-            await Assert.ThrowsAsync<SettingServerAddressNullOrEmptyException>(() => MethodAddressNullOrEmpty());
+            // Arrange
+            var id = Guid.NewGuid();
+            var serverAdress = "ya.ru";
+            uint serverPort = 477;
+            var connection = new Connection(serverAdress, serverPort);
+            var login = new Email("ya@ya.ru");
+            var createDate = DateTime.Now;
+
+            // Act & Assert
+            var exception = Assert.Throws<SettingPasswordNullOrEmptyException>(() =>
+                new Setting(id, connection, true, login, string.Empty, createDate));
+            Assert.Equal(ExceptionStrings.ERROR_SERVER_PASS, exception.Message);
         }
 
         [Fact]
-        public async Task ExceptionAddressLength()
+        public void Constructor_Should_ThrowException_When_Id_IsEmpty()
         {
-            await Assert.ThrowsAsync<SettingServerAddressLengthException>(() => MethodAddressLength());
-        }
-        [Fact]
-        public async Task ExceptionPort()
-        {
-            await Assert.ThrowsAsync<SettingServerPortException>(() => MethodPortException());
-        }
+            // Arrange
+            var id = Guid.Empty;
+            var serverAdress = "ya.ru";
+            uint serverPort = 477;
+            var connection = new Connection(serverAdress, serverPort);
+            var login = new Email("ya@ya.ru");
+            var password = "12345";
+            var createDate = DateTime.Now;
 
-        [Fact]
-        public async Task ExceptionPasswordNullOrEmpty()
-        {
-            await Assert.ThrowsAsync<SettingPasswordNullOrEmptyException>(() => MethodPasswordNullOrEmpty());
-        }
-
-        private Task MethodGuidEmpty()
-        {
-            throw new SettingGuidEmptyException("Null GUID", _guidTest.ToString());
-        }
-        private Task MethodAddressNullOrEmpty()
-        {
-            throw new SettingServerAddressNullOrEmptyException("Null ServerAdress", _serverAdress);
-        }
-        private Task MethodAddressLength()
-        {
-            throw new SettingServerAddressLengthException("Big Length ServerAdress", _serverAdress);
-        }
-        private Task MethodPortException()
-        {
-            throw new SettingServerPortException("Port is not correct", _serverPort.ToString());
-        }
-        private Task MethodPasswordNullOrEmpty()
-        {
-            throw new SettingPasswordNullOrEmptyException("Null Password", _password);
+            // Act & Assert
+            var exception = Assert.Throws<SettingGuidEmptyException>(() =>
+                new Setting(id, connection, true, login, password, createDate));
+            Assert.Equal(ExceptionStrings.ERROR_ID + $" (Parameter '{id}')", exception.Message);
         }
     }
 }
