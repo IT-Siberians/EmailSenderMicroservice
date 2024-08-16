@@ -1,9 +1,9 @@
-﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using EmailSenderMicroservice.Domain.Exception.Setting;
+﻿using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.ValueObject;
-using EmailSenderMicroservice.Domain.Resources;
+using EmailSenderMicroservice.Domain.Helpers;
+using EmailSenderMicroservice.Domain.Entities.Base;
 
-namespace EmailSenderMicroservice.Domain.Models
+namespace EmailSenderMicroservice.Domain.Entities
 {
     /// <summary>
     /// Сообщение
@@ -41,7 +41,7 @@ namespace EmailSenderMicroservice.Domain.Models
         public DateTime CreateDate { get; }
 
         /// <summary>
-        /// Конструктор для EF
+        /// Пустой конструктор для EF Core
         /// </summary>
         protected Setting() { }
 

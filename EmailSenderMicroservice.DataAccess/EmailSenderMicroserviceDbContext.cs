@@ -1,4 +1,4 @@
-﻿using EmailSenderMicroservice.Domain.Models;
+﻿using EmailSenderMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmailSenderMicroservice.DataAccess

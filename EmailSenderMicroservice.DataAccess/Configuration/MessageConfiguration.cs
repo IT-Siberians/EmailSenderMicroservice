@@ -1,4 +1,4 @@
-﻿using EmailSenderMicroservice.Domain.Models;
+﻿using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

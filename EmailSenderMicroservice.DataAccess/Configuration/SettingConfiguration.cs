@@ -1,8 +1,7 @@
-﻿using EmailSenderMicroservice.Domain.Models;
+﻿using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.Json;
 
 namespace EmailSenderMicroservice.DataAccess.Configuration
 {
@@ -15,10 +14,12 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
                 .ValueGeneratedOnAdd();
 
             builder.OwnsOne(x => x.Connection)
-                .Property(p => p.Address).HasColumnName("ServerAddress");
+                .Property(p => p.Address)
+                .HasColumnName("ServerAddress");
 
             builder.OwnsOne(x => x.Connection)
-               .Property(p => p.Port).HasColumnName("ServerPort");
+               .Property(p => p.Port)
+               .HasColumnName("ServerPort");
 
             builder.Property(x => x.UseSSL);
 

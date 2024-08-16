@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using EmailSenderMicroservice.Application.Interface;
 using EmailSenderMicroservice.Application.Model;
-using EmailSenderMicroservice.Domain.Interface.Repository;
-using EmailSenderMicroservice.Domain.Models;
+using EmailSenderMicroservice.DataAccess.Interface;
+using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 
 namespace EmailSenderMicroservice.Application.Services
@@ -43,8 +43,6 @@ namespace EmailSenderMicroservice.Application.Services
                 z.Login.Value,
                 z.Password,
                 z.CreateDate));
-
-            //return settings.Select(_mapper.Map<SettingModel>);
         }
 
         public async Task<SettingModel?> GetAsync()
@@ -60,8 +58,6 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.Login.Value,
                 setting.Password,
                 setting.CreateDate);
-
-            //(_mapper.Map<SettingModel>(setting));
         }
 
         public async Task<SettingModel?> GetByIdAsync(Guid id)
@@ -78,8 +74,6 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.Login.Value,
                 setting.Password,
                 setting.CreateDate);
-
-            //(_mapper.Map<SettingModel>(setting));
         }
     }
 }

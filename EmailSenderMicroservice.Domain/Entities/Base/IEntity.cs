@@ -1,4 +1,4 @@
-﻿namespace EmailSenderMicroservice.Domain.Interface.Model
+﻿namespace EmailSenderMicroservice.Domain.Entities.Base
 {
     /// <summary>
     /// Описание базовой Entity 

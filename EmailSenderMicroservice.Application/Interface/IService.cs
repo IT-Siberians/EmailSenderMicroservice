@@ -1,4 +1,4 @@
-﻿namespace EmailSenderMicroservice.Domain.Interface.Service
+﻿namespace EmailSenderMicroservice.Application.Interface
 {
     /// <summary>
     /// Описания методов для базового сервиса.
@@ -6,7 +6,7 @@
     /// <typeparam name="TEntity">Основной класс сущности</typeparam>
     /// <typeparam name="TEntityAdd">Класс сущности для добавления</typeparam>
     /// <typeparam name="TKey">Идентификатор</typeparam>
-    public interface IBaseService<TEntity, TEntityAdd, TKey> where TEntity : class where TEntityAdd : class where TKey : struct
+    public interface IService<TEntity, TEntityAdd, TKey> where TEntity : class where TEntityAdd : class where TKey : struct
     {
         /// <summary>
         /// Получение всех сущностей

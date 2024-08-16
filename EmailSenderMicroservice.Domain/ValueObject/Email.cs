@@ -1,7 +1,6 @@
-﻿using EmailSenderMicroservice.Domain.Exception.VoalueObject;
-using EmailSenderMicroservice.Domain.Resources;
+﻿using EmailSenderMicroservice.Domain.Exception.ValueObject;
+using EmailSenderMicroservice.Domain.Helpers;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace EmailSenderMicroservice.Domain.ValueObject
 {

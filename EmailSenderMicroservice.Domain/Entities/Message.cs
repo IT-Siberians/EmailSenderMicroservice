@@ -1,9 +1,9 @@
-﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using EmailSenderMicroservice.Domain.Exception.Message;
+﻿using EmailSenderMicroservice.Domain.Exception.Message;
 using EmailSenderMicroservice.Domain.ValueObject;
-using EmailSenderMicroservice.Domain.Resources;
+using EmailSenderMicroservice.Domain.Helpers;
+using EmailSenderMicroservice.Domain.Entities.Base;
 
-namespace EmailSenderMicroservice.Domain.Models
+namespace EmailSenderMicroservice.Domain.Entities
 {
     /// <summary>
     /// Сообщение

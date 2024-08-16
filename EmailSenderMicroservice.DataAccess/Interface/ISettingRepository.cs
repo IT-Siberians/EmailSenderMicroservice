@@ -1,11 +1,11 @@
-﻿using EmailSenderMicroservice.Domain.Models;
+﻿using EmailSenderMicroservice.Domain.Entities;
 
-namespace EmailSenderMicroservice.Domain.Interface.Repository
+namespace EmailSenderMicroservice.DataAccess.Interface
 {
     /// <summary>
     /// Описания методов для репозитория Настроек.
     /// </summary>
-    public interface ISettingRepository: IBaseRepository<Setting, Guid>
+    public interface ISettingRepository: IRepository<Setting, Guid>
     {
         /// <summary>
         /// Получение текущих настроек отправки сообщений

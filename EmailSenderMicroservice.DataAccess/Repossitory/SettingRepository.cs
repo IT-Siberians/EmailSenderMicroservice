@@ -1,5 +1,5 @@
-﻿using EmailSenderMicroservice.Domain.Interface.Repository;
-using EmailSenderMicroservice.Domain.Models;
+﻿using EmailSenderMicroservice.DataAccess.Interface;
+using EmailSenderMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmailSenderMicroservice.DataAccess.Repossitory
