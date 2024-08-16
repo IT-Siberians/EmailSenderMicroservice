@@ -14,11 +14,11 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
             builder.Property(x => x.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Connection)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<Connection>(v, (JsonSerializerOptions)null))
-                .IsRequired();
+            builder.OwnsOne(x => x.Connection)
+                .Property(p => p.Address).HasColumnName("ServerAddress");
+
+            builder.OwnsOne(x => x.Connection)
+               .Property(p => p.Port).HasColumnName("ServerPort");
 
             builder.Property(x => x.UseSSL);
 

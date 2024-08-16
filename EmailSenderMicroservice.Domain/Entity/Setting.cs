@@ -41,6 +41,11 @@ namespace EmailSenderMicroservice.Domain.Models
         public DateTime CreateDate { get; }
 
         /// <summary>
+        /// Конструктор для EF
+        /// </summary>
+        protected Setting() { }
+
+        /// <summary>
         /// Основной конструктор класса
         /// </summary>
         /// <param name="id">идентификатор записи</param>
