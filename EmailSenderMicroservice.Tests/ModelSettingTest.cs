@@ -1,6 +1,6 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Resources;
+﻿using EmailSenderMicroservice.Domain.Entities;
+using EmailSenderMicroservice.Domain.Exception.Resources;
 using EmailSenderMicroservice.Domain.Exception.Setting;
-using EmailSenderMicroservice.Domain.Models;
 using EmailSenderMicroservice.Domain.ValueObject;
 using Xunit;
 
@@ -48,6 +48,23 @@ namespace EmailSenderMicroservice.Tests
             var exception = Assert.Throws<SettingPasswordNullOrEmptyException>(() =>
                 new Setting(id, connection, true, login, string.Empty, createDate));
             Assert.Equal(ExceptionStrings.ERROR_SERVER_PASS, exception.Message);
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowException_When_Password_WhiteSpace()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var serverAdress = "ya.ru";
+            uint serverPort = 477;
+            var connection = new Connection(serverAdress, serverPort);
+            var login = new Email("ya@ya.ru");
+            var createDate = DateTime.Now;
+
+            // Act & Assert
+            var exception = Assert.Throws<SettingPasswordNullOrEmptyException>(() =>
+                new Setting(id, connection, true, login, "  ", createDate));
+            Assert.Equal(ExceptionStrings.ERROR_SERVER_PASS + " (Parameter '  ')", exception.Message);
         }
 
         [Fact]

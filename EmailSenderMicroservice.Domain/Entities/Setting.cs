@@ -1,9 +1,9 @@
-﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using EmailSenderMicroservice.Domain.Exception.Setting;
+﻿using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.ValueObject;
 using EmailSenderMicroservice.Domain.Exception.Resources;
+using EmailSenderMicroservice.Domain.Entities.Base;
 
-namespace EmailSenderMicroservice.Domain.Models
+namespace EmailSenderMicroservice.Domain.Entities
 {
     /// <summary>
     /// Сообщение
@@ -67,7 +67,7 @@ namespace EmailSenderMicroservice.Domain.Models
                 throw new SettingGuidEmptyException(ExceptionStrings.ERROR_ID, id.ToString());
             }
 
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 throw new SettingPasswordNullOrEmptyException(ExceptionStrings.ERROR_SERVER_PASS, password.ToString());
             }

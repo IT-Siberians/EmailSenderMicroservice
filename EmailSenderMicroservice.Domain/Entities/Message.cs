@@ -1,9 +1,9 @@
-﻿using EmailSenderMicroservice.Domain.Interface.Model;
-using EmailSenderMicroservice.Domain.Exception.Message;
+﻿using EmailSenderMicroservice.Domain.Exception.Message;
 using EmailSenderMicroservice.Domain.ValueObject;
 using EmailSenderMicroservice.Domain.Exception.Resources;
+using EmailSenderMicroservice.Domain.Entities.Base;
 
-namespace EmailSenderMicroservice.Domain.Models
+namespace EmailSenderMicroservice.Domain.Entities
 {
     /// <summary>
     /// Сообщение
@@ -69,12 +69,12 @@ namespace EmailSenderMicroservice.Domain.Models
                 throw new MessageGuidEmptyException(ExceptionStrings.ERROR_ID, id.ToString());
             }
 
-            if (string.IsNullOrEmpty(messageType))
+            if (string.IsNullOrWhiteSpace(messageType))
             {
                 throw new MessageTypeNullOrEmptyException(ExceptionStrings.ERROR_TYPE, messageType);
             }
 
-            if (string.IsNullOrEmpty(messageText))
+            if (string.IsNullOrWhiteSpace(messageText))
             {
                 throw new MessageTextNullOrEmptyException(ExceptionStrings.ERROR_TEXT, messageText);
             }

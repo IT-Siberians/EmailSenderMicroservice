@@ -1,6 +1,6 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Message;
+﻿using EmailSenderMicroservice.Domain.Entities;
+using EmailSenderMicroservice.Domain.Exception.Message;
 using EmailSenderMicroservice.Domain.Exception.Resources;
-using EmailSenderMicroservice.Domain.Models;
 using Xunit;
 
 namespace EmailSenderMicroservice.Tests
@@ -45,6 +45,21 @@ namespace EmailSenderMicroservice.Tests
         }
 
         [Fact]
+        public void Constructor_Should_ThrowException_When_Type_WhiteSpace()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var email = "test@test.ru";
+            var messageText = "Test message";
+            var createDate = DateTime.Now;
+
+            // Act & Assert
+            var exception = Assert.Throws<MessageTypeNullOrEmptyException>(() =>
+                new Message(id, email, "  ", messageText, true, createDate));
+            Assert.Equal(ExceptionStrings.ERROR_TYPE + " (Parameter '  ')", exception.Message);
+        }
+
+        [Fact]
         public void Constructor_Should_ThrowException_When_Text_IsNullOrEmpty()
         {
             // Arrange
@@ -57,6 +72,21 @@ namespace EmailSenderMicroservice.Tests
             var exception = Assert.Throws<MessageTextNullOrEmptyException>(() =>
                 new Message(id, email, messageType, string.Empty, true, createDate));
             Assert.Equal(ExceptionStrings.ERROR_TEXT, exception.Message);
+        }
+
+        [Fact]
+        public void Constructor_Should_ThrowException_When_Text_WhiteSpace()
+        {
+            // Arrange
+            var id = Guid.NewGuid();
+            var email = "test@test.ru";
+            var messageType = "Test type message";
+            var createDate = DateTime.Now;
+
+            // Act & Assert
+            var exception = Assert.Throws<MessageTextNullOrEmptyException>(() =>
+                new Message(id, email, messageType, " ", true, createDate));
+            Assert.Equal(ExceptionStrings.ERROR_TEXT + " (Parameter ' ')", exception.Message);
         }
 
         [Fact]
