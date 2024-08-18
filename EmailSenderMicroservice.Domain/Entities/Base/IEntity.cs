@@ -4,7 +4,7 @@
     /// Описание базовой Entity 
     /// </summary>
     /// <typeparam name="TKey"> Тип первичного ключа. </typeparam>
-    public interface IEntity<Tkey> where Tkey : struct
+    public interface IEntity<out Tkey> where Tkey : struct
     {
         /// <summary>
         /// Идентификатор

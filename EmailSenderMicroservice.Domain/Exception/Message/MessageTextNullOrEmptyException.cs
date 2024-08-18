@@ -1,18 +1,12 @@
 ﻿namespace EmailSenderMicroservice.Domain.Exception.Message
 {
     /// <summary>
-    /// Исключение пустого значения текста сообщения
+    /// Конструктор с информационным сообщением и значением параметра
     /// </summary>
-    public class MessageTextNullOrEmptyException : ArgumentNullException
+    /// <param name="message">Информационное сообщение</param>
+    /// <param name="value">значение параметра вызвашвего исключение</param>
+    public class MessageTextNullOrEmptyException(string message, string value) : ArgumentNullException(value, message)
     {
-        /// <summary>
-        /// Конструктор с информационным сообщением и значением параметра
-        /// </summary>
-        /// <param name="message">Информационное сообщение</param>
-        /// <param name="value">значение параметра вызвашвего исключение</param>
-        public MessageTextNullOrEmptyException(string? message, string? value)
-            : base(value, message)
-        {
-        }
+
     }
 }
