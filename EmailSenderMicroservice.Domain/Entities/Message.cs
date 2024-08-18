@@ -61,12 +61,12 @@ namespace EmailSenderMicroservice.Domain.Entities
                 throw new MessageGuidEmptyException(StringValue.ERROR_ID, id.ToString());
             }
 
-            if (string.IsNullOrEmpty(messageType))
+            if (string.IsNullOrWhiteSpace(messageType))
             {
                 throw new MessageTypeNullOrEmptyException(StringValue.ERROR_TYPE, messageType);
             }
 
-            if (string.IsNullOrEmpty(messageText))
+            if (string.IsNullOrWhiteSpace(messageText))
             {
                 throw new MessageTextNullOrEmptyException(StringValue.ERROR_TEXT, messageText);
             }

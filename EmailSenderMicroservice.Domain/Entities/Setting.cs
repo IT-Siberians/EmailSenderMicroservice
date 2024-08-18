@@ -64,7 +64,7 @@ namespace EmailSenderMicroservice.Domain.Entities
                 throw new SettingGuidEmptyException(StringValue.ERROR_ID, id.ToString());
             }
 
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrWhiteSpace(password))
             {
                 throw new SettingPasswordNullOrEmptyException(StringValue.ERROR_SERVER_PASS, password.ToString());
             }
