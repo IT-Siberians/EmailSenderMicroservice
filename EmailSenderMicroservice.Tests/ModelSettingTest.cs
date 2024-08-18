@@ -1,6 +1,6 @@
 ﻿using EmailSenderMicroservice.Domain.Entities;
-using EmailSenderMicroservice.Domain.Exception.Resources;
 using EmailSenderMicroservice.Domain.Exception.Setting;
+using EmailSenderMicroservice.Domain.Helpers;
 using EmailSenderMicroservice.Domain.ValueObject;
 using Xunit;
 
@@ -47,7 +47,7 @@ namespace EmailSenderMicroservice.Tests
             // Act & Assert
             var exception = Assert.Throws<SettingPasswordNullOrEmptyException>(() =>
                 new Setting(id, connection, true, login, string.Empty, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_SERVER_PASS, exception.Message);
+            Assert.Equal(StringValue.ERROR_SERVER_PASS, exception.Message);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace EmailSenderMicroservice.Tests
             // Act & Assert
             var exception = Assert.Throws<SettingPasswordNullOrEmptyException>(() =>
                 new Setting(id, connection, true, login, "  ", createDate));
-            Assert.Equal(ExceptionStrings.ERROR_SERVER_PASS + " (Parameter '  ')", exception.Message);
+            Assert.Equal(StringValue.ERROR_SERVER_PASS + " (Parameter '  ')", exception.Message);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace EmailSenderMicroservice.Tests
             // Act & Assert
             var exception = Assert.Throws<SettingGuidEmptyException>(() =>
                 new Setting(id, connection, true, login, password, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_ID + $" (Parameter '{id}')", exception.Message);
+            Assert.Equal(StringValue.ERROR_ID + $" (Parameter '{id}')", exception.Message);
         }
     }
 }

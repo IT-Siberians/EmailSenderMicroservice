@@ -1,6 +1,7 @@
 ﻿using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.Exception.Message;
-using EmailSenderMicroservice.Domain.Exception.Resources;
+using EmailSenderMicroservice.Domain.Helpers;
+using EmailSenderMicroservice.Domain.ValueObject;
 using Xunit;
 
 namespace EmailSenderMicroservice.Tests
@@ -13,7 +14,7 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageType = "Test type message";
             var messageText = "Test message";
             var createDate = DateTime.Now;
@@ -23,7 +24,7 @@ namespace EmailSenderMicroservice.Tests
 
             // Assert
             Assert.Equal(id, message.Id);
-            Assert.Equal(email, message.Email.Value);
+            Assert.Equal(email, message.Email);
             Assert.Equal(messageType, message.MessageType);
             Assert.Equal(messageText, message.MessageText);
             Assert.Equal(createDate, message.CreateDate);
@@ -34,14 +35,14 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageText = "Test message";
             var createDate = DateTime.Now;
 
             // Act & Assert
             var exception = Assert.Throws<MessageTypeNullOrEmptyException>(() =>
                 new Message(id, email, string.Empty, messageText, true, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_TYPE, exception.Message);
+            Assert.Equal(StringValue.ERROR_TYPE, exception.Message);
         }
 
         [Fact]
@@ -49,14 +50,14 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageText = "Test message";
             var createDate = DateTime.Now;
 
             // Act & Assert
             var exception = Assert.Throws<MessageTypeNullOrEmptyException>(() =>
                 new Message(id, email, "  ", messageText, true, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_TYPE + " (Parameter '  ')", exception.Message);
+            Assert.Equal(StringValue.ERROR_TYPE + " (Parameter '  ')", exception.Message);
         }
 
         [Fact]
@@ -64,14 +65,14 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageType = "Test type message";
             var createDate = DateTime.Now;
 
             // Act & Assert
             var exception = Assert.Throws<MessageTextNullOrEmptyException>(() =>
                 new Message(id, email, messageType, string.Empty, true, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_TEXT, exception.Message);
+            Assert.Equal(StringValue.ERROR_TEXT, exception.Message);
         }
 
         [Fact]
@@ -79,14 +80,14 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.NewGuid();
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageType = "Test type message";
             var createDate = DateTime.Now;
 
             // Act & Assert
             var exception = Assert.Throws<MessageTextNullOrEmptyException>(() =>
                 new Message(id, email, messageType, " ", true, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_TEXT + " (Parameter ' ')", exception.Message);
+            Assert.Equal(StringValue.ERROR_TEXT + " (Parameter ' ')", exception.Message);
         }
 
         [Fact]
@@ -94,7 +95,7 @@ namespace EmailSenderMicroservice.Tests
         {
             // Arrange
             var id = Guid.Empty;
-            var email = "test@test.ru";
+            var email = new Email("test@test.ru");
             var messageType = "Test type message";
             var messageText = "Test message";
             var createDate = DateTime.Now;
@@ -102,7 +103,7 @@ namespace EmailSenderMicroservice.Tests
             // Act & Assert
             var exception = Assert.Throws<MessageGuidEmptyException>(() =>
                 new Message(id, email, messageType, messageText, true, createDate));
-            Assert.Equal(ExceptionStrings.ERROR_ID + $" (Parameter '{Guid.Empty}')", exception.Message);
+            Assert.Equal(StringValue.ERROR_ID + $" (Parameter '{Guid.Empty}')", exception.Message);
         }
 
     }
