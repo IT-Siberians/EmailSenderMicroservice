@@ -1,11 +1,15 @@
-﻿namespace EmailSenderMicroservice.DataAccess.Interface
+﻿using EmailSenderMicroservice.Domain.Entities.Base;
+
+namespace EmailSenderMicroservice.DataAccess.Repossitory.Abstraction.Base
 {
     /// <summary>
     /// Описания методов для базового репозитория.
     /// </summary>
     /// <typeparam name="TEntity">Тип сущности</typeparam>
     /// <typeparam name="TKey">Тип идентификатора</typeparam>
-    public interface IRepository<TEntity, TKey> where TEntity : class where TKey : struct
+    public interface IRepository<TEntity, TKey> 
+        where TEntity : class, IEntity<TKey> 
+        where TKey : struct
     {
         /// <summary>
         /// Получить сущность коллекцию сущностей.

@@ -1,9 +1,9 @@
-using EmailSenderMicroservice.Application.Interface;
 using EmailSenderMicroservice.Application.Mapper;
 using EmailSenderMicroservice.Application.Services;
+using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess;
-using EmailSenderMicroservice.DataAccess.Interface;
 using EmailSenderMicroservice.DataAccess.Repossitory;
+using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
 using EmailSenderMicroservice.Mapper;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using EmailSenderMicroservice.Application.Interface;
 using EmailSenderMicroservice.Application.Model;
-using EmailSenderMicroservice.DataAccess.Interface;
+using EmailSenderMicroservice.Application.Services.Abstraction;
+using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 

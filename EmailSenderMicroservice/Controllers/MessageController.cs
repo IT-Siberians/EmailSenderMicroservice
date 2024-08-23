@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EmailSenderMicroservice.Application.Interface;
+using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.Contracts.Message;
 using Microsoft.AspNetCore.Mvc;
 

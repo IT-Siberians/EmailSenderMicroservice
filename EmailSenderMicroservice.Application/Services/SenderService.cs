@@ -1,5 +1,5 @@
-﻿using EmailSenderMicroservice.Application.Interface;
-using EmailSenderMicroservice.Application.Model;
+﻿using EmailSenderMicroservice.Application.Model;
+using EmailSenderMicroservice.Application.Services.Abstraction;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;

@@ -1,4 +1,4 @@
-﻿namespace EmailSenderMicroservice.Application.Interface
+﻿namespace EmailSenderMicroservice.Application.Services.Abstraction.Base
 {
     /// <summary>
     /// Описания методов для базового сервиса.
@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="entity">Сущность</param>
         /// <returns>Идентификатор добавленной сущности</returns>
-        Task<TKey> AddAsync(TEntityAdd entity);        
-        
+        Task<TKey> AddAsync(TEntityAdd entity);
+
     }
 }

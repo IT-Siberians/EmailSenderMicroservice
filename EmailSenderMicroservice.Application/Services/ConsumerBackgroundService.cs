@@ -1,4 +1,4 @@
-﻿using EmailSenderMicroservice.Application.Interface;
+﻿using EmailSenderMicroservice.Application.Services.Abstraction;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
