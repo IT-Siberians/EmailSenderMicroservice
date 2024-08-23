@@ -30,7 +30,7 @@ namespace EmailSenderMicroservice.Tests
             Assert.True(setting.UseSSL);
             Assert.Equal(login, setting.Login);
             Assert.Equal(password, setting.Password);
-            Assert.Equal(createDate, setting.CreateDate);
+            Assert.Equal(createDate, setting.CreatedDate);
         }
 
         [Fact]

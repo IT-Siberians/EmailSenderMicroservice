@@ -27,7 +27,7 @@ namespace EmailSenderMicroservice.Tests
             Assert.Equal(email, message.Email);
             Assert.Equal(messageType, message.MessageType);
             Assert.Equal(messageText, message.MessageText);
-            Assert.Equal(createDate, message.CreateDate);
+            Assert.Equal(createDate, message.CreatedDate);
         }
 
         [Fact]

@@ -38,7 +38,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Дата отправки сообщения
         /// </summary>
-        public DateTime CreateDate { get; }
+        public DateTime CreatedDate { get; }
 
         /// <summary>
         /// Основной конструктор класса
@@ -69,7 +69,7 @@ namespace EmailSenderMicroservice.Domain.Entities
             UseSSL = useSSL;
             Login = login;
             Password = password;
-            CreateDate = createDate;
+            CreatedDate = createDate;
         }
     }
 }

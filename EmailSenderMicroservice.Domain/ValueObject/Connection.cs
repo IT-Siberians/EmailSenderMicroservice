@@ -48,7 +48,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(StringValue.ERROR_SERVER_PORT, port.ToString());
+                throw new SettingServerPortException(StringValue.ERROR_SERVER_PORT);
             }
 
             Address = address;
@@ -93,9 +93,9 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// <returns>Булевое значение</returns>
         public override bool Equals(object obj)
         {
-            return obj is Connection other &&
-                   StringComparer.Ordinal.Equals(Address, other.Address) &&
-                   StringComparer.Ordinal.Equals(Port, other.Port);
+            return obj is Connection other 
+                && StringComparer.Ordinal.Equals(Address, other.Address)
+                && StringComparer.Ordinal.Equals(Port, other.Port);
         }
 
         /// <summary>
