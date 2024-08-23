@@ -4,9 +4,9 @@ using EmailSenderMicroservice.Domain.Entities;
 
 namespace EmailSenderMicroservice.Application.Mapper
 {
-    public class AppProfile : Profile
+    public class ApplicationProfile : Profile
     {
-        public AppProfile()
+        public ApplicationProfile()
         {
             CreateMap<Setting, SettingModel>()
                 .ForMember(d => d.Login, o => o.MapFrom(s => s.Login.Value))

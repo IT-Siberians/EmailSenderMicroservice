@@ -18,8 +18,8 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
                 .HasColumnName("ServerAddress");
 
             builder.OwnsOne(x => x.Connection)
-               .Property(p => p.Port)
-               .HasColumnName("ServerPort");
+                .Property(p => p.Port)
+                .HasColumnName("ServerPort");
 
             builder.Property(x => x.UseSSL);
 
@@ -32,7 +32,7 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
             builder.Property(x => x.Password)
                 .IsRequired();
 
-            builder.Property(x => x.CreateDate)
+            builder.Property(x => x.CreatedDate)
                 .IsRequired();
 
         }

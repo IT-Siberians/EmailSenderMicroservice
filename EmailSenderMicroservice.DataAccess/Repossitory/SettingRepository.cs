@@ -30,7 +30,7 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
         public async Task<Setting?> GetAsync(CancellationToken cancellationToken)
         {
             return await _context.Settings
-                .OrderBy(z => z.CreateDate)
+                .OrderBy(z => z.CreatedDate)
                 .LastOrDefaultAsync(cancellationToken);
         }
 
@@ -51,7 +51,7 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
                 .SetProperty(a => a.Login, a => entity.Login)
                 .SetProperty(a => a.Password, a => entity.Password)
                 .SetProperty(a => a.Password, a => entity.Password)
-                .SetProperty(a => a.CreateDate, a => entity.CreateDate)
+                .SetProperty(a => a.CreatedDate, a => entity.CreatedDate)
                 );
 
             return true;

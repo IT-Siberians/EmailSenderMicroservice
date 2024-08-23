@@ -7,5 +7,5 @@
         bool UseSSL,
         string Login,
         string Password,
-        DateTime CreateDate);
+        DateTime CreatedDate);
 }

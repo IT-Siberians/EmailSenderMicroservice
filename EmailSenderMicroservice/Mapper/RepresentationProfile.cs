@@ -5,9 +5,9 @@ using EmailSenderMicroservice.Contracts.Setting;
 
 namespace EmailSenderMicroservice.Mapper
 {
-    public class RepProfile : Profile
+    public class RepresentationProfile : Profile
     {
-        public RepProfile()
+        public RepresentationProfile()
         {
             CreateMap<SettingResponse, SettingModel>().ReverseMap();
             CreateMap<SettingRequest, SettingAddModel>().ReverseMap();

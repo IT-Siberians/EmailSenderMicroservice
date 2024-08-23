@@ -23,7 +23,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             if (!IsValid(value))
             {
-                throw new EmailInvalidException(StringValue.ERROR_EMAIL, value);
+                throw new EmailInvalidException(StringValue.ERROR_EMAIL);
             }
 
             Value = value;
@@ -52,8 +52,8 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// <returns>Булевое значение</returns>
         public override bool Equals(object obj)
         {
-            return obj is Email other &&
-                   StringComparer.Ordinal.Equals(Value, other.Value);
+            return obj is Email other 
+                && StringComparer.Ordinal.Equals(Value, other.Value);
         }
 
         /// <summary>

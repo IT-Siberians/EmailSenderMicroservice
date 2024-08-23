@@ -28,7 +28,7 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
             builder.Property(x => x.Status)
                 .IsRequired();
 
-            builder.Property(x => x.CreateDate)
+            builder.Property(x => x.CreatedDate)
                 .IsRequired();
         }
     }
