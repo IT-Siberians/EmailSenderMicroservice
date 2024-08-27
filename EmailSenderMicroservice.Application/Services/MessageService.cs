@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using EmailSenderMicroservice.Application.Model;
+using EmailSenderMicroservice.Application.Models.Message;
 using EmailSenderMicroservice.Application.Services.Abstraction;
-using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
+using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 
@@ -19,7 +19,7 @@ namespace EmailSenderMicroservice.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Guid> AddAsync(MessageAddModel entity)
+        public async Task<Guid> AddAsync(AddMessageModel entity)
         {
             var result = new Message(
                 Guid.NewGuid(), 

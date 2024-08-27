@@ -1,7 +1,6 @@
-﻿using AutoMapper;
-using EmailSenderMicroservice.Application.Model;
+﻿using EmailSenderMicroservice.Application.Models.Setting;
 using EmailSenderMicroservice.Application.Services.Abstraction;
-using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
+using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
 using EmailSenderMicroservice.Domain.ValueObject;
 
@@ -10,15 +9,13 @@ namespace EmailSenderMicroservice.Application.Services
     public class SettingService : ISettingService
     {
         private readonly ISettingRepository _settingRepository;
-        private readonly IMapper _mapper;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public SettingService(ISettingRepository settingRepository, IMapper mapper)
+        public SettingService(ISettingRepository settingRepository)
         {
             _settingRepository = settingRepository;
-            _mapper = mapper;
         }
-        public async Task<Guid> AddAsync(SettingAddModel entity)
+        public async Task<Guid> AddAsync(AddSettingModel entity)
         {
             var setting = new Setting(
                 Guid.NewGuid(),
@@ -42,12 +39,12 @@ namespace EmailSenderMicroservice.Application.Services
                 z.UseSSL,
                 z.Login.Value,
                 z.Password,
-                z.CreatedDate));
+                z.CreattionDate));
         }
 
-        public async Task<SettingModel?> GetAsync()
+        public async Task<SettingModel?> GetCurrentAsync()
         {
-            var setting = await _settingRepository.GetAsync(_cancellationTokenSource.Token);
+            var setting = await _settingRepository.GetCurrentAsync(_cancellationTokenSource.Token);
 
             return setting is null ? null :
             new SettingModel(
@@ -57,7 +54,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
-                setting.CreatedDate);
+                setting.CreattionDate);
         }
 
         public async Task<SettingModel?> GetByIdAsync(Guid id)
@@ -73,7 +70,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
-                setting.CreatedDate);
+                setting.CreattionDate);
         }
     }
 }

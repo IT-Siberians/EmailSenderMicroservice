@@ -1,4 +1,4 @@
-﻿namespace EmailSenderMicroservice.Application.Model
+﻿namespace EmailSenderMicroservice.Application.Models.Message
 {
     public record MessageModel(
         Guid Id,

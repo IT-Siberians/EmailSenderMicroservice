@@ -1,8 +1,8 @@
-﻿using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
+﻿using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmailSenderMicroservice.DataAccess.Repossitory
+namespace EmailSenderMicroservice.DataAccess.Repositories
 {
     /// <summary>
     /// Репозиторий для работы с сущностями настроек в базе данных.
@@ -41,10 +41,10 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
         /// </summary>
         /// <param name="cancellationToken">Токен отмены операции.</param>
         /// <returns>Последняя настройка типа <see cref="Setting"/> или <c>null</c>, если настройки не найдены.</returns>
-        public async Task<Setting?> GetAsync(CancellationToken cancellationToken)
+        public async Task<Setting?> GetCurrentAsync(CancellationToken cancellationToken)
         {
             return await context.Settings
-                .OrderBy(z => z.CreatedDate)
+                .OrderBy(z => z.CreattionDate)
                 .LastOrDefaultAsync(cancellationToken);
         }
 
@@ -72,12 +72,12 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory
             await context.Settings
                 .Where(x => x.Id == entity.Id)
                 .ExecuteUpdateAsync(z => z
-                .SetProperty(a => a.Connection, a => entity.Connection)
-                .SetProperty(a => a.UseSSL, a => entity.UseSSL)
-                .SetProperty(a => a.Login, a => entity.Login)
-                .SetProperty(a => a.Password, a => entity.Password)
-                .SetProperty(a => a.Password, a => entity.Password)
-                .SetProperty(a => a.CreatedDate, a => entity.CreatedDate)
+                    .SetProperty(a => a.Connection, a => entity.Connection)
+                    .SetProperty(a => a.UseSSL, a => entity.UseSSL)
+                    .SetProperty(a => a.Login, a => entity.Login)
+                    .SetProperty(a => a.Password, a => entity.Password)
+                    .SetProperty(a => a.Password, a => entity.Password)
+                    .SetProperty(a => a.CreattionDate, a => entity.CreattionDate)
                 );
 
             return true;

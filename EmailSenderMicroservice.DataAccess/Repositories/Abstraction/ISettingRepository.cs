@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction.Base;
+﻿using EmailSenderMicroservice.DataAccess.Repositories.Abstraction.Base;
 using EmailSenderMicroservice.Domain.Entities;
 
-namespace EmailSenderMicroservice.DataAccess.Repossitory.Abstraction
+namespace EmailSenderMicroservice.DataAccess.Repositories.Abstraction
 {
     /// <summary>
     /// Описания методов для репозитория Настроек.
@@ -13,7 +13,7 @@ namespace EmailSenderMicroservice.DataAccess.Repossitory.Abstraction
         /// </summary>
         /// <param name="cancellationToken"> Токен отмены. </param>
         /// <returns>Сущность с текущими настройки</returns>
-        Task<Setting?> GetAsync(CancellationToken cancellationToken);
+        Task<Setting?> GetCurrentAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Обновление настроек отправки сообщений

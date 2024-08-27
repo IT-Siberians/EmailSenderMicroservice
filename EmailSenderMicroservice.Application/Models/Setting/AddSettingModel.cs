@@ -1,6 +1,6 @@
-﻿namespace EmailSenderMicroservice.Application.Model
+﻿namespace EmailSenderMicroservice.Application.Models.Setting
 {
-    public record SettingAddModel(
+    public record AddSettingModel(
         string ServerAddress,
         uint ServerPort,
         bool UseSSL,

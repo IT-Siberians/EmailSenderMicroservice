@@ -43,7 +43,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
 
             if (address.Length > MAX_SERVER_ADDRESS_LENG)
             {
-                throw new SettingServerAddressLengthException(StringValue.ERROR_SERVER_ADDRESS_LENG, address.ToString());
+                throw new SettingServerAddressLengthException(StringValue.ERROR_SERVER_ADDRESS_LENG);
             }
 
             if (!IsValidPort(port))

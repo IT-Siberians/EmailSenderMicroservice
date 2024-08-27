@@ -14,6 +14,6 @@
         /// <summary>
         /// Дата и время создания
         /// </summary>
-        DateTime CreatedDate { get; }
+        DateTime CreattionDate { get; }
     }
 }

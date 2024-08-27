@@ -1,4 +1,4 @@
-﻿namespace EmailSenderMicroservice.Application.Model
+﻿namespace EmailSenderMicroservice.Application.Models.Setting
 {
     public record SettingModel(
         Guid Id,

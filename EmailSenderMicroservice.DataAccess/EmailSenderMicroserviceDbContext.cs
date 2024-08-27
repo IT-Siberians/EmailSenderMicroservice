@@ -5,6 +5,9 @@ namespace EmailSenderMicroservice.DataAccess
 {
     public class EmailSenderMicroserviceDbContext : DbContext
     {
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Setting> Settings { get; set; }
+
         public EmailSenderMicroserviceDbContext(DbContextOptions<EmailSenderMicroserviceDbContext> options) 
             : base(options)
         {
@@ -20,7 +23,6 @@ namespace EmailSenderMicroservice.DataAccess
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
 
-        public DbSet<Message> Messages { get; set; }
-        public DbSet<Setting> Settings { get; set; }
+        
     }
 }

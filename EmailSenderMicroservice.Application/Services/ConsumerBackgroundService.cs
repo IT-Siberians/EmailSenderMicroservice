@@ -17,7 +17,6 @@ namespace EmailSenderMicroservice.Application.Services
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             var test = _sender.SendAsync("vasya", "pophas123@mail.ru", "Важное уведомление", "что-то какой-то текст", true);
 
             return Task.CompletedTask;

@@ -5,7 +5,7 @@
     /// </summary>
     /// <param name="message">Информационное сообщение</param>
     /// <param name="value">значение параметра вызвашвего исключение</param>
-    public class SettingGuidEmptyException(string message, string value) : ArgumentException(message, value)
+    public class SettingGuidEmptyException(string message, string value) : ArgumentNullException(value, message)
     {
 
     }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EmailSenderMicroservice.Application.Model;
+using EmailSenderMicroservice.Application.Models.Setting;
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.Contracts.Setting;
 using EmailSenderMicroservice.Validator;
@@ -47,9 +47,9 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<SettingResponse>> GetAsync()
+        public async Task<ActionResult<SettingResponse>> GetCurrentAsync()
         {
-            var setting = await _settingService.GetAsync();
+            var setting = await _settingService.GetCurrentAsync();
 
             if (setting is null)
             {
@@ -72,7 +72,7 @@ namespace EmailSenderMicroservice.Controllers
             {
                 return BadRequest(result.ToString("\n"));
             }
-            var settingId = await _settingService.AddAsync(_mapper.Map<SettingAddModel>(request));
+            var settingId = await _settingService.AddAsync(_mapper.Map<AddSettingModel>(request));
 
             if (settingId == Guid.Empty)
             {

@@ -6,7 +6,10 @@
     /// <typeparam name="TEntity">Основной класс сущности</typeparam>
     /// <typeparam name="TEntityAdd">Класс сущности для добавления</typeparam>
     /// <typeparam name="TKey">Идентификатор</typeparam>
-    public interface IService<TEntity, TEntityAdd, TKey> where TEntity : class where TEntityAdd : class where TKey : struct
+    public interface IService<TEntity, TEntityAdd, TKey> 
+        where TEntity : class 
+        where TEntityAdd : class 
+        where TKey : struct
     {
         /// <summary>
         /// Получение всех сущностей

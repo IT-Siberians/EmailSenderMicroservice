@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction.Base;
+﻿using EmailSenderMicroservice.DataAccess.Repositories.Abstraction.Base;
 using EmailSenderMicroservice.Domain.Entities;
 
-namespace EmailSenderMicroservice.DataAccess.Repossitory.Abstraction
+namespace EmailSenderMicroservice.DataAccess.Repositories.Abstraction
 {
     /// <summary>
     /// Описания методов для репозитория Сообщений.

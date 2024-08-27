@@ -2,10 +2,11 @@ using EmailSenderMicroservice.Application.Mapper;
 using EmailSenderMicroservice.Application.Services;
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess;
-using EmailSenderMicroservice.DataAccess.Repossitory;
-using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
+using EmailSenderMicroservice.DataAccess.Repositories;
+using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Mapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace EmailSenderMicroservice
 {
@@ -32,8 +33,6 @@ namespace EmailSenderMicroservice
             builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
-          //  builder.Services.AddAutoMapper(typeof(AppProfile));
-
 
             var app = builder.Build();
 

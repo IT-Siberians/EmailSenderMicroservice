@@ -3,7 +3,7 @@ using EmailSenderMicroservice.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EmailSenderMicroservice.DataAccess.Configuration
+namespace EmailSenderMicroservice.DataAccess.Configurations
 {
     internal class MessageConfiguration : IEntityTypeConfiguration<Message>
     {
@@ -28,7 +28,7 @@ namespace EmailSenderMicroservice.DataAccess.Configuration
             builder.Property(x => x.Status)
                 .IsRequired();
 
-            builder.Property(x => x.CreatedDate)
+            builder.Property(x => x.CreattionDate)
                 .IsRequired();
         }
     }

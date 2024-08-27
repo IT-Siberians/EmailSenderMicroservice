@@ -1,8 +1,8 @@
-﻿using EmailSenderMicroservice.DataAccess.Repossitory.Abstraction;
+﻿using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmailSenderMicroservice.DataAccess.Repossitory
+namespace EmailSenderMicroservice.DataAccess.Repositories
 {
     /// <summary>
     /// Репозиторий для работы с сущностями сообщений в базе данных.
