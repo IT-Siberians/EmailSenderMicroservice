@@ -1,12 +1,12 @@
 ﻿using EmailSenderMicroservice.Application.Models.Message;
+using EmailSenderMicroservice.Application.Services;
 using EmailSenderMicroservice.Application.Services.Abstraction;
-using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 
-namespace EmailSenderMicroservice.Application.Services
+namespace EmailSenderMicroservice.Services
 {
     public class EmailConsumerService : BackgroundService
     {
@@ -17,7 +17,7 @@ namespace EmailSenderMicroservice.Application.Services
 
         public EmailConsumerService(ISettingService settingService, IMessageService messageService)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "localhost" }; // пока типа локально
             _sender = new SenderService(settingService, messageService);            
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();

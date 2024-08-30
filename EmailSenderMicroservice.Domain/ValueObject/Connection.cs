@@ -32,8 +32,11 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// <summary>
         /// Основной конструктор класса проверки Email 
         /// </summary>
-        /// <param name="address"></param>
-        /// <exception cref="EmailInvalidException">Исключение валидации</exception>
+        /// <param name="address">Адрес сервера</param>
+        /// <param name="port">Порт сервера</param>
+        /// <exception cref="SettingServerAddressNullOrEmptyException"></exception>
+        /// <exception cref="SettingServerAddressLengthException"></exception>
+        /// <exception cref="SettingServerPortException"></exception>
         public Connection(string address, uint port)
         {
             if (!IsValidAddress(address))
@@ -48,7 +51,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(StringValue.ERROR_SERVER_PORT);
+                throw new SettingServerPortException(port.ToString());
             }
 
             Address = address;

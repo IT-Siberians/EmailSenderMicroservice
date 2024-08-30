@@ -38,7 +38,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Дата отправки сообщения
         /// </summary>
-        public DateTime CreattionDate { get; }
+        public DateTime CreationDate { get; }
 
         /// <summary>
         /// Основной конструктор класса
@@ -48,12 +48,12 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <param name="messageType">тип сообщений</param>
         /// <param name="messageText">текст сообщения</param>
         /// <param name="status">статус отправки</param>
-        /// <param name="creattionDate">дата и время отправления сообщения</param>
+        /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность</returns>
         /// <exception cref="MessageGuidEmptyException">Исключение пустого значения идентификатора</exception>
         /// <exception cref="MessageTypeNullOrEmptyException">Исключение пустого значения типа направляемого сообщения</exception>
         /// <exception cref="MessageTextNullOrEmptyException">Исключение пустого значения текста направляемого сообщения</exception>
-        public Message(Guid id, Email email, string messageType, string messageText, bool status, DateTime creattionDate)
+        public Message(Guid id, Email email, string messageType, string messageText, bool status, DateTime creationDate)
         {
 
             if (id == Guid.Empty)
@@ -76,10 +76,13 @@ namespace EmailSenderMicroservice.Domain.Entities
             MessageType = messageType;
             MessageText = messageText;
             Status = status;
-            CreattionDate = creattionDate;
+            CreationDate = creationDate;
         }
 
-        public void Sended ()
+        /// <summary>
+        /// Метод изменения статуса доставки
+        /// </summary>
+        public void Send ()
         {
             Status = true;
         }

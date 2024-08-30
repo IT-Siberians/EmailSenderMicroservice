@@ -32,7 +32,7 @@ namespace EmailSenderMicroservice.DataAccess.Configurations
             builder.Property(x => x.Password)
                 .IsRequired();
 
-            builder.Property(x => x.CreattionDate)
+            builder.Property(x => x.CreationDate)
                 .IsRequired();
 
         }

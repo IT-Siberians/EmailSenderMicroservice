@@ -38,7 +38,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Дата отправки сообщения
         /// </summary>
-        public DateTime CreattionDate { get; }
+        public DateTime CreationDate { get; }
 
         /// <summary>
         /// Пустой конструктор для EF Core
@@ -53,11 +53,11 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <param name="useSSL">признак использования SSL</param>
         /// <param name="login">логин учетной записи отправителя</param>
         /// <param name="password">пароль от учетной записи отпраителя</param>
-        /// <param name="creattionDate">дата и время отправления сообщения</param>
+        /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
         /// <exception cref="SettingGuidEmptyException">Исключение на соответсвие идентификатора</exception>        
         /// <exception cref="SettingPasswordNullOrEmptyException">Исключение пустого значения параметра пароля</exception>
-        public Setting(Guid id, Connection connection, bool useSSL, Email login, string password, DateTime creattionDate)
+        public Setting(Guid id, Connection connection, bool useSSL, Email login, string password, DateTime creationDate)
         {
             if (id == Guid.Empty)
             {
@@ -74,7 +74,7 @@ namespace EmailSenderMicroservice.Domain.Entities
             UseSSL = useSSL;
             Login = login;
             Password = password;
-            CreattionDate = creattionDate;
+            CreationDate = creationDate;
         }
     }
 }

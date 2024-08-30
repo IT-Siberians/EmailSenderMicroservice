@@ -39,7 +39,7 @@ namespace EmailSenderMicroservice.Application.Services
                 z.UseSSL,
                 z.Login.Value,
                 z.Password,
-                z.CreattionDate));
+                z.CreationDate));
         }
 
         public async Task<SettingModel?> GetCurrentAsync()
@@ -54,7 +54,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
-                setting.CreattionDate);
+                setting.CreationDate);
         }
 
         public async Task<SettingModel?> GetByIdAsync(Guid id)
@@ -70,7 +70,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.UseSSL,
                 setting.Login.Value,
                 setting.Password,
-                setting.CreattionDate);
+                setting.CreationDate);
         }
     }
 }

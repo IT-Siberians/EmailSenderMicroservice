@@ -5,7 +5,9 @@ using EmailSenderMicroservice.DataAccess;
 using EmailSenderMicroservice.DataAccess.Repositories;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Mapper;
+using EmailSenderMicroservice.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace EmailSenderMicroservice
 {
@@ -17,12 +19,28 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(
+                c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Email Sender API",
+                        Description = "The Email Sender API provides endpoints for managing and retrieving email messages. This API allows you to fetch all email messages or retrieve a specific message by its unique identifier."
+                    });
+                });
 
             builder.Services.AddDbContext<EmailSenderMicroserviceDbContext>(
                 options =>
                 {
-                    options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext)));
+                    var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
+
+                    if (string.IsNullOrEmpty(connectionString))
+                    {
+                        throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
+                    }
+
+                    options.UseNpgsql(connectionString);
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
@@ -31,7 +49,7 @@ namespace EmailSenderMicroservice
             builder.Services.AddScoped<ISettingService, SettingService>();
             builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 
-            // builder.Services.AddHostedService<EmailConsumerService>(); // не запускается
+            //builder.Services.AddHostedService<EmailConsumerService>(); // не запускается
 
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
 

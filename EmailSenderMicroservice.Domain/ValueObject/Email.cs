@@ -23,7 +23,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             if (!IsValid(value))
             {
-                throw new EmailInvalidException(StringValue.ERROR_EMAIL);
+                throw new EmailInvalidException(value);
             }
 
             Value = value;
