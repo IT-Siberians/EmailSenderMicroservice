@@ -1,6 +1,5 @@
 ﻿using EmailSenderMicroservice.Application.Models.Message;
 using EmailSenderMicroservice.Application.Services;
-using EmailSenderMicroservice.Application.Services.Abstraction;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -10,18 +9,28 @@ namespace EmailSenderMicroservice.Services
 {
     public class EmailConsumerService : BackgroundService
     {
-        private readonly SenderService _sender;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private readonly string _queueName = "emailQueue";
+        private readonly string _queueName;
+        private readonly string _connectionString;
 
-        public EmailConsumerService(ISettingService settingService, IMessageService messageService)
+        public EmailConsumerService(IServiceScopeFactory serviceScopeFactory, IConfiguration configuration)
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" }; // пока типа локально
-            _sender = new SenderService(settingService, messageService);            
+            _serviceScopeFactory = serviceScopeFactory;
+
+            _connectionString = configuration.GetValue<string>("RabbitMQ:ConnectionString")
+                ?? throw new ArgumentNullException("Connection string for RabbitMQ is not configured.");
+
+            _queueName = configuration.GetValue<string>("RabbitMQ:QueueName")
+                ?? throw new ArgumentNullException("Queue name for RabbitMQ is not configured.");
+
+            var factory = new ConnectionFactory()
+            {
+                Uri = new Uri(_connectionString)
+            };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-
             _channel.QueueDeclare(
                 queue: _queueName,
                 durable: false,
@@ -39,9 +48,12 @@ namespace EmailSenderMicroservice.Services
                 var message = Encoding.UTF8.GetString(body);
                 var emailRequest = JsonSerializer.Deserialize<MessageRequest>(message);
 
-                //var test = _sender.SendAsync("vasya", "pophas123@mail.ru", "Важное уведомление", "что-то какой-то текст", true);
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var senderService = scope.ServiceProvider.GetRequiredService<SenderService>();
 
-                var result = _sender.SendAsync(emailRequest.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true);
+                    await senderService.SendAsync(emailRequest!.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true);
+                }
 
                 await Task.CompletedTask;
             };
@@ -52,6 +64,13 @@ namespace EmailSenderMicroservice.Services
                 consumer: consumer);
 
             return Task.CompletedTask;
+        }
+
+        public override Task StopAsync(CancellationToken cancellationToken)
+        {
+            _channel.Close();
+            _connection.Close();
+            return base.StopAsync(cancellationToken);
         }
     }
 }

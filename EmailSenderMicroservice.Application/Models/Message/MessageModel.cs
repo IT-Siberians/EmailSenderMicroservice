@@ -6,5 +6,5 @@
         string MessageType,
         string MessageText,
         bool Status,
-        DateTime CreatedDate);
+        DateTime CreationDate);
 }

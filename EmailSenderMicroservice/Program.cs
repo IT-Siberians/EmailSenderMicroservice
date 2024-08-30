@@ -49,7 +49,9 @@ namespace EmailSenderMicroservice
             builder.Services.AddScoped<ISettingService, SettingService>();
             builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 
-            //builder.Services.AddHostedService<EmailConsumerService>(); // не запускается
+            builder.Services.AddScoped<SenderService>();
+
+            builder.Services.AddHostedService<EmailConsumerService>();
 
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
 
