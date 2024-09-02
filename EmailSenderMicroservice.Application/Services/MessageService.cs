@@ -22,7 +22,6 @@ namespace EmailSenderMicroservice.Application.Services
         public async Task<Guid> AddAsync(AddMessageModel entity)
         {
             var result = new Message(
-                Guid.NewGuid(), 
                 new Email(entity.Email), 
                 entity.MessageType, 
                 entity.MessageText, 

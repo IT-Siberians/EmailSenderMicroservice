@@ -8,6 +8,8 @@ using EmailSenderMicroservice.Mapper;
 using EmailSenderMicroservice.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 
 namespace EmailSenderMicroservice
 {
@@ -19,6 +21,10 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddFluentValidationAutoValidation();
+
             builder.Services.AddSwaggerGen(
                 c =>
                 {

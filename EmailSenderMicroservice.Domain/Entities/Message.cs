@@ -41,25 +41,23 @@ namespace EmailSenderMicroservice.Domain.Entities
         public DateTime CreationDate { get; }
 
         /// <summary>
+        /// Пустой конструктор для EF Core
+        /// </summary>
+        protected Message() { }
+
+        /// <summary>
         /// Основной конструктор класса
         /// </summary>
-        /// <param name="id">идентификатор записи</param>
         /// <param name="email">адрес получателя сообщений</param>
         /// <param name="messageType">тип сообщений</param>
         /// <param name="messageText">текст сообщения</param>
         /// <param name="status">статус отправки</param>
         /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность</returns>
-        /// <exception cref="MessageGuidEmptyException">Исключение пустого значения идентификатора</exception>
         /// <exception cref="MessageTypeNullOrEmptyException">Исключение пустого значения типа направляемого сообщения</exception>
         /// <exception cref="MessageTextNullOrEmptyException">Исключение пустого значения текста направляемого сообщения</exception>
-        public Message(Guid id, Email email, string messageType, string messageText, bool status, DateTime creationDate)
+        public Message(Email email, string messageType, string messageText, bool status, DateTime creationDate)
         {
-
-            if (id == Guid.Empty)
-            {
-                throw new MessageGuidEmptyException(StringValue.ERROR_ID, id.ToString());
-            }
 
             if (string.IsNullOrWhiteSpace(messageType))
             {
@@ -71,7 +69,6 @@ namespace EmailSenderMicroservice.Domain.Entities
                 throw new MessageTextNullOrEmptyException(StringValue.ERROR_TEXT, messageText);
             }
 
-            Id = id;
             Email = email;
             MessageType = messageType;
             MessageText = messageText;

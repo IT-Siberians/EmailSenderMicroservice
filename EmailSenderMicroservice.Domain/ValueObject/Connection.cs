@@ -1,42 +1,47 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Setting;
-using EmailSenderMicroservice.Domain.Exception.ValueObject;
+﻿using EmailSenderMicroservice.Domain.Entities;
+using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.Helpers;
 using System.Text.RegularExpressions;
 
 namespace EmailSenderMicroservice.Domain.ValueObject
 {
     /// <summary>
-    /// 
+    /// Класс, представляющий соединение с сервером отправки email.
     /// </summary>
-    /// <exception cref="SettingServerAddressNullOrEmptyException">Исключение пустого значения адреса сервиса отправки</exception>
-    /// <exception cref="SettingServerAddressLengthException">Исключение привышения адреса сервиса отправки максимально разрешенному значению</exception>
-    /// <exception cref="SettingServerPortException">Исключение несоответсвия разрадности значения порта сервиса отправки</exception>
+    /// <exception cref="SettingServerAddressNullOrEmptyException">
+    /// Исключение, возникающее при пустом значении адреса сервера.
+    /// </exception>
+    /// <exception cref="SettingServerAddressLengthException">
+    /// Исключение, возникающее при превышении максимальной длины адреса сервера.
+    /// </exception>
+    /// <exception cref="SettingServerPortException">
+    /// Исключение, возникающее при несоответствии значения порта сервера.
+    /// </exception>
     public class Connection
     {
-        public const int MAX_SERVER_ADDRESS_LENG = 30;
+        public const int MAX_SERVER_ADDRESS_LENGTH = 30;
 
         /// <summary>
-        /// 
+        /// Регулярное выражение для проверки валидности адреса сервера.
         /// </summary>
         private static readonly Regex ValidationAddressRegex = new Regex(
                 StringValue.REGEX_ADDRESS,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
-        /// 
+        /// Основной конструктор класса Connection.
         /// </summary>
-        private static readonly Regex ValidationPortRegex = new Regex(
-                StringValue.REGEX_PORT,
-                RegexOptions.Singleline | RegexOptions.Compiled);
-
-        /// <summary>
-        /// Основной конструктор класса проверки Email 
-        /// </summary>
-        /// <param name="address">Адрес сервера</param>
-        /// <param name="port">Порт сервера</param>
-        /// <exception cref="SettingServerAddressNullOrEmptyException"></exception>
-        /// <exception cref="SettingServerAddressLengthException"></exception>
-        /// <exception cref="SettingServerPortException"></exception>
+        /// <param name="address">Адрес сервера.</param>
+        /// <param name="port">Порт сервера.</param>
+        /// <exception cref="SettingServerAddressNullOrEmptyException">
+        /// Исключение, возникающее при пустом значении адреса сервера.
+        /// </exception>
+        /// <exception cref="SettingServerAddressLengthException">
+        /// Исключение, возникающее при превышении максимальной длины адреса сервера.
+        /// </exception>
+        /// <exception cref="SettingServerPortException">
+        /// Исключение, возникающее при несоответствии значения порта сервера.
+        /// </exception>
         public Connection(string address, uint port)
         {
             if (!IsValidAddress(address))
@@ -44,14 +49,14 @@ namespace EmailSenderMicroservice.Domain.ValueObject
                 throw new SettingServerAddressNullOrEmptyException(StringValue.ERROR_SERVER_ADDRESS, address);
             }
 
-            if (address.Length > MAX_SERVER_ADDRESS_LENG)
+            if (address.Length > MAX_SERVER_ADDRESS_LENGTH)
             {
-                throw new SettingServerAddressLengthException(StringValue.ERROR_SERVER_ADDRESS_LENG);
+                throw new SettingServerAddressLengthException(address.Length.ToString());
             }
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(port.ToString());
+                throw new SettingServerPortException(port.ToString(), StringValue.ERROR_SERVER_PORT);
             }
 
             Address = address;
@@ -59,56 +64,54 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         }
 
         /// <summary>
-        /// Адресс сервера
+        /// Адрес сервера.
         /// </summary>
         public string Address { get; }
 
         /// <summary>
-        /// Порт сервера
+        /// Порт сервера.
         /// </summary>
         public uint Port { get; }
 
-
         /// <summary>
-        /// Проверка передоваемой строки на соответсвие правилам
+        /// Проверяет валидность переданного адреса.
         /// </summary>
-        /// <param name="value">строка с Email</param>
-        /// <returns>Булевое значение</returns>
+        /// <param name="value">Адрес сервера.</param>
+        /// <returns>Булевое значение, указывающее на валидность адреса.</returns>
         private bool IsValidAddress(string value)
         {
             return !string.IsNullOrWhiteSpace(value) && ValidationAddressRegex.IsMatch(value);
         }
 
         /// <summary>
-        /// Проверка передоваемого значения правилам (100 <= port <= 999)
+        /// Проверяет валидность переданного значения порта (1 <= port <= 65535).
         /// </summary>
-        /// <param name="value">значение порта</param>
-        /// <returns>Булевое значение</returns>
+        /// <param name="value">Значение порта.</param>
+        /// <returns>Булевое значение, указывающее на валидность порта.</returns>
         private bool IsValidPort(uint value)
         {
-            return (value != 0) && ValidationPortRegex.IsMatch(value.ToString());
+            return value >= 1 && value <= 65535;
         }
 
         /// <summary>
-        /// Переопределенный метод Equals
+        /// Переопределенный метод Equals.
         /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>Булевое значение</returns>
+        /// <param name="obj">Объект для сравнения.</param>
+        /// <returns>Булевое значение, указывающее на равенство объектов.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Connection other 
+            return obj is Connection other
                 && StringComparer.Ordinal.Equals(Address, other.Address)
-                && StringComparer.Ordinal.Equals(Port, other.Port);
+                && Port == other.Port;
         }
 
         /// <summary>
-        /// Переопределенный метод HashCode
+        /// Переопределенный метод GetHashCode.
         /// </summary>
-        /// <returns>HashCode</returns>
+        /// <returns>Хэш-код объекта.</returns>
         public override int GetHashCode()
         {
             return HashCode.Combine(Address.GetHashCode(), Port.GetHashCode());
         }
-
     }
 }

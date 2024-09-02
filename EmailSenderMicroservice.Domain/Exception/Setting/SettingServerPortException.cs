@@ -6,7 +6,8 @@ namespace EmailSenderMicroservice.Domain.Exception.Setting
     /// Конструктор с информационным сообщением и значением параметра
     /// </summary>
     /// <param name="value">Информационное сообщение</param>
-    public class SettingServerPortException(string value) : FormatException(StringValue.ERROR_SERVER_PORT + $"'{value}'")
+    /// 
+    public class SettingServerPortException(string value, string message) : ArgumentOutOfRangeException(value, message)
     {
 
     }

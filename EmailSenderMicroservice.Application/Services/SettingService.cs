@@ -18,7 +18,6 @@ namespace EmailSenderMicroservice.Application.Services
         public async Task<Guid> AddAsync(AddSettingModel entity)
         {
             var setting = new Setting(
-                Guid.NewGuid(),
                 new Connection(entity.ServerAddress, entity.ServerPort),
                 entity.UseSSL,
                 new Email(entity.Login),

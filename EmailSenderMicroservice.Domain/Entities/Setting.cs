@@ -48,28 +48,20 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Основной конструктор класса
         /// </summary>
-        /// <param name="id">идентификатор записи</param>
         /// <param name="connection">объект содержащий в себе адрес и порт сервера отправки сообщений</param>
         /// <param name="useSSL">признак использования SSL</param>
         /// <param name="login">логин учетной записи отправителя</param>
         /// <param name="password">пароль от учетной записи отпраителя</param>
         /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
-        /// <exception cref="SettingGuidEmptyException">Исключение на соответсвие идентификатора</exception>        
         /// <exception cref="SettingPasswordNullOrEmptyException">Исключение пустого значения параметра пароля</exception>
-        public Setting(Guid id, Connection connection, bool useSSL, Email login, string password, DateTime creationDate)
+        public Setting(Connection connection, bool useSSL, Email login, string password, DateTime creationDate)
         {
-            if (id == Guid.Empty)
-            {
-                throw new SettingGuidEmptyException(StringValue.ERROR_ID, id.ToString());
-            }
-
             if (string.IsNullOrWhiteSpace(password))
             {
                 throw new SettingPasswordNullOrEmptyException(StringValue.ERROR_SERVER_PASS, password.ToString());
             }
 
-            Id = id;
             Connection = connection;
             UseSSL = useSSL;
             Login = login;

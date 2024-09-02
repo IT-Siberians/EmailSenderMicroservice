@@ -2,7 +2,6 @@
 using EmailSenderMicroservice.Application.Models.Setting;
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.Contracts.Setting;
-using EmailSenderMicroservice.Validator;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmailSenderMicroservice.Controllers
@@ -64,14 +63,6 @@ namespace EmailSenderMicroservice.Controllers
         [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request)
         {
-            var validator = new SettingValidator();
-
-            var result = validator.Validate(request);
-            
-            if (!result.IsValid)
-            {
-                return BadRequest(result.ToString("\n"));
-            }
             var settingId = await _settingService.AddAsync(_mapper.Map<AddSettingModel>(request));
 
             if (settingId == Guid.Empty)
