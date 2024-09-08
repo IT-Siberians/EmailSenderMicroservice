@@ -1,6 +1,4 @@
-﻿using EmailSenderMicroservice.Domain.Helpers;
-
-namespace EmailSenderMicroservice.Domain.Exception.Setting
+﻿namespace EmailSenderMicroservice.Domain.Exception.Setting
 {
     /// <summary>
     /// Конструктор с информационным сообщением и значением параметра

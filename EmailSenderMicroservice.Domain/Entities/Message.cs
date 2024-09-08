@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Message;
-using EmailSenderMicroservice.Domain.ValueObject;
+﻿using EmailSenderMicroservice.Domain.Entities.Base;
+using EmailSenderMicroservice.Domain.Exception.Message;
 using EmailSenderMicroservice.Domain.Helpers;
-using EmailSenderMicroservice.Domain.Entities.Base;
+using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Domain.Entities
 {
@@ -9,7 +9,7 @@ namespace EmailSenderMicroservice.Domain.Entities
     /// Сообщение
     /// </summary>
     public class Message : IEntity<Guid>
-    {        
+    {
         /// <summary>
         /// Идентификатор
         /// </summary>
@@ -19,12 +19,12 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// Email получателя
         /// </summary>
         public Email Email { get; }
-        
+
         /// <summary>
         /// Название шаблона сообщений
         /// </summary>
         public string MessageType { get; }
-        
+
         /// <summary>
         /// Текст сообщения
         /// </summary>
@@ -61,12 +61,12 @@ namespace EmailSenderMicroservice.Domain.Entities
 
             if (string.IsNullOrWhiteSpace(messageType))
             {
-                throw new MessageTypeNullOrEmptyException(StringValue.ERROR_TYPE, messageType);
+                throw new MessageTypeNullOrEmptyException(StringValues.ERROR_TYPE, messageType);
             }
 
             if (string.IsNullOrWhiteSpace(messageText))
             {
-                throw new MessageTextNullOrEmptyException(StringValue.ERROR_TEXT, messageText);
+                throw new MessageTextNullOrEmptyException(StringValues.ERROR_TEXT, messageText);
             }
 
             Email = email;
@@ -77,12 +77,11 @@ namespace EmailSenderMicroservice.Domain.Entities
         }
 
         /// <summary>
-        /// Метод изменения статуса доставки
+        /// Метод для изменения статуса доставки на отправлен.
         /// </summary>
-        public void Send ()
+        public void MarkAsSent()
         {
             Status = true;
         }
-        
     }
 }

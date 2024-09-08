@@ -4,30 +4,39 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 
-
 namespace EmailSenderMicroservice.Application.Services
 {
-    public class SenderService
+    /// <summary>
+    /// Служба для отправки электронных писем.
+    /// </summary>
+    /// <param name="settingService">Служба для получения настроек электронной почты.</param>
+    /// <param name="messageService">Служба для управления сообщениями.</param>
+    public class SenderService(ISettingService settingService, IMessageService messageService)
     {
-        private readonly ISettingService _settingService;
-        private readonly IMessageService _messageService;
         private const string fromName = "Email Notification Service";
 
-        public SenderService(ISettingService setting, IMessageService message)
-        {
-            _settingService = setting;
-            _messageService = message;
-        }        
-
+        /// <summary>
+        /// Отправляет электронное письмо.
+        /// </summary>
+        /// <param name="toName">Имя получателя.</param>
+        /// <param name="toEmail">Адрес электронной почты получателя.</param>
+        /// <param name="subject">Тема письма.</param>
+        /// <param name="text">Текст письма.</param>
+        /// <param name="isHtml">Указывает, является ли текст письма HTML-контентом.</param>
+        /// <returns>Асинхронная задача.</returns>
+        /// <exception cref="InvalidOperationException">Выбрасывается, если не удается получить текущие настройки.</exception>
         public async Task SendAsync(string toName, string toEmail, string subject, string text, bool isHtml)
         {
-            var settingNow = await _settingService.GetCurrentAsync();
+            var settingNow = await settingService.GetCurrentAsync();
+            if (settingNow is null)
+            {
+                throw new InvalidOperationException("Не удалось получить текущие настройки для отправки письма.");
+            }
 
             var messageSend = new AddMessageModel(toEmail, subject, text);
+            await messageService.AddAsync(messageSend);
 
-            await _messageService.AddAsync(messageSend);
-
-            var message = new MimeMessage()
+            var message = new MimeMessage
             {
                 Subject = subject,
                 Body = new TextPart(isHtml ? "html" : "plain")
@@ -38,19 +47,14 @@ namespace EmailSenderMicroservice.Application.Services
             message.From.Add(new MailboxAddress(fromName, settingNow.Login));
             message.To.Add(new MailboxAddress(toName, toEmail));
 
-            var result = string.Empty;
-
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort), (settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None));
+                await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort),
+                    settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None);
                 await client.AuthenticateAsync(settingNow.Login, settingNow.Password);
-                result = await client.SendAsync(message);
+                await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
-
-            result.Trim();
-
         }
-
     }
 }

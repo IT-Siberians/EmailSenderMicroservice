@@ -1,9 +1,8 @@
-﻿using EmailSenderMicroservice.Domain.Entities;
-using EmailSenderMicroservice.Domain.Exception.Setting;
+﻿using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.Helpers;
 using System.Text.RegularExpressions;
 
-namespace EmailSenderMicroservice.Domain.ValueObject
+namespace EmailSenderMicroservice.Domain.ValueObjects
 {
     /// <summary>
     /// Класс, представляющий соединение с сервером отправки email.
@@ -25,7 +24,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         /// Регулярное выражение для проверки валидности адреса сервера.
         /// </summary>
         private static readonly Regex ValidationAddressRegex = new Regex(
-                StringValue.REGEX_ADDRESS,
+                StringValues.REGEX_ADDRESS,
                 RegexOptions.Singleline | RegexOptions.Compiled);
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         {
             if (!IsValidAddress(address))
             {
-                throw new SettingServerAddressNullOrEmptyException(StringValue.ERROR_SERVER_ADDRESS, address);
+                throw new SettingServerAddressNullOrEmptyException(StringValues.ERROR_SERVER_ADDRESS, address);
             }
 
             if (address.Length > MAX_SERVER_ADDRESS_LENGTH)
@@ -56,7 +55,7 @@ namespace EmailSenderMicroservice.Domain.ValueObject
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(port.ToString(), StringValue.ERROR_SERVER_PORT);
+                throw new SettingServerPortException(port.ToString(), StringValues.ERROR_SERVER_PORT);
             }
 
             Address = address;
@@ -106,12 +105,34 @@ namespace EmailSenderMicroservice.Domain.ValueObject
         }
 
         /// <summary>
+        /// Перегруженный оператор равенства для сравнения двух объектов <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="left">Первый объект <see cref="Connection"/>.</param>
+        /// <param name="right">Второй объект <see cref="Connection"/>.</param>
+        /// <returns><c>true</c>, если оба объекта равны; в противном случае <c>false</c>.</returns>
+        public static bool operator ==(Connection left, Connection right)
+        {
+            if (ReferenceEquals(left, null))
+                return ReferenceEquals(right, null);
+            return left.Equals(right);
+        }
+
+        /// <summary>
+        /// Перегруженный оператор неравенства для сравнения двух объектов <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="left">Первый объект <see cref="Connection"/>.</param>
+        /// <param name="right">Второй объект <see cref="Connection"/>.</param>
+        /// <returns><c>true</c>, если объекты не равны; в противном случае <c>false</c>.</returns>
+        public static bool operator !=(Connection left, Connection right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
         /// Переопределенный метод GetHashCode.
         /// </summary>
         /// <returns>Хэш-код объекта.</returns>
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Address.GetHashCode(), Port.GetHashCode());
-        }
+        public override int GetHashCode() => HashCode.Combine(Address.GetHashCode(), Port.GetHashCode());
+
     }
 }

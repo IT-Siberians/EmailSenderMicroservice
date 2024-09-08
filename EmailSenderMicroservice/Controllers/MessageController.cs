@@ -7,24 +7,15 @@ namespace EmailSenderMicroservice.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class MessageController : ControllerBase
+    public class MessageController(IMessageService messageService, IMapper mapper) : ControllerBase
     {
-        private readonly IMessageService _messageService;
-        private readonly IMapper _mapper;
-
-        public MessageController(IMessageService messageService, IMapper mapper)
-        {
-            _messageService = messageService;
-            _mapper = mapper;
-        }
-
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MessageResponse>), 200)]
         public async Task<ActionResult<List<MessageResponse>>> GetAllAsync()
         {
-            var messages = await _messageService.GetAllAsync();
+            var messages = await messageService.GetAllAsync();
 
-            return Ok(messages.Select(_mapper.Map<MessageResponse>));
+            return Ok(messages.Select(mapper.Map<MessageResponse>));
         }
 
         [HttpGet("{id:guid}")]
@@ -32,14 +23,14 @@ namespace EmailSenderMicroservice.Controllers
         [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<MessageResponse>> GetByIdAsync(Guid id)
         {
-            var message = await _messageService.GetByIdAsync(id);
-            
+            var message = await messageService.GetByIdAsync(id);
+
             if (message is null)
             {
                 return NotFound($"Message {id} not found!");
             }
 
-            return Ok(_mapper.Map<MessageResponse>(message));
+            return Ok(mapper.Map<MessageResponse>(message));
         }
     }
 }

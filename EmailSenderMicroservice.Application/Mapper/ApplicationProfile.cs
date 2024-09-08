@@ -16,7 +16,7 @@ namespace EmailSenderMicroservice.Application.Mapper
 
             CreateMap<Message, MessageModel>()
                 .ForMember(d => d.Email, o => o.MapFrom(s => s.Email.Value))
-                .ReverseMap(); 
+                .ReverseMap();
         }
     }
 }

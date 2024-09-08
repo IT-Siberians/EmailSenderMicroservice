@@ -21,7 +21,7 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         {
             await context.Settings.AddAsync(entity);
             await context.SaveChangesAsync();
-            
+
             return entity.Id;
         }
 

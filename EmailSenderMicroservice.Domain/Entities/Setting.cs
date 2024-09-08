@@ -1,7 +1,7 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Setting;
-using EmailSenderMicroservice.Domain.ValueObject;
+﻿using EmailSenderMicroservice.Domain.Entities.Base;
+using EmailSenderMicroservice.Domain.Exception.Setting;
 using EmailSenderMicroservice.Domain.Helpers;
-using EmailSenderMicroservice.Domain.Entities.Base;
+using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Domain.Entities
 {
@@ -59,7 +59,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new SettingPasswordNullOrEmptyException(StringValue.ERROR_SERVER_PASS, password.ToString());
+                throw new SettingPasswordNullOrEmptyException(StringValues.ERROR_SERVER_PASS, password.ToString());
             }
 
             Connection = connection;

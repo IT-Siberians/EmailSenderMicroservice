@@ -2,19 +2,23 @@
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
-using EmailSenderMicroservice.Domain.ValueObject;
+using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Application.Services
 {
-    public class SettingService : ISettingService
+    /// <summary>
+    /// Служба для управления настройками приложения.
+    /// </summary>
+    /// <param name="settingRepository">Репозиторий для работы с настройками.</param>
+    public class SettingService(ISettingRepository settingRepository) : ISettingService
     {
-        private readonly ISettingRepository _settingRepository;
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public SettingService(ISettingRepository settingRepository)
-        {
-            _settingRepository = settingRepository;
-        }
+        /// <summary>
+        /// Добавляет новую настройку в репозиторий.
+        /// </summary>
+        /// <param name="entity">Модель настройки для добавления.</param>
+        /// <returns>Идентификатор добавленной настройки.</returns>
         public async Task<Guid> AddAsync(AddSettingModel entity)
         {
             var setting = new Setting(
@@ -24,12 +28,16 @@ namespace EmailSenderMicroservice.Application.Services
                 entity.Password,
                 DateTime.UtcNow);
 
-            return await _settingRepository.AddAsync(setting, _cancellationTokenSource.Token);
+            return await settingRepository.AddAsync(setting, _cancellationTokenSource.Token);
         }
 
+        /// <summary>
+        /// Получает все настройки из репозитория.
+        /// </summary>
+        /// <returns>Список моделей настроек.</returns>
         public async Task<IEnumerable<SettingModel>> GetAllAsync()
         {
-            var settings = await _settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var settings = await settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
 
             return settings.Select(z => new SettingModel(
                 z.Id,
@@ -41,12 +49,16 @@ namespace EmailSenderMicroservice.Application.Services
                 z.CreationDate));
         }
 
+        /// <summary>
+        /// Получает текущую настройку из репозитория.
+        /// </summary>
+        /// <returns>Модель текущей настройки или <c>null</c>, если настройка не найдена.</returns>
         public async Task<SettingModel?> GetCurrentAsync()
         {
-            var setting = await _settingRepository.GetCurrentAsync(_cancellationTokenSource.Token);
+            var setting = await settingRepository.GetCurrentAsync(_cancellationTokenSource.Token);
 
             return setting is null ? null :
-            new SettingModel(
+                new SettingModel(
                 setting.Id,
                 setting.Connection.Address,
                 setting.Connection.Port,
@@ -56,10 +68,14 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.CreationDate);
         }
 
+        /// <summary>
+        /// Получает настройку по идентификатору из репозитория.
+        /// </summary>
+        /// <param name="id">Идентификатор настройки.</param>
+        /// <returns>Модель настройки или <c>null</c>, если настройка не найдена.</returns>
         public async Task<SettingModel?> GetByIdAsync(Guid id)
         {
-            var setting = await _settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
-
+            var setting = await settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
 
             return setting is null ? null :
                 new SettingModel(
