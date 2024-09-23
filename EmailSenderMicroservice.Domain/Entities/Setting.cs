@@ -1,6 +1,5 @@
 ﻿using EmailSenderMicroservice.Domain.Entities.Base;
 using EmailSenderMicroservice.Domain.Exception.Setting;
-using EmailSenderMicroservice.Domain.Helpers;
 using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Domain.Entities
@@ -43,7 +42,9 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Пустой конструктор для EF Core
         /// </summary>
+#pragma warning disable CS8618
         protected Setting() { }
+#pragma warning disable CS8618
 
         /// <summary>
         /// Основной конструктор класса
@@ -59,7 +60,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                throw new SettingPasswordNullOrEmptyException(StringValues.ERROR_SERVER_PASS, password.ToString());
+                throw new SettingPasswordNullOrEmptyException(password.ToString());
             }
 
             Connection = connection;

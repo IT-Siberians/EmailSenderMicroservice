@@ -45,17 +45,17 @@ namespace EmailSenderMicroservice.Domain.ValueObjects
         {
             if (!IsValidAddress(address))
             {
-                throw new SettingServerAddressNullOrEmptyException(StringValues.ERROR_SERVER_ADDRESS, address);
+                throw new SettingServerAddressNullOrEmptyException(address);
             }
 
             if (address.Length > MAX_SERVER_ADDRESS_LENGTH)
             {
-                throw new SettingServerAddressLengthException(address.Length.ToString());
+                throw new SettingServerAddressLengthException(MAX_SERVER_ADDRESS_LENGTH, address.Length.ToString());
             }
 
             if (!IsValidPort(port))
             {
-                throw new SettingServerPortException(port.ToString(), StringValues.ERROR_SERVER_PORT);
+                throw new SettingServerPortException(port.ToString());
             }
 
             Address = address;

@@ -1,6 +1,5 @@
 ﻿using EmailSenderMicroservice.Domain.Entities.Base;
 using EmailSenderMicroservice.Domain.Exception.Message;
-using EmailSenderMicroservice.Domain.Helpers;
 using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Domain.Entities
@@ -43,7 +42,9 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Пустой конструктор для EF Core
         /// </summary>
+#pragma warning disable CS8618
         protected Message() { }
+#pragma warning disable CS8618
 
         /// <summary>
         /// Основной конструктор класса
@@ -61,12 +62,12 @@ namespace EmailSenderMicroservice.Domain.Entities
 
             if (string.IsNullOrWhiteSpace(messageType))
             {
-                throw new MessageTypeNullOrEmptyException(StringValues.ERROR_TYPE, messageType);
+                throw new MessageTypeNullOrEmptyException(messageType);
             }
 
             if (string.IsNullOrWhiteSpace(messageText))
             {
-                throw new MessageTextNullOrEmptyException(StringValues.ERROR_TEXT, messageText);
+                throw new MessageTextNullOrEmptyException(messageText);
             }
 
             Email = email;
