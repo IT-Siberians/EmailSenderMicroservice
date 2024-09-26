@@ -1,4 +1,6 @@
-﻿namespace EmailSenderMicroservice.Application.Models.Setting
+﻿using EmailSenderMicroservice.Application.Models.Abstraction;
+
+namespace EmailSenderMicroservice.Application.Models.Setting
 {
     public record SettingModel(
         Guid Id,
@@ -7,5 +9,5 @@
         bool UseSSL,
         string Login,
         string Password,
-        DateTime CreationDate);
+        DateTime CreationDate) : IModel<Guid>;
 }

@@ -32,7 +32,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Пароль от ящика отправки
         /// </summary>
-        public string Password { get; }
+        public Password Password { get; }
 
         /// <summary>
         /// Дата отправки сообщения
@@ -56,13 +56,8 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
         /// <exception cref="SettingPasswordNullOrEmptyException">Исключение пустого значения параметра пароля</exception>
-        public Setting(Connection connection, bool useSSL, Email login, string password, DateTime creationDate)
+        public Setting(Connection connection, bool useSSL, Email login, Password password, DateTime creationDate)
         {
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new SettingPasswordNullOrEmptyException(password.ToString());
-            }
-
             Connection = connection;
             UseSSL = useSSL;
             Login = login;

@@ -12,6 +12,6 @@ namespace EmailSenderMicroservice.Application.Services.Abstraction
         /// Получение текущих настроек сервиса отправки сообщений
         /// </summary>
         /// <returns>Сущность с текущими настройками</returns>
-        Task<SettingModel?> GetCurrentAsync();
+        Task<SettingModel?> GetCurrentAsync(CancellationToken cancellationToken);
     }
 }

@@ -45,7 +45,7 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         public async Task<Guid> AddAsync(Message entity, CancellationToken cancellationToken)
         {
             await context.Messages.AddAsync(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
         }

@@ -14,14 +14,13 @@ namespace EmailSenderMicroservice.Application.Services
     /// <param name="mapper">Маппер для преобразования сущностей в модели и наоборот.</param>
     public class MessageService(IMessageRepository messageRepository, IMapper mapper) : IMessageService
     {
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
         /// <summary>
         /// Добавляет новое сообщение.
         /// </summary>
         /// <param name="entity">Модель сообщения для добавления.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
         /// <returns>Идентификатор добавленного сообщения.</returns>
-        public async Task<Guid> AddAsync(AddMessageModel entity)
+        public async Task<Guid> AddAsync(AddMessageModel entity, CancellationToken cancellationToken = default)
         {
             var message = new Message(
                 new Email(entity.Email),
@@ -30,16 +29,17 @@ namespace EmailSenderMicroservice.Application.Services
                 false,
                 DateTime.UtcNow);
 
-            return await messageRepository.AddAsync(message, _cancellationTokenSource.Token);
+            return await messageRepository.AddAsync(message, cancellationToken);
         }
 
         /// <summary>
         /// Получает все сообщения.
         /// </summary>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
         /// <returns>Список моделей сообщений.</returns>
-        public async Task<IEnumerable<MessageModel>> GetAllAsync()
+        public async Task<IEnumerable<MessageModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var messages = await messageRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var messages = await messageRepository.GetAllAsync(cancellationToken, true);
 
             return messages.Select(mapper.Map<MessageModel>);
         }
@@ -48,10 +48,11 @@ namespace EmailSenderMicroservice.Application.Services
         /// Получает сообщение по идентификатору.
         /// </summary>
         /// <param name="id">Идентификатор сообщения.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
         /// <returns>Модель сообщения или <c>null</c>, если сообщение не найдено.</returns>
-        public async Task<MessageModel?> GetByIdAsync(Guid id)
+        public async Task<MessageModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var message = await messageRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
+            var message = await messageRepository.GetByIdAsync(id, cancellationToken);
 
             return mapper.Map<MessageModel>(message);
         }

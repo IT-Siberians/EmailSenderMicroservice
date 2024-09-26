@@ -12,32 +12,30 @@ namespace EmailSenderMicroservice.Application.Services
     /// <param name="settingRepository">Репозиторий для работы с настройками.</param>
     public class SettingService(ISettingRepository settingRepository) : ISettingService
     {
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
         /// <summary>
         /// Добавляет новую настройку в репозиторий.
         /// </summary>
         /// <param name="entity">Модель настройки для добавления.</param>
         /// <returns>Идентификатор добавленной настройки.</returns>
-        public async Task<Guid> AddAsync(AddSettingModel entity)
+        public async Task<Guid> AddAsync(AddSettingModel entity, CancellationToken cancellationToken = default)
         {
             var setting = new Setting(
                 new Connection(entity.ServerAddress, entity.ServerPort),
                 entity.UseSSL,
                 new Email(entity.Login),
-                entity.Password,
+                new Password(entity.Password),
                 DateTime.UtcNow);
 
-            return await settingRepository.AddAsync(setting, _cancellationTokenSource.Token);
+            return await settingRepository.AddAsync(setting, cancellationToken);
         }
 
         /// <summary>
         /// Получает все настройки из репозитория.
         /// </summary>
         /// <returns>Список моделей настроек.</returns>
-        public async Task<IEnumerable<SettingModel>> GetAllAsync()
+        public async Task<IEnumerable<SettingModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var settings = await settingRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var settings = await settingRepository.GetAllAsync(cancellationToken, true);
 
             return settings.Select(z => new SettingModel(
                 z.Id,
@@ -45,7 +43,7 @@ namespace EmailSenderMicroservice.Application.Services
                 z.Connection.Port,
                 z.UseSSL,
                 z.Login.Value,
-                z.Password,
+                z.Password.Value,
                 z.CreationDate));
         }
 
@@ -53,9 +51,9 @@ namespace EmailSenderMicroservice.Application.Services
         /// Получает текущую настройку из репозитория.
         /// </summary>
         /// <returns>Модель текущей настройки или <c>null</c>, если настройка не найдена.</returns>
-        public async Task<SettingModel?> GetCurrentAsync()
+        public async Task<SettingModel?> GetCurrentAsync(CancellationToken cancellationToken = default)
         {
-            var setting = await settingRepository.GetCurrentAsync(_cancellationTokenSource.Token);
+            var setting = await settingRepository.GetCurrentAsync(cancellationToken);
 
             return setting is null ? null :
                 new SettingModel(
@@ -64,7 +62,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.Connection.Port,
                 setting.UseSSL,
                 setting.Login.Value,
-                setting.Password,
+                setting.Password.Value,
                 setting.CreationDate);
         }
 
@@ -73,9 +71,9 @@ namespace EmailSenderMicroservice.Application.Services
         /// </summary>
         /// <param name="id">Идентификатор настройки.</param>
         /// <returns>Модель настройки или <c>null</c>, если настройка не найдена.</returns>
-        public async Task<SettingModel?> GetByIdAsync(Guid id)
+        public async Task<SettingModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var setting = await settingRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
+            var setting = await settingRepository.GetByIdAsync(id, cancellationToken);
 
             return setting is null ? null :
                 new SettingModel(
@@ -84,7 +82,7 @@ namespace EmailSenderMicroservice.Application.Services
                 setting.Connection.Port,
                 setting.UseSSL,
                 setting.Login.Value,
-                setting.Password,
+                setting.Password.Value,
                 setting.CreationDate);
         }
     }

@@ -12,9 +12,9 @@ namespace EmailSenderMicroservice.Controllers
     {
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SettingResponse>), 200)]
-        public async Task<ActionResult<List<SettingResponse>>> GetAllAsync()
+        public async Task<ActionResult<List<SettingResponse>>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var settings = await settingService.GetAllAsync();
+            var settings = await settingService.GetAllAsync(cancellationToken);
 
             return Ok(settings.Select(mapper.Map<SettingResponse>));
         }
@@ -22,9 +22,9 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<SettingResponse>> GetByIdAsync(Guid id)
+        public async Task<ActionResult<SettingResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var setting = await settingService.GetByIdAsync(id);
+            var setting = await settingService.GetByIdAsync(id, cancellationToken);
 
             if (setting is null)
             {
@@ -37,9 +37,9 @@ namespace EmailSenderMicroservice.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
-        public async Task<ActionResult<SettingResponse>> GetCurrentAsync()
+        public async Task<ActionResult<SettingResponse>> GetCurrentAsync(CancellationToken cancellationToken)
         {
-            var setting = await settingService.GetCurrentAsync();
+            var setting = await settingService.GetCurrentAsync(cancellationToken);
 
             if (setting is null)
             {
@@ -52,9 +52,9 @@ namespace EmailSenderMicroservice.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Guid), 201)]
         [ProducesResponseType(typeof(string), 400)]
-        public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request)
+        public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request, CancellationToken cancellationToken)
         {
-            var settingId = await settingService.AddAsync(mapper.Map<AddSettingModel>(request));
+            var settingId = await settingService.AddAsync(mapper.Map<AddSettingModel>(request), cancellationToken);
 
             if (settingId == Guid.Empty)
             {

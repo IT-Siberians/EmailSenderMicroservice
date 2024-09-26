@@ -20,7 +20,7 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         public async Task<Guid> AddAsync(Setting entity, CancellationToken cancellationToken)
         {
             await context.Settings.AddAsync(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
         }
@@ -77,7 +77,8 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
                     .SetProperty(a => a.Login, a => entity.Login)
                     .SetProperty(a => a.Password, a => entity.Password)
                     .SetProperty(a => a.Password, a => entity.Password)
-                    .SetProperty(a => a.CreationDate, a => entity.CreationDate)
+                    .SetProperty(a => a.CreationDate, a => entity.CreationDate),
+                    cancellationToken
                 );
 
             return true;

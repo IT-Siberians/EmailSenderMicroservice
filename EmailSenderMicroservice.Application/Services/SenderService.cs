@@ -13,7 +13,7 @@ namespace EmailSenderMicroservice.Application.Services
     /// <param name="messageService">Служба для управления сообщениями.</param>
     public class SenderService(ISettingService settingService, IMessageService messageService)
     {
-        private const string fromName = "Email Notification Service";
+        private const string FromName = "Email Notification Service";
 
         /// <summary>
         /// Отправляет электронное письмо.
@@ -25,16 +25,16 @@ namespace EmailSenderMicroservice.Application.Services
         /// <param name="isHtml">Указывает, является ли текст письма HTML-контентом.</param>
         /// <returns>Асинхронная задача.</returns>
         /// <exception cref="InvalidOperationException">Выбрасывается, если не удается получить текущие настройки.</exception>
-        public async Task SendAsync(string toName, string toEmail, string subject, string text, bool isHtml)
+        public async Task SendAsync(string toName, string toEmail, string subject, string text, bool isHtml, CancellationToken cancellationToken)
         {
-            var settingNow = await settingService.GetCurrentAsync();
+            var settingNow = await settingService.GetCurrentAsync(cancellationToken);
             if (settingNow is null)
             {
                 throw new InvalidOperationException("Не удалось получить текущие настройки для отправки письма.");
             }
 
             var messageSend = new AddMessageModel(toEmail, subject, text);
-            await messageService.AddAsync(messageSend);
+            await messageService.AddAsync(messageSend, cancellationToken);
 
             var message = new MimeMessage
             {
@@ -44,7 +44,7 @@ namespace EmailSenderMicroservice.Application.Services
                     Text = text
                 }
             };
-            message.From.Add(new MailboxAddress(fromName, settingNow.Login));
+            message.From.Add(new MailboxAddress(FromName, settingNow.Login));
             message.To.Add(new MailboxAddress(toName, toEmail));
 
             using (var client = new SmtpClient())

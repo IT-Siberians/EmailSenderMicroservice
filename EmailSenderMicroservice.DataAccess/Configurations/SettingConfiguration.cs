@@ -25,11 +25,14 @@ namespace EmailSenderMicroservice.DataAccess.Configurations
 
             builder.Property(x => x.Login)
                 .HasConversion(
-                    v => v.Value,
-                    v => new Email(v))
+                    o => o.Value,
+                    s => new Email(s))
                 .IsRequired();
 
             builder.Property(x => x.Password)
+                .HasConversion(
+                    o => o.Value,
+                    s => new Password(s))
                 .IsRequired();
 
             builder.Property(x => x.CreationDate)

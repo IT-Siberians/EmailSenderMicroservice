@@ -11,6 +11,7 @@ namespace EmailSenderMicroservice.Application.Mapper
         {
             CreateMap<Setting, SettingModel>()
                 .ForMember(d => d.Login, o => o.MapFrom(s => s.Login.Value))
+                .ForMember(d => d.Password, o => o.MapFrom(s => s.Password.Value))
                 .ForMember(d => d.ServerAddress, o => o.MapFrom(s => s.Connection.Address))
                 .ForMember(d => d.ServerPort, o => o.MapFrom(s => s.Connection.Port));
 
