@@ -19,7 +19,7 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         /// <returns>Список всех сообщений типа <see cref="Message"/>.</returns>
         public async Task<IEnumerable<Message>> GetAllAsync(CancellationToken cancellationToken, bool asNoTracking)
         {
-            return await(asNoTracking ? context.Messages.AsNoTracking() : context.Messages)
+            return await (asNoTracking ? context.Messages.AsNoTracking() : context.Messages)
                 .ToListAsync(cancellationToken);
         }
 
@@ -32,8 +32,8 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         public async Task<Message?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             return await context.Messages
-                .Where(x => x.Id == id)                
-                .FirstOrDefaultAsync(cancellationToken);            
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         /// <summary>
@@ -44,9 +44,8 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         /// <returns>Идентификатор добавленного сообщения.</returns>
         public async Task<Guid> AddAsync(Message entity, CancellationToken cancellationToken)
         {
-
             await context.Messages.AddAsync(entity);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
         }

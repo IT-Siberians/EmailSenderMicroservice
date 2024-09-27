@@ -1,5 +1,5 @@
 ﻿using EmailSenderMicroservice.Domain.Entities;
-using EmailSenderMicroservice.Domain.ValueObject;
+using EmailSenderMicroservice.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,8 +15,8 @@ namespace EmailSenderMicroservice.DataAccess.Configurations
 
             builder.Property(x => x.Email)
                 .HasConversion(
-                    v => v.Value, 
-                    v => new Email(v))
+                    o => o.Value,
+                    s => new Email(s))
                 .IsRequired();
 
             builder.Property(x => x.MessageType)

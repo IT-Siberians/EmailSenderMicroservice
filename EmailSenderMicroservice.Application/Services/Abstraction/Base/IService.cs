@@ -1,35 +1,36 @@
-﻿namespace EmailSenderMicroservice.Application.Services.Abstraction.Base
+﻿using EmailSenderMicroservice.Application.Models.Abstraction;
+
+namespace EmailSenderMicroservice.Application.Services.Abstraction.Base
 {
     /// <summary>
-    /// Описания методов для базового сервиса.
+    /// Предоставляет методы для базового сервиса.
     /// </summary>
-    /// <typeparam name="TEntity">Основной класс сущности</typeparam>
-    /// <typeparam name="TEntityAdd">Класс сущности для добавления</typeparam>
-    /// <typeparam name="TKey">Идентификатор</typeparam>
-    public interface IService<TEntity, TEntityAdd, TKey> 
-        where TEntity : class 
-        where TEntityAdd : class 
-        where TKey : struct
+    /// <typeparam name="TEntity">Основной класс сущности.</typeparam>
+    /// <typeparam name="TEntityAdd">Класс сущности, используемый для добавления.</typeparam>
+    /// <typeparam name="TKey">Тип идентификатора.</typeparam>
+    public interface IService<TEntity, TEntityAdd, TKey>
+        where TEntity : class, IModel<TKey>
+        where TEntityAdd : class, IAddModel
+        where TKey : struct, IEquatable<TKey>
     {
         /// <summary>
-        /// Получение всех сущностей
+        /// Получает все сущности.
         /// </summary>
-        /// <returns>Коллекция сущностей</returns>
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        /// <returns>Коллекцию сущностей.</returns>
+        Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken);
 
         /// <summary>
-        /// Получение конкретной сущности по идентификатору
+        /// Получает конкретную сущность по ее идентификатору.
         /// </summary>
-        /// <param name="key">Идентификатор сущности</param>
-        /// <returns>Сущность</returns>
-        Task<TEntity?> GetByIdAsync(TKey key);
+        /// <param name="key">Идентификатор сущности.</param>
+        /// <returns>Сущность.</returns>
+        Task<TEntity?> GetByIdAsync(TKey key, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Добавление сущности
+        /// Добавляет новую сущность.
         /// </summary>
-        /// <param name="entity">Сущность</param>
-        /// <returns>Идентификатор добавленной сущности</returns>
-        Task<TKey> AddAsync(TEntityAdd entity);
-
+        /// <param name="entity">Сущность для добавления.</param>
+        /// <returns>Идентификатор добавленной сущности.</returns>
+        Task<TKey> AddAsync(TEntityAdd entity, CancellationToken cancellationToken);
     }
 }

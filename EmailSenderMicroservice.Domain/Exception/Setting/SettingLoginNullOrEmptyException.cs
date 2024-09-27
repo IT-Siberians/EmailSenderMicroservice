@@ -5,8 +5,5 @@
     /// </summary>
     /// <param name="message">Информационное сообщение</param>
     /// <param name="value">значение параметра вызвашвего исключение</param>
-    public class SettingLoginNullOrEmptyException(string message, string value) : ArgumentNullException(value, message)
-    {
-
-    }
+    public class SettingLoginNullOrEmptyException(string message, string value) : ArgumentNullException(value, message);
 }

@@ -1,7 +1,6 @@
-﻿using EmailSenderMicroservice.Domain.Exception.Setting;
-using EmailSenderMicroservice.Domain.ValueObject;
-using EmailSenderMicroservice.Domain.Helpers;
-using EmailSenderMicroservice.Domain.Entities.Base;
+﻿using EmailSenderMicroservice.Domain.Entities.Base;
+using EmailSenderMicroservice.Domain.Exception.Setting;
+using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Domain.Entities
 {
@@ -33,7 +32,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Пароль от ящика отправки
         /// </summary>
-        public string Password { get; }
+        public Password Password { get; }
 
         /// <summary>
         /// Дата отправки сообщения
@@ -43,7 +42,9 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Пустой конструктор для EF Core
         /// </summary>
+#pragma warning disable CS8618
         protected Setting() { }
+#pragma warning disable CS8618
 
         /// <summary>
         /// Основной конструктор класса
@@ -55,13 +56,8 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <param name="creationDate">дата и время отправления сообщения</param>
         /// <returns>Сущность (Настройки для сервиса отправления сообщений на Email)</returns>
         /// <exception cref="SettingPasswordNullOrEmptyException">Исключение пустого значения параметра пароля</exception>
-        public Setting(Connection connection, bool useSSL, Email login, string password, DateTime creationDate)
+        public Setting(Connection connection, bool useSSL, Email login, Password password, DateTime creationDate)
         {
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new SettingPasswordNullOrEmptyException(StringValue.ERROR_SERVER_PASS, password.ToString());
-            }
-
             Connection = connection;
             UseSSL = useSSL;
             Login = login;

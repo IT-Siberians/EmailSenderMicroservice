@@ -8,10 +8,11 @@ namespace EmailSenderMicroservice.DataAccess
         public DbSet<Message> Messages { get; set; }
         public DbSet<Setting> Settings { get; set; }
 
-        public EmailSenderMicroserviceDbContext(DbContextOptions<EmailSenderMicroserviceDbContext> options) 
+        public EmailSenderMicroserviceDbContext(DbContextOptions<EmailSenderMicroserviceDbContext> options)
             : base(options)
         {
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();
@@ -22,7 +23,5 @@ namespace EmailSenderMicroservice.DataAccess
         {
             modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
         }
-
-        
     }
 }

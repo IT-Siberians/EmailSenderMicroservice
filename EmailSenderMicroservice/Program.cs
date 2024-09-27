@@ -6,10 +6,10 @@ using EmailSenderMicroservice.DataAccess.Repositories;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Mapper;
 using EmailSenderMicroservice.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace EmailSenderMicroservice
 {

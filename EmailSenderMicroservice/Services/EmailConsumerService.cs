@@ -39,7 +39,7 @@ namespace EmailSenderMicroservice.Services
                 arguments: null);
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken cancellationToken)
         {
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async (model, ea) =>
@@ -52,7 +52,7 @@ namespace EmailSenderMicroservice.Services
                 {
                     var senderService = scope.ServiceProvider.GetRequiredService<SenderService>();
 
-                    await senderService.SendAsync(emailRequest!.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true);
+                    await senderService.SendAsync(emailRequest!.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true, cancellationToken);
                 }
 
                 await Task.CompletedTask;

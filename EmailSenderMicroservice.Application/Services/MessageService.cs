@@ -3,46 +3,58 @@ using EmailSenderMicroservice.Application.Models.Message;
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
 using EmailSenderMicroservice.Domain.Entities;
-using EmailSenderMicroservice.Domain.ValueObject;
+using EmailSenderMicroservice.Domain.ValueObjects;
 
 namespace EmailSenderMicroservice.Application.Services
 {
-    public class MessageService : IMessageService
+    /// <summary>
+    /// Служба для управления сообщениями.
+    /// </summary>
+    /// <param name="messageRepository">Репозиторий для работы с сообщениями.</param>
+    /// <param name="mapper">Маппер для преобразования сущностей в модели и наоборот.</param>
+    public class MessageService(IMessageRepository messageRepository, IMapper mapper) : IMessageService
     {
-        private readonly IMessageRepository _messageRepository;
-        private readonly IMapper _mapper;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-        public MessageService(IMessageRepository messageRepository, IMapper mapper)
+        /// <summary>
+        /// Добавляет новое сообщение.
+        /// </summary>
+        /// <param name="entity">Модель сообщения для добавления.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns>Идентификатор добавленного сообщения.</returns>
+        public async Task<Guid> AddAsync(AddMessageModel entity, CancellationToken cancellationToken = default)
         {
-            _messageRepository = messageRepository;
-            _mapper = mapper;
-        }
-
-        public async Task<Guid> AddAsync(AddMessageModel entity)
-        {
-            var result = new Message(
-                new Email(entity.Email), 
-                entity.MessageType, 
-                entity.MessageText, 
-                false, 
+            var message = new Message(
+                new Email(entity.Email),
+                entity.MessageType,
+                entity.MessageText,
+                false,
                 DateTime.UtcNow);
 
-            return await _messageRepository.AddAsync(result, _cancellationTokenSource.Token);
+            return await messageRepository.AddAsync(message, cancellationToken);
         }
 
-        public async Task<IEnumerable<MessageModel>> GetAllAsync()
+        /// <summary>
+        /// Получает все сообщения.
+        /// </summary>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns>Список моделей сообщений.</returns>
+        public async Task<IEnumerable<MessageModel>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var messages = await _messageRepository.GetAllAsync(_cancellationTokenSource.Token, true);
+            var messages = await messageRepository.GetAllAsync(cancellationToken, true);
 
-            return messages.Select(_mapper.Map<MessageModel>);
+            return messages.Select(mapper.Map<MessageModel>);
         }
 
-        public async Task<MessageModel?> GetByIdAsync(Guid id)
+        /// <summary>
+        /// Получает сообщение по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор сообщения.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns>Модель сообщения или <c>null</c>, если сообщение не найдено.</returns>
+        public async Task<MessageModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            var message = await _messageRepository.GetByIdAsync(id, _cancellationTokenSource.Token);
+            var message = await messageRepository.GetByIdAsync(id, cancellationToken);
 
-            return _mapper.Map<MessageModel>(message);
+            return mapper.Map<MessageModel>(message);
         }
     }
 }

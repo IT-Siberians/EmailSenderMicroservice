@@ -7,8 +7,8 @@ namespace EmailSenderMicroservice.DataAccess.Repositories.Abstraction.Base
     /// </summary>
     /// <typeparam name="TEntity">Тип сущности</typeparam>
     /// <typeparam name="TKey">Тип идентификатора</typeparam>
-    public interface IRepository<TEntity, TKey> 
-        where TEntity : class, IEntity<TKey> 
+    public interface IRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
         where TKey : struct
     {
         /// <summary>
