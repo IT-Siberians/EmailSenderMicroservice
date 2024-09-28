@@ -3,6 +3,7 @@ using EmailSenderMicroservice.Application.Services.Abstraction;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
+using System.Data;
 
 namespace EmailSenderMicroservice.Application.Services
 {
@@ -30,11 +31,11 @@ namespace EmailSenderMicroservice.Application.Services
             var settingNow = await settingService.GetCurrentAsync(cancellationToken);
             if (settingNow is null)
             {
-                throw new InvalidOperationException("Не удалось получить текущие настройки для отправки письма.");
+                throw new InvalidOperationException("Could not get current settings for sending email.");
             }
 
             var messageSend = new AddMessageModel(toEmail, subject, text);
-            await messageService.AddAsync(messageSend, cancellationToken);
+            var messageId = await messageService.AddAsync(messageSend, cancellationToken);
 
             var message = new MimeMessage
             {
@@ -47,13 +48,22 @@ namespace EmailSenderMicroservice.Application.Services
             message.From.Add(new MailboxAddress(FromName, settingNow.Login));
             message.To.Add(new MailboxAddress(toName, toEmail));
 
-            using (var client = new SmtpClient())
+            try
             {
-                await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort),
-                    settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None);
-                await client.AuthenticateAsync(settingNow.Login, settingNow.Password);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                using (var client = new SmtpClient())
+                {
+                    await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort),
+                        settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None, cancellationToken);
+                    await client.AuthenticateAsync(settingNow.Login, settingNow.Password, cancellationToken);
+                    var q = await client.SendAsync(message, cancellationToken);
+                    await client.DisconnectAsync(true, cancellationToken);
+                }
+
+                await messageService.SendedStatusAsync(messageId, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Failed to send message. Error '{ex.Message}'");
             }
         }
     }

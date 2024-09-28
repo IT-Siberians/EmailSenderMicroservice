@@ -8,6 +8,12 @@ namespace EmailSenderMicroservice.Application.Services.Abstraction
     /// </summary>
     public interface IMessageService : IService<MessageModel, AddMessageModel, Guid>
     {
-
+        /// <summary>
+        /// Обновление статуса отправки сообщения
+        /// </summary>
+        /// <returns>Сущность с текущими настройками</returns>
+        /// <param name="id">Уникальный идентификатор сообщения.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        Task<bool> SendedStatusAsync(Guid id, CancellationToken cancellationToken);
     }
 }

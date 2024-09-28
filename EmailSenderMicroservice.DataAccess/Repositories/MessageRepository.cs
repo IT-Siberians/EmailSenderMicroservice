@@ -49,5 +49,18 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
 
             return entity.Id;
         }
+
+        /// <summary>
+        /// Обновляет сообщения в базе данных.
+        /// </summary>
+        /// <param name="entity">Обновлённая сущность настройки.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns><c>true</c>, если обновление прошло успешно.</returns>
+        public async Task<bool> UpdateAsync(Message entity, CancellationToken cancellationToken)
+        {
+            context.Messages.Update(entity);
+
+            return await context.SaveChangesAsync(cancellationToken) > 0;
+        }
     }
 }

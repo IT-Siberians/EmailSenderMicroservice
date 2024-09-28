@@ -80,7 +80,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Метод для изменения статуса доставки на отправлен.
         /// </summary>
-        public void MarkAsSent()
+        public void SendedStatus()
         {
             Status = true;
         }

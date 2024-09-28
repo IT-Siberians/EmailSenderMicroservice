@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EmailSenderMicroservice.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
-    public class SettingController(ISettingService settingService, IMapper mapper) : ControllerBase
+    [Route("api/[controller]")]
+    public class SettingsController(ISettingService settingService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<SettingResponse>), 200)]
@@ -35,6 +35,7 @@ namespace EmailSenderMicroservice.Controllers
         }
 
         [HttpGet]
+        [Route("Current")]
         [ProducesResponseType(typeof(SettingResponse), 200)]
         [ProducesResponseType(typeof(string), 404)]
         public async Task<ActionResult<SettingResponse>> GetCurrentAsync(CancellationToken cancellationToken)
@@ -49,7 +50,7 @@ namespace EmailSenderMicroservice.Controllers
             return Ok(mapper.Map<SettingResponse>(setting));
         }
 
-        [HttpPost]
+        [HttpPost]        
         [ProducesResponseType(typeof(Guid), 201)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request, CancellationToken cancellationToken)
