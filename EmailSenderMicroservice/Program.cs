@@ -4,6 +4,7 @@ using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess;
 using EmailSenderMicroservice.DataAccess.Repositories;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
+using EmailSenderMicroservice.Helpers;
 using EmailSenderMicroservice.Mapper;
 using EmailSenderMicroservice.Services;
 using FluentValidation;
@@ -47,6 +48,7 @@ namespace EmailSenderMicroservice
                     }
 
                     options.UseNpgsql(connectionString);
+
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
@@ -70,10 +72,11 @@ namespace EmailSenderMicroservice
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.MigrateDatabase<EmailSenderMicroserviceDbContext>();
 
             app.MapControllers();
 

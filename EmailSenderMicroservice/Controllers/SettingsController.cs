@@ -50,7 +50,7 @@ namespace EmailSenderMicroservice.Controllers
             return Ok(mapper.Map<SettingResponse>(setting));
         }
 
-        [HttpPost]        
+        [HttpPost]
         [ProducesResponseType(typeof(Guid), 201)]
         [ProducesResponseType(typeof(string), 400)]
         public async Task<ActionResult<Guid>> AddAsync([FromBody] SettingRequest request, CancellationToken cancellationToken)

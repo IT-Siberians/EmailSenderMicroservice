@@ -1,0 +1,23 @@
+services:
+  backend:    
+    build:
+     context: .
+     dockerfile: EmailSenderMicroservice/Dockerfile
+    restart: always
+    ports:
+      - "3001:8080"
+    depends_on:
+      - database
+  database:
+    image: postgres:latest
+    container_name: local_pgdb_email
+    restart: always
+    environment:
+      POSTGRES_DB: "db_sender"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "admin"
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+
+volumes:
+  local_pgdata:
