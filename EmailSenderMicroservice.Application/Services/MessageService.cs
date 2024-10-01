@@ -64,7 +64,7 @@ namespace EmailSenderMicroservice.Application.Services
         /// <param name="cancellationToken">Токен отмены операции.</param>
         /// <returns>True, если статус отправки успешно обновлен, иначе False.</returns>
         /// <remarks>Обновляет статус отправки сообщения с указанным идентификатором.</remarks>
-        public async Task<bool> MarkAsSendedStatusAsync(Guid id, CancellationToken cancellationToken = default)
+        public async Task<bool> SetSendedStatusAsync(Guid id, CancellationToken cancellationToken = default)
         {
             var message = await messageRepository.GetByIdAsync(id, cancellationToken);
 
