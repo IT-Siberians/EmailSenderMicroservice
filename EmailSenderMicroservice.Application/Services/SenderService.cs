@@ -58,7 +58,7 @@ namespace EmailSenderMicroservice.Application.Services
                     await client.DisconnectAsync(true, cancellationToken);
                 }
 
-                await messageService.SendedStatusAsync(messageId, cancellationToken);
+                await messageService.MarkAsSendedStatusAsync(messageId, cancellationToken);
             }
             catch (Exception ex)
             {

@@ -14,6 +14,6 @@ namespace EmailSenderMicroservice.Application.Services.Abstraction
         /// <returns>Сущность с текущими настройками</returns>
         /// <param name="id">Уникальный идентификатор сообщения.</param>
         /// <param name="cancellationToken">Токен отмены операции.</param>
-        Task<bool> SendedStatusAsync(Guid id, CancellationToken cancellationToken);
+        Task<bool> MarkAsSendedStatusAsync(Guid id, CancellationToken cancellationToken);
     }
 }
