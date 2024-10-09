@@ -63,6 +63,8 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
 
+            builder.Services.AddLogging(builder => builder.AddConsole());
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

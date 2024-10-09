@@ -1,5 +1,6 @@
 services:
-  backend:    
+  backend:
+    container_name: emailsender_api
     build:
      context: .
      dockerfile: EmailSenderMicroservice/Dockerfile
@@ -13,11 +14,16 @@ services:
     container_name: local_pgdb_email
     restart: always
     environment:
-      POSTGRES_DB: "db_sender"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - local_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   local_pgdata:
