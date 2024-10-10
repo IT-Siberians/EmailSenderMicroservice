@@ -9,6 +9,11 @@ services:
       - "3001:8080"
     depends_on:
       - database
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   database:
     image: postgres:latest
     container_name: local_pgdb_email

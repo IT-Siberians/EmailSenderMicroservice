@@ -9,6 +9,8 @@ using EmailSenderMicroservice.Mapper;
 using EmailSenderMicroservice.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -19,6 +21,13 @@ namespace EmailSenderMicroservice
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
+            }
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -40,15 +49,7 @@ namespace EmailSenderMicroservice
             builder.Services.AddDbContext<EmailSenderMicroserviceDbContext>(
                 options =>
                 {
-                    var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
-
-                    if (string.IsNullOrEmpty(connectionString))
-                    {
-                        throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
-                    }
-
                     options.UseNpgsql(connectionString);
-
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
@@ -65,6 +66,10 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddLogging(builder => builder.AddConsole());
 
+            builder.Services.AddHealthChecks()
+                .AddNpgSql(connectionString)
+                .AddDbContextCheck<EmailSenderMicroserviceDbContext>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -75,6 +80,13 @@ namespace EmailSenderMicroservice
             }
 
             //app.UseHttpsRedirection();
+
+            app.UseCors();
+
+            app.MapHealthChecks("health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             app.UseAuthorization();
 

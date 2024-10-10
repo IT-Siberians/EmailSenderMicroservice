@@ -20,7 +20,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         public Email Email { get; }
 
         /// <summary>
-        /// Название шаблона сообщений
+        /// Тип сообщения
         /// </summary>
         public string MessageType { get; }
 
