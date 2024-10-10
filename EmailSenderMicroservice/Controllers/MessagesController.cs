@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace EmailSenderMicroservice.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
-    public class MessageController(IMessageService messageService, IMapper mapper) : ControllerBase
+    [Route("api/[controller]")]
+    public class MessagesController(IMessageService messageService, IMapper mapper) : ControllerBase
     {
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MessageResponse>), 200)]

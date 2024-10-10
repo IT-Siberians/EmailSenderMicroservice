@@ -56,5 +56,26 @@ namespace EmailSenderMicroservice.Application.Services
 
             return mapper.Map<MessageModel>(message);
         }
+
+        /// <summary>
+        /// Обновляет статус отправки сообщения.
+        /// </summary>
+        /// <param name="id">Уникальный идентификатор сообщения.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns>True, если статус отправки успешно обновлен, иначе False.</returns>
+        /// <remarks>Обновляет статус отправки сообщения с указанным идентификатором.</remarks>
+        public async Task<bool> SetSendedStatusAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var message = await messageRepository.GetByIdAsync(id, cancellationToken);
+
+            if (message == null)
+            {
+                return false;
+            }
+
+            message.MarkAsSended();
+
+            return await messageRepository.UpdateAsync(message, cancellationToken);
+        }
     }
 }

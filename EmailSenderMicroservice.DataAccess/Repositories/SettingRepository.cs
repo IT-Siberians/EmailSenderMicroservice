@@ -19,7 +19,7 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         /// <returns>Идентификатор добавленной настройки.</returns>
         public async Task<Guid> AddAsync(Setting entity, CancellationToken cancellationToken)
         {
-            await context.Settings.AddAsync(entity);
+            await context.Settings.AddAsync(entity, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;

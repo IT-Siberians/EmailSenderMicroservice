@@ -8,5 +8,12 @@ namespace EmailSenderMicroservice.DataAccess.Repositories.Abstraction
     /// </summary>
     public interface IMessageRepository : IRepository<Message, Guid>
     {
+        /// <summary>
+        /// Обновление сообщения
+        /// </summary>
+        /// <param name="entity"> Сущность для изменения. </param>
+        /// <param name="cancellationToken"> Токен отмены. </param>
+        /// <returns>Идентификатор обновленной сущности</returns>
+        Task<bool> UpdateAsync(Message entity, CancellationToken cancellationToken);
     }
 }

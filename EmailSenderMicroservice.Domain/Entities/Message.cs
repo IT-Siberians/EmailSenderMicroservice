@@ -20,7 +20,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         public Email Email { get; }
 
         /// <summary>
-        /// Название шаблона сообщений
+        /// Тип сообщения
         /// </summary>
         public string MessageType { get; }
 
@@ -80,7 +80,7 @@ namespace EmailSenderMicroservice.Domain.Entities
         /// <summary>
         /// Метод для изменения статуса доставки на отправлен.
         /// </summary>
-        public void MarkAsSent()
+        public void MarkAsSended()
         {
             Status = true;
         }
