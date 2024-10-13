@@ -4,10 +4,13 @@ using EmailSenderMicroservice.Application.Services.Abstraction;
 using EmailSenderMicroservice.DataAccess;
 using EmailSenderMicroservice.DataAccess.Repositories;
 using EmailSenderMicroservice.DataAccess.Repositories.Abstraction;
+using EmailSenderMicroservice.Helpers;
 using EmailSenderMicroservice.Mapper;
 using EmailSenderMicroservice.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -18,6 +21,13 @@ namespace EmailSenderMicroservice
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
+
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
+            }
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -39,13 +49,6 @@ namespace EmailSenderMicroservice
             builder.Services.AddDbContext<EmailSenderMicroserviceDbContext>(
                 options =>
                 {
-                    var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
-
-                    if (string.IsNullOrEmpty(connectionString))
-                    {
-                        throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
-                    }
-
                     options.UseNpgsql(connectionString);
                 });
 
@@ -61,6 +64,12 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
 
+            builder.Services.AddLogging(builder => builder.AddConsole());
+
+            builder.Services.AddHealthChecks()
+                .AddNpgSql(connectionString)
+                .AddDbContextCheck<EmailSenderMicroserviceDbContext>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -70,10 +79,18 @@ namespace EmailSenderMicroservice
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
+
+            app.UseCors();
+
+            app.MapHealthChecks("health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             app.UseAuthorization();
 
+            app.MigrateDatabase<EmailSenderMicroserviceDbContext>();
 
             app.MapControllers();
 

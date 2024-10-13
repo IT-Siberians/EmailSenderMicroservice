@@ -58,6 +58,11 @@ dlldata.c
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 
+
+# Ignore local appSettings
+*.Local.json
+*.Development.json
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json
@@ -361,3 +366,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+*.env
+*.Development.json

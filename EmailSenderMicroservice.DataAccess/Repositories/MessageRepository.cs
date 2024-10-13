@@ -44,10 +44,23 @@ namespace EmailSenderMicroservice.DataAccess.Repositories
         /// <returns>Идентификатор добавленного сообщения.</returns>
         public async Task<Guid> AddAsync(Message entity, CancellationToken cancellationToken)
         {
-            await context.Messages.AddAsync(entity);
+            await context.Messages.AddAsync(entity, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);
 
             return entity.Id;
+        }
+
+        /// <summary>
+        /// Обновляет сообщения в базе данных.
+        /// </summary>
+        /// <param name="entity">Обновлённая сущность настройки.</param>
+        /// <param name="cancellationToken">Токен отмены операции.</param>
+        /// <returns><c>true</c>, если обновление прошло успешно.</returns>
+        public async Task<bool> UpdateAsync(Message entity, CancellationToken cancellationToken)
+        {
+            context.Messages.Update(entity);
+
+            return await context.SaveChangesAsync(cancellationToken) > 0;
         }
     }
 }

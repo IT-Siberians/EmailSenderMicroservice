@@ -48,11 +48,18 @@ namespace EmailSenderMicroservice.Services
                 var message = Encoding.UTF8.GetString(body);
                 var emailRequest = JsonSerializer.Deserialize<MessageRequest>(message);
 
-                using (var scope = _serviceScopeFactory.CreateScope())
-                {
-                    var senderService = scope.ServiceProvider.GetRequiredService<SenderService>();
+                using var scope = _serviceScopeFactory.CreateScope();
+                var senderService = scope.ServiceProvider.GetRequiredService<SenderService>();
 
-                    await senderService.SendAsync(emailRequest!.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true, cancellationToken);
+                var result = await senderService.SendAsync(emailRequest!.Name, emailRequest.Email, emailRequest.MessageType, emailRequest.MessageText, true, cancellationToken);
+
+                if (result)
+                {
+                    _channel.BasicAck(ea.DeliveryTag, false);
+                }
+                else
+                {
+                    _channel.BasicNack(ea.DeliveryTag, false, true);
                 }
 
                 await Task.CompletedTask;
@@ -60,7 +67,7 @@ namespace EmailSenderMicroservice.Services
 
             _channel.BasicConsume(
                 queue: _queueName,
-                autoAck: true,
+                autoAck: false,
                 consumer: consumer);
 
             return Task.CompletedTask;

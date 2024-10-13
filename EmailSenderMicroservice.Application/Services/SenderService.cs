@@ -2,6 +2,7 @@
 using EmailSenderMicroservice.Application.Services.Abstraction;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 
 namespace EmailSenderMicroservice.Application.Services
@@ -11,7 +12,7 @@ namespace EmailSenderMicroservice.Application.Services
     /// </summary>
     /// <param name="settingService">Служба для получения настроек электронной почты.</param>
     /// <param name="messageService">Служба для управления сообщениями.</param>
-    public class SenderService(ISettingService settingService, IMessageService messageService)
+    public class SenderService(ISettingService settingService, IMessageService messageService, ILogger<SenderService> logger)
     {
         private const string FromName = "Email Notification Service";
 
@@ -25,16 +26,17 @@ namespace EmailSenderMicroservice.Application.Services
         /// <param name="isHtml">Указывает, является ли текст письма HTML-контентом.</param>
         /// <returns>Асинхронная задача.</returns>
         /// <exception cref="InvalidOperationException">Выбрасывается, если не удается получить текущие настройки.</exception>
-        public async Task SendAsync(string toName, string toEmail, string subject, string text, bool isHtml, CancellationToken cancellationToken)
+        public async Task<bool> SendAsync(string toName, string toEmail, string subject, string text, bool isHtml, CancellationToken cancellationToken)
         {
             var settingNow = await settingService.GetCurrentAsync(cancellationToken);
             if (settingNow is null)
             {
-                throw new InvalidOperationException("Не удалось получить текущие настройки для отправки письма.");
+                logger.LogError("Could not get current settings for sending email.");
+                return false;
             }
 
             var messageSend = new AddMessageModel(toEmail, subject, text);
-            await messageService.AddAsync(messageSend, cancellationToken);
+            var messageId = await messageService.AddAsync(messageSend, cancellationToken);
 
             var message = new MimeMessage
             {
@@ -47,13 +49,26 @@ namespace EmailSenderMicroservice.Application.Services
             message.From.Add(new MailboxAddress(FromName, settingNow.Login));
             message.To.Add(new MailboxAddress(toName, toEmail));
 
-            using (var client = new SmtpClient())
+            try
             {
-                await client.ConnectAsync(settingNow.ServerAddress, Convert.ToInt32(settingNow.ServerPort),
-                    settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None);
-                await client.AuthenticateAsync(settingNow.Login, settingNow.Password);
-                await client.SendAsync(message);
-                await client.DisconnectAsync(true);
+                using (var client = new SmtpClient())
+                {
+                    await client.ConnectAsync(
+                        settingNow.ServerAddress,
+                        Convert.ToInt32(settingNow.ServerPort),
+                        settingNow.UseSSL ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.None,
+                        cancellationToken);
+                    await client.AuthenticateAsync(settingNow.Login, settingNow.Password, cancellationToken);
+                    var q = await client.SendAsync(message, cancellationToken);
+                    await client.DisconnectAsync(true, cancellationToken);
+                }
+
+                return await messageService.SetSendedStatusAsync(messageId, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Error sending email.");
+                return false;
             }
         }
     }
