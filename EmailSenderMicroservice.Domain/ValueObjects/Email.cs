@@ -20,9 +20,9 @@ namespace EmailSenderMicroservice.Domain.ValueObjects
         /// </summary>
         /// <param name="value">Значение электронного адреса.</param>
         /// <exception cref="EmailInvalidException">Выбрасывается, если значение электронного адреса некорректно.</exception>
-        protected override void IsValid(string value)
+        protected override void Validate(string value)
         {
-            if (!(!string.IsNullOrWhiteSpace(value) && ValidationRegex.IsMatch(value)))
+            if (string.IsNullOrWhiteSpace(value) || !ValidationRegex.IsMatch(value))
             {
                 throw new EmailInvalidException(value);
             }

@@ -18,10 +18,7 @@ services:
     image: postgres:latest
     container_name: local_pgdb_email
     restart: always
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    env_file: ".env"
     volumes:
       - local_pgdata:/var/lib/postgresql/data
     healthcheck:
