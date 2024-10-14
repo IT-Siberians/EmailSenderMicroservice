@@ -11,7 +11,7 @@
         /// <param name="value">Строка, представляющая значение объекта.</param>
         protected StringValueObject(string value)
         {
-            IsValid(value);
+            Validate(value);
 
             Value = value;
         }
@@ -25,7 +25,7 @@
         /// Проверяет, соответствует ли переданная строка формату корректного значения объекта.
         /// </summary>
         /// <param name="value">Строка для проверки.</param>
-        protected abstract void IsValid(string value);
+        protected abstract void Validate(string value);
 
         /// <summary>
         /// Возвращает строковое представление значения объекта.
@@ -50,12 +50,7 @@
         /// <param name="left">Первый объект <see cref="StringValueObject"/>.</param>
         /// <param name="right">Второй объект <see cref="StringValueObject"/>.</param>
         /// <returns><c>true</c>, если оба объекта равны; в противном случае <c>false</c>.</returns>
-        public static bool operator ==(StringValueObject left, StringValueObject right)
-        {
-            if (ReferenceEquals(left, null))
-                return ReferenceEquals(right, null);
-            return left.Equals(right);
-        }
+        public static bool operator ==(StringValueObject left, StringValueObject right) => Equals(left, right);
 
         /// <summary>
         /// Перегруженный оператор неравенства для сравнения двух объектов <see cref="StringValueObject"/>.
@@ -63,10 +58,7 @@
         /// <param name="left">Первый объект <see cref="StringValueObject"/>.</param>
         /// <param name="right">Второй объект <see cref="StringValueObject"/>.</param>
         /// <returns><c>true</c>, если объекты не равны; в противном случае <c>false</c>.</returns>
-        public static bool operator !=(StringValueObject left, StringValueObject right)
-        {
-            return !(left == right);
-        }
+        public static bool operator !=(StringValueObject left, StringValueObject right) => !(left == right);
 
         /// <summary>
         /// Возвращает хеш-код для текущего объекта <see cref="StringValueObject"/>.
