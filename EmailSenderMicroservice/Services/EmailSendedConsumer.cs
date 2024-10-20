@@ -1,6 +1,6 @@
 ﻿using EmailSenderMicroservice.Application.Services;
 using MassTransit;
-using Otus.QueueDto;
+using Otus.QueueDto.Email;
 
 namespace EmailSenderMicroservice.Services
 {
@@ -13,9 +13,9 @@ namespace EmailSenderMicroservice.Services
             using var scope = serviceScopeFactory.CreateScope();
             var senderService = scope.ServiceProvider.GetRequiredService<SenderService>();
 
-            var result = await senderService.SendAsync(message!.Name, message.Email, message.MessageType, message.MessageText, true);
+            var isSent = await senderService.SendAsync(message!.Name, message.Email, message.MessageType, message.MessageText, true);
 
-            if (!result)
+            if (!isSent)
             {
                 logger.LogWarning("Failed to send email, message will be redelivered.");
                 await context.Redeliver(TimeSpan.FromSeconds(10));

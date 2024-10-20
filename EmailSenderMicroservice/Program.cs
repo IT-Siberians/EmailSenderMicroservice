@@ -23,16 +23,16 @@ namespace EmailSenderMicroservice
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionStringDb = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
+            var dbConnectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
 
-            if (string.IsNullOrEmpty(connectionStringDb))
+            if (string.IsNullOrEmpty(dbConnectionString))
             {
                 throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
             }
 
-            var connectionStringRMQ = builder.Configuration.GetConnectionString(nameof(EmailSendedConsumer));
+            var rmqConnectionString = builder.Configuration.GetConnectionString(nameof(EmailSendedConsumer));
 
-            if (string.IsNullOrEmpty(connectionStringRMQ))
+            if (string.IsNullOrEmpty(rmqConnectionString))
             {
                 throw new InvalidOperationException("Connection string for RabbitMQ is not configured.");
             }
@@ -57,7 +57,7 @@ namespace EmailSenderMicroservice
             builder.Services.AddDbContext<EmailSenderMicroserviceDbContext>(
                 options =>
                 {
-                    options.UseNpgsql(connectionStringDb);
+                    options.UseNpgsql(dbConnectionString);
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
@@ -73,8 +73,8 @@ namespace EmailSenderMicroservice
             builder.Services.AddLogging(builder => builder.AddConsole());
 
             builder.Services.AddHealthChecks()
-                .AddNpgSql(connectionStringDb)
-                .AddRabbitMQ(rabbitConnectionString: connectionStringRMQ)
+                .AddNpgSql(dbConnectionString)
+                .AddRabbitMQ(rabbitConnectionString: rmqConnectionString)
                 .AddDbContextCheck<EmailSenderMicroserviceDbContext>();
 
             builder.Services.AddMassTransit(x =>
@@ -82,7 +82,7 @@ namespace EmailSenderMicroservice
                 x.AddConsumers(typeof(Program).Assembly);
                 x.UsingRabbitMq((context, cfg) =>
                 {
-                    cfg.Host(new Uri(connectionStringRMQ));
+                    cfg.Host(new Uri(rmqConnectionString));
                     cfg.ConfigureEndpoints(context);
                     cfg.UseMessageRetry(r =>
                     {
