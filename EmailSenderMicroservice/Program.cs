@@ -10,6 +10,7 @@ using EmailSenderMicroservice.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -22,11 +23,18 @@ namespace EmailSenderMicroservice
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
+            var connectionStringDb = builder.Configuration.GetConnectionString(nameof(EmailSenderMicroserviceDbContext));
 
-            if (string.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(connectionStringDb))
             {
                 throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
+            }
+
+            var connectionStringRMQ = builder.Configuration.GetConnectionString(nameof(EmailSendedConsumer));
+
+            if (string.IsNullOrEmpty(connectionStringRMQ))
+            {
+                throw new InvalidOperationException("Connection string for RabbitMQ is not configured.");
             }
 
             builder.Services.AddControllers();
@@ -49,7 +57,7 @@ namespace EmailSenderMicroservice
             builder.Services.AddDbContext<EmailSenderMicroserviceDbContext>(
                 options =>
                 {
-                    options.UseNpgsql(connectionString);
+                    options.UseNpgsql(connectionStringDb);
                 });
 
             builder.Services.AddScoped<IMessageService, MessageService>();
@@ -60,15 +68,28 @@ namespace EmailSenderMicroservice
 
             builder.Services.AddScoped<SenderService>();
 
-            builder.Services.AddHostedService<EmailConsumerService>();
-
             builder.Services.AddAutoMapper(typeof(RepresentationProfile), typeof(ApplicationProfile));
 
             builder.Services.AddLogging(builder => builder.AddConsole());
 
             builder.Services.AddHealthChecks()
-                .AddNpgSql(connectionString)
+                .AddNpgSql(connectionStringDb)
+                .AddRabbitMQ(rabbitConnectionString: connectionStringRMQ)
                 .AddDbContextCheck<EmailSenderMicroserviceDbContext>();
+
+            builder.Services.AddMassTransit(x =>
+            {
+                x.AddConsumers(typeof(Program).Assembly);
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(new Uri(connectionStringRMQ));
+                    cfg.ConfigureEndpoints(context);
+                    cfg.UseMessageRetry(r =>
+                    {
+                        r.Interval(3, TimeSpan.FromSeconds(10));
+                    });
+                });
+            });
 
             var app = builder.Build();
 
@@ -81,7 +102,12 @@ namespace EmailSenderMicroservice
 
             //app.UseHttpsRedirection();
 
-            app.UseCors();
+            app.UseCors(policy =>
+            {
+                policy.WithOrigins("http://localhost:5173")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            });
 
             app.MapHealthChecks("health", new HealthCheckOptions
             {

@@ -369,3 +369,5 @@ FodyWeavers.xsd
 
 *.env
 *.Development.json
+*/*.Development.json
+/EmailSenderMicroservice/appsettings.Development.json

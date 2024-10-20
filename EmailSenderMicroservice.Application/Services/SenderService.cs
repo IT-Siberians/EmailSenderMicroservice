@@ -24,9 +24,9 @@ namespace EmailSenderMicroservice.Application.Services
         /// <param name="subject">Тема письма.</param>
         /// <param name="text">Текст письма.</param>
         /// <param name="isHtml">Указывает, является ли текст письма HTML-контентом.</param>
-        /// <returns>Асинхронная задача.</returns>
+        /// <returns>True, если сообщение отправлено успешно, иначе False.</returns>
         /// <exception cref="InvalidOperationException">Выбрасывается, если не удается получить текущие настройки.</exception>
-        public async Task<bool> SendAsync(string toName, string toEmail, string subject, string text, bool isHtml, CancellationToken cancellationToken)
+        public async Task<bool> SendAsync(string toName, string toEmail, string subject, string text, bool isHtml, CancellationToken cancellationToken = default)
         {
             var settingNow = await settingService.GetCurrentAsync(cancellationToken);
             if (settingNow is null)

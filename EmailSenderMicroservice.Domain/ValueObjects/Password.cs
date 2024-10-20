@@ -14,7 +14,7 @@ namespace EmailSenderMicroservice.Domain.ValueObjects
         /// </summary>
         /// <param name="value">Значение пароля.</param>
         /// <exception cref="SettingPasswordNullOrEmptyException">Выбрасывается, если значение пароля пустое или содержит только пробелы.</exception>
-        protected override void IsValid(string value)
+        protected override void Validate(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
