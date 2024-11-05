@@ -30,7 +30,7 @@ namespace EmailSenderMicroservice
                 throw new InvalidOperationException("Connection string for EmailSenderMicroserviceDbContext is not configured.");
             }
 
-            var rmqConnectionString = builder.Configuration.GetConnectionString(nameof(EmailSendedConsumer));
+            var rmqConnectionString = builder.Configuration.GetConnectionString(nameof(EmailSentConsumer));
 
             if (string.IsNullOrEmpty(rmqConnectionString))
             {

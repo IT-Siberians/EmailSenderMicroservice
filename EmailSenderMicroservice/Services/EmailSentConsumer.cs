@@ -4,7 +4,7 @@ using Otus.QueueDto.Email;
 
 namespace EmailSenderMicroservice.Services
 {
-    public class EmailSendedConsumer(IServiceScopeFactory serviceScopeFactory, ILogger<EmailSendedConsumer> logger) : IConsumer<MessageEvent>
+    public class EmailSentConsumer(IServiceScopeFactory serviceScopeFactory, ILogger<EmailSentConsumer> logger) : IConsumer<MessageEvent>
     {
         public async Task Consume(ConsumeContext<MessageEvent> context)
         {
