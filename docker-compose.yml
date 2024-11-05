@@ -5,6 +5,8 @@ services:
      context: .
      dockerfile: EmailSenderMicroservice/Dockerfile
     restart: always
+    volumes:
+      - ./appsettings.json:/app/appsettings.json
     ports:
       - "3001:8080"
     depends_on:
